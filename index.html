@@ -13,6 +13,16 @@
             --text-color: #ffffff;
         }
 
+        /* 🌈 حركات ريمبو الواجهة المتحركة */
+        @keyframes rainbowBackground {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        body.rainbow-theme {
+            animation: rainbowBackground 8s linear infinite;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -187,7 +197,7 @@
             border-radius: 50%;
         }
 
-        /* 🌈 زر رينبو الجديد */
+        /* 🌈 زر رينبو للنص */
         .rainbow-btn {
             background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
             border: 2px solid #fff;
@@ -620,7 +630,7 @@
         <div class="input-box">
             <input type="text" id="userInput" placeholder="اكتب النص هنا..." value="Nulls Magic" onfocus="preventAutoScroll(event)">
             <div class="color-pickers">
-                <button class="rainbow-btn" onclick="applyRainbowColors()">🌈 رينبو</button>
+                <button class="rainbow-btn" onclick="applyTextRainbow()">🌈 رينبو</button>
                 <input type="color" id="color1" value="#0088ff">
                 <input type="color" id="color2" value="#8a2be2">
                 <input type="color" id="color3" value="#ff007f">
@@ -677,6 +687,16 @@
                         <div class="preview-color" style="background: #ff007f;"></div>
                     </div>
                     <span class="theme-name">⚡ النيون الفخم</span>
+                </div>
+
+                <!-- 🌈 ثيم رينبو المتحرك الجديد -->
+                <div class="theme-card" onclick="applyRainbowTheme()">
+                    <div class="theme-preview">
+                        <div class="preview-color" style="background: red;"></div>
+                        <div class="preview-color" style="background: yellow;"></div>
+                        <div class="preview-color" style="background: blue;"></div>
+                    </div>
+                    <span class="theme-name">🌈 رينبو متحرك</span>
                 </div>
 
             </div>
@@ -784,7 +804,7 @@
         let currentUser = null;
         let activeChatId = null; 
         let activeChatType = 'friend';
-        let isRainbowMode = false;
+        let isTextRainbowMode = false;
 
         let dbUsers = JSON.parse(localStorage.getItem('nulls_db_users') || '{}');
         let dbGroups = JSON.parse(localStorage.getItem('nulls_db_groups') || '{}');
@@ -808,15 +828,23 @@
         }
 
         function applyTheme(bgColor, cardBg, accentColor, glowColor) {
+            document.body.classList.remove('rainbow-theme');
             document.documentElement.style.setProperty('--bg-color', bgColor);
             document.documentElement.style.setProperty('--card-bg', cardBg);
             document.documentElement.style.setProperty('--accent-blue', accentColor);
             document.documentElement.style.setProperty('--neon-glow', glowColor);
         }
 
-        // 🌈 دالة تفعيل رينبو
-        function applyRainbowColors() {
-            isRainbowMode = true;
+        // 🌈 تفعيل ثيم رينبو المتحرك للواجهة بالكامل
+        function applyRainbowTheme() {
+            document.body.classList.add('rainbow-theme');
+            document.documentElement.style.setProperty('--accent-blue', '#ff007f');
+            document.documentElement.style.setProperty('--neon-glow', 'rgba(255, 0, 127, 0.8)');
+        }
+
+        // 🌈 تفعيل رينبو للنص
+        function applyTextRainbow() {
+            isTextRainbowMode = true;
             generateGradientText();
         }
 
@@ -1184,7 +1212,7 @@
                 }
 
                 let hexColor = '';
-                if (isRainbowMode) {
+                if (isTextRainbowMode) {
                     const rainbowIndex = Math.floor((i / len) * rainbowHexes.length);
                     hexColor = rainbowHexes[Math.min(rainbowIndex, rainbowHexes.length - 1)];
                 } else {
@@ -1214,10 +1242,10 @@
             });
         }
 
-        userInput.addEventListener('input', () => { isRainbowMode = false; generateGradientText(); });
-        color1Input.addEventListener('input', () => { isRainbowMode = false; generateGradientText(); });
-        color2Input.addEventListener('input', () => { isRainbowMode = false; generateGradientText(); });
-        color3Input.addEventListener('input', () => { isRainbowMode = false; generateGradientText(); });
+        userInput.addEventListener('input', () => { isTextRainbowMode = false; generateGradientText(); });
+        color1Input.addEventListener('input', () => { isTextRainbowMode = false; generateGradientText(); });
+        color2Input.addEventListener('input', () => { isTextRainbowMode = false; generateGradientTest = generateGradientText; generateGradientText(); });
+        color3Input.addEventListener('input', () => { isTextRainbowMode = false; generateGradientText(); });
 
         generateGradientText();
     </script>
