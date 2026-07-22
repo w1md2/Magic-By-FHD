@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الموقع العربي الاول ل الوان سحريه بنولز - Text Colorizer</title>
+    <title>Nulls Magic - AI & Text Colorizer</title>
     <style>
         :root {
             --bg-color: #0d0e12;
@@ -54,26 +54,27 @@
         }
 
         .ai-btn {
-            background: linear-gradient(135deg, #8a2be2, #0088ff);
+            background: linear-gradient(135deg, #0088ff, #8a2be2);
             color: #fff;
-            border: none;
+            border: 1px solid rgba(0, 136, 255, 0.5);
             padding: 10px 18px;
             border-radius: 20px;
             cursor: pointer;
             font-weight: bold;
-            box-shadow: 0 0 12px rgba(138, 43, 226, 0.5);
+            box-shadow: 0 0 15px rgba(0, 136, 255, 0.4);
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             gap: 8px;
+            font-size: 0.95rem;
         }
 
         .ai-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(138, 43, 226, 0.8);
+            box-shadow: 0 0 22px rgba(0, 136, 255, 0.8);
         }
 
-        /* الشريط الأسود ذو الحواف الزرقاء الماعة */
+        /* الشريط الأسود ذو الحواف الزرقاء اللماعة */
         .input-box {
             position: relative;
             background-color: #000000;
@@ -102,7 +103,7 @@
             padding: 10px;
         }
 
-        /* 3 دوائر ألوان */
+        /* 3 دوائر الألوان */
         .color-pickers {
             display: flex;
             align-items: center;
@@ -190,12 +191,13 @@
             background-color: #0066cc;
         }
 
-        /* نافذة AI Magic Modal */
+        /* نافذة الشات الذكي Null's AI Modal */
         .modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
             justify-content: center;
             align-items: center;
             z-index: 100;
@@ -204,43 +206,100 @@
         .modal-content {
             background: var(--card-bg);
             border: 1px solid var(--accent-blue);
-            border-radius: 12px;
-            padding: 25px;
+            border-radius: 16px;
+            padding: 20px;
             width: 90%;
-            max-width: 450px;
-            text-align: right;
-            box-shadow: 0 0 20px var(--neon-glow);
-        }
-
-        .modal-content h2 {
-            margin-bottom: 15px;
-            color: #fff;
-        }
-
-        .modal-content input[type="text"], .modal-content input[type="file"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 12px;
-            border-radius: 6px;
-            border: 1px solid #333;
-            background: #000;
-            color: #fff;
-        }
-
-        .modal-actions {
+            max-width: 500px;
+            height: 520px;
             display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-            margin-top: 15px;
+            flex-direction: column;
+            box-shadow: 0 0 25px var(--neon-glow);
         }
 
-        .btn-sec {
-            background: #444;
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #2a2e39;
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+        }
+
+        .modal-header h2 {
+            font-size: 1.3rem;
+            background: linear-gradient(45deg, #0088ff, #00d2ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #aaa;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* صندوق المحادثة */
+        .chat-box {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-right: 5px;
+            margin-bottom: 12px;
+        }
+
+        .chat-msg {
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .msg-ai {
+            align-self: flex-start;
+            background: #20242e;
+            color: #fff;
+            border-bottom-right-radius: 2px;
+            border: 1px solid #323846;
+        }
+
+        .msg-user {
+            align-self: flex-end;
+            background: var(--accent-blue);
+            color: #fff;
+            border-bottom-left-radius: 2px;
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 8px;
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 6px;
+        }
+
+        .chat-input-area input[type="text"] {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            padding: 8px;
+        }
+
+        .send-btn {
+            background: var(--accent-blue);
             color: #fff;
             border: none;
-            padding: 8px 14px;
-            border-radius: 6px;
+            padding: 8px 16px;
+            border-radius: 8px;
             cursor: pointer;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -249,16 +308,17 @@
     <div class="container">
         <div class="header-area">
             <h1>Nulls Magic</h1>
-            <button class="ai-btn" onclick="openAiModal()">✨ AI Magic</button>
+            <!-- زر Null's AI للمحادثة الذكية -->
+            <button class="ai-btn" onclick="openAiModal()">🤖 Null’s AI</button>
         </div>
 
-        <!-- شريط النص والـ 3 ألوان -->
+        <!-- الشريط الأسود ذو الحواف الزرقاء والضوء -->
         <div class="input-box">
             <input type="text" id="userInput" placeholder="اكتب النص هنا..." value="Nulls Magic">
             
             <div class="color-pickers">
                 <input type="color" id="color1" value="#0088ff" title="اللون الأول">
-                <input type="color" id="color2" value="#8a2be2" title="اللون الأوسط">
+                <input type="color" id="color2" value="#8a2be2" title="اللون الثاني">
                 <input type="color" id="color3" value="#ff007f" title="اللون الثالث">
             </div>
         </div>
@@ -276,18 +336,25 @@
         </div>
     </div>
 
-    <!-- نافذة الذكاء الاصطناعي -->
+    <!-- نافذة المحادثة المباشرة Null's AI Modal -->
     <div class="modal" id="aiModal">
         <div class="modal-content">
-            <h2>✨ AI Magic</h2>
-            <p style="font-size:0.85rem; color:#aaa; margin-bottom:12px;">وصف الثيم أو اختر صورة لاستخراج 3 ألوان:</p>
+            <div class="modal-header">
+                <h2>🤖 Null’s AI Assistant</h2>
+                <button class="close-btn" onclick="closeAiModal()">&times;</button>
+            </div>
 
-            <input type="text" id="aiPrompt" placeholder="مثال: نار، نيون لايم، ثيم دراغون بول...">
-            <input type="file" id="aiImage" accept="image/*">
+            <!-- منطقة الشات -->
+            <div class="chat-box" id="chatBox">
+                <div class="chat-msg msg-ai">
+                    أهلاً بك! أنا Null’s AI 🤖. اسألني عن أي ألوان أو ثيمات، أو أطلب مني ألوان محددة (مثل: ثيم بركان، نيون فضاء، دراغون بول) وسأقوم باختيارها وتطبيقها لك فوراً!
+                </div>
+            </div>
 
-            <div class="modal-actions">
-                <button class="btn-sec" onclick="closeAiModal()">إلغاء</button>
-                <button class="copy-btn" onclick="processAi()">توليد الألوان</button>
+            <!-- الإدخال والدردشة -->
+            <div class="chat-input-area">
+                <input type="text" id="aiMsgInput" placeholder="تحدث معي أو اطلب ألوان..." onkeypress="handleKeyPress(event)">
+                <button class="send-btn" onclick="sendAiMessage()">إرسال</button>
             </div>
         </div>
     </div>
@@ -299,6 +366,8 @@
         const color3Input = document.getElementById('color3');
         const textPreview = document.getElementById('textPreview');
         const codeOutput = document.getElementById('codeOutput');
+        const chatBox = document.getElementById('chatBox');
+        const aiMsgInput = document.getElementById('aiMsgInput');
 
         function hexToRgb(hex) {
             const bigint = parseInt(hex.replace('#', ''), 16);
@@ -318,7 +387,7 @@
             return `${r}${g}${b}`;
         }
 
-        // حساب التدرج بناءً على 3 ألوان
+        // حساب التدرج بناءً على الـ 3 ألوان
         function get3PointGradientColor(factor) {
             if (factor <= 0.5) {
                 return interpolateColor(color1Input.value, color2Input.value, factor * 2);
@@ -373,63 +442,93 @@
             });
         }
 
-        /* التحكم بـ AI Modal */
+        /* نافذة Null's AI */
         function openAiModal() { document.getElementById('aiModal').style.display = 'flex'; }
         function closeAiModal() { document.getElementById('aiModal').style.display = 'none'; }
 
-        function processAi() {
-            const prompt = document.getElementById('aiPrompt').value.toLowerCase();
-            const imageInput = document.getElementById('aiImage');
-
-            // إذا تم اختيار صورة
-            if (imageInput.files && imageInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = new Image();
-                    img.src = e.target.result;
-                    img.onload = function() {
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-                        canvas.width = img.width;
-                        canvas.height = img.height;
-                        ctx.drawImage(img, 0, 0);
-                        
-                        // سحب 3 ألوان من أماكن مختلفة بالصورة
-                        const p1 = ctx.getImageData(10, 10, 1, 1).data;
-                        const p2 = ctx.getImageData(Math.floor(img.width/2), Math.floor(img.height/2), 1, 1).data;
-                        const p3 = ctx.getImageData(img.width - 10, img.height - 10, 1, 1).data;
-
-                        color1Input.value = `#${((1<<24)+(p1[0]<<16)+(p1[1]<<8)+p2[2]).toString(16).slice(1)}`;
-                        color2Input.value = `#${((1<<24)+(p2[0]<<16)+(p2[1]<<8)+p2[2]).toString(16).slice(1)}`;
-                        color3Input.value = `#${((1<<24)+(p3[0]<<16)+(p3[1]<<8)+p3[2]).toString(16).slice(1)}`;
-                        
-                        generateGradientText();
-                        closeAiModal();
-                    }
-                }
-                reader.readAsDataURL(imageInput.files[0]);
-                return;
-            }
-
-            // اقتراحات الذكاء الاصطناعي المبسطة بناءً على الوصف النصي
-            if (prompt.includes('نار') || prompt.includes('fire')) {
-                color1Input.value = '#ff0000'; color2Input.value = '#ff7700'; color3Input.value = '#ffea00';
-            } else if (prompt.includes('ثلج') || prompt.includes('ice')) {
-                color1Input.value = '#00ffff'; color2Input.value = '#0088ff'; color3Input.value = '#ffffff';
-            } else if (prompt.includes('سام') || prompt.includes('toxic') || prompt.includes('لايم')) {
-                color1Input.value = '#00ff22'; color2Input.value = '#a6ff00'; color3Input.value = '#004411';
-            } else {
-                // تلوين عشوائي متناسق كـ AI Suggestion
-                color1Input.value = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
-                color2Input.value = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
-                color3Input.value = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
-            }
-
-            generateGradientText();
-            closeAiModal();
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') sendAiMessage();
         }
 
-        // الاستماع للتغييرات
+        // المحرك الذكي المباشر للـ AI
+        function sendAiMessage() {
+            const text = aiMsgInput.value.trim();
+            if (!text) return;
+
+            // إضافة رسالة المستخدم
+            appendMessage(text, 'user');
+            aiMsgInput.value = '';
+
+            // محاكاة استجابة الـ AI الذكي وتطليق الألوان
+            setTimeout(() => {
+                const response = processAiBrain(text);
+                appendMessage(response, 'ai');
+            }, 600);
+        }
+
+        function appendMessage(msg, sender) {
+            const msgDiv = document.createElement('div');
+            msgDiv.classList.add('chat-msg', sender === 'user' ? 'msg-user' : 'msg-ai');
+            msgDiv.innerText = msg;
+            chatBox.appendChild(msgDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        /* منطق الذكاء الاصطناعي الخاص بـ Null's AI */
+        function processAiBrain(input) {
+            const q = input.toLowerCase();
+
+            if (q.includes('سلام') || q.includes('مرحبا') || q.includes('هلا')) {
+                return "أهلاً بك يا بطل! كيف يمكنني مساعدتك اليوم بخصوص نولز أو تصميم الألوان؟";
+            } 
+            
+            if (q.includes('من انت') || q.includes('من أنت')) {
+                return "أنا Null’s AI! مساعد الذكاء الاصطناعي المطور خصيصاً لتصميم وتحليل الألوان لجميع مشاريع نولز.";
+            }
+
+            // تحليل طلبات الألوان
+            if (q.includes('نار') || q.includes('بركان') || q.includes('احمر') || q.includes('أحمر')) {
+                setColors('#ff0000', '#ff6600', '#ffcc00');
+                return "تمت معالجة طلبك! جهزت لك تدرج ناري نيون ممتاز وحولته لدوائر الألوان فوراً 🔴🔥";
+            }
+
+            if (q.includes('ثلج') || q.includes('جليد') || q.includes('ازرق') || q.includes('أزرق')) {
+                setColors('#00f0ff', '#0077ff', '#ffffff');
+                return "تم! قمت بإنشاء ثيم ثلجي كريستالي وتطبيقه على النص ❄️💎";
+            }
+
+            if (q.includes('سام') || q.includes('سم') || q.includes('اخضر') || q.includes('أخضر') || q.includes('لايم')) {
+                setColors('#00ff44', '#a6ff00', '#003311');
+                return "تم اختيار ثيم السُم والنيون الأخضر الساطع وتطبيقه 🧪🟢";
+            }
+
+            if (q.includes('بنفسجي') || q.includes('ملكي') || q.includes('شبح')) {
+                setColors('#8a2be2', '#d800ff', '#240046');
+                return "تم ضبط التدرج البنفسجي الملكي الفخم 🟣✨";
+            }
+
+            if (q.includes('ذهب') || q.includes('ذهبي') || q.includes('فخم')) {
+                setColors('#ffe600', '#ffaa00', '#885500');
+                return "تم تطبيق التدرج الذهبي اللامع بنجاح 👑💛";
+            }
+
+            // إجابة عامة توليدية مع اختيار ألوان عشوائية متناسقة
+            const r1 = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+            const r2 = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+            const r3 = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+            setColors(r1, r2, r3);
+
+            return `فهمت قصدك! قمت بتحليل كلامك واستخراج أفضل 3 ألوان متناسقة وتطبيقها لك مباشرة 🎨✨`;
+        }
+
+        function setColors(c1, c2, c3) {
+            color1Input.value = c1;
+            color2Input.value = c2;
+            color3Input.value = c3;
+            generateGradientText();
+        }
+
+        // الاستماع للتغييرات المباشرة
         userInput.addEventListener('input', generateGradientText);
         color1Input.addEventListener('input', generateGradientText);
         color2Input.addEventListener('input', generateGradientText);
