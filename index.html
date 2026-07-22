@@ -13,7 +13,6 @@
             --text-color: #ffffff;
         }
 
-        /* 🌈 حركات ريمبو الواجهة المتحركة */
         @keyframes rainbowBackground {
             0% { filter: hue-rotate(0deg); }
             100% { filter: hue-rotate(360deg); }
@@ -58,7 +57,7 @@
         }
 
         .nav-item {
-            padding: 8px 20px;
+            padding: 8px 25px;
             border-radius: 20px;
             background: #1a1d24;
             color: #aaa;
@@ -129,10 +128,12 @@
             justify-content: space-between;
             width: 100%;
             margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         h1 {
-            font-size: 2.5rem;
+            font-size: 2.3rem;
             font-weight: 800;
             background: linear-gradient(45deg, #0088ff, #00d2ff);
             -webkit-background-clip: text;
@@ -140,19 +141,25 @@
             text-shadow: 0 0 15px rgba(0, 136, 255, 0.3);
         }
 
-        .ai-btn {
+        .header-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
             background: linear-gradient(135deg, #0088ff, #8a2be2);
             color: #fff;
             border: 1px solid rgba(0, 136, 255, 0.5);
-            padding: 10px 18px;
+            padding: 8px 15px;
             border-radius: 20px;
             cursor: pointer;
             font-weight: bold;
-            box-shadow: 0 0 15px rgba(0, 136, 255, 0.4);
+            box-shadow: 0 0 12px rgba(0, 136, 255, 0.4);
             transition: all 0.3s ease;
+            font-size: 0.9rem;
         }
 
-        .ai-btn:hover { transform: scale(1.05); }
+        .action-btn:hover { transform: scale(1.05); }
 
         /* الألوان والنص */
         .input-box {
@@ -197,7 +204,6 @@
             border-radius: 50%;
         }
 
-        /* 🌈 زر رينبو للنص */
         .rainbow-btn {
             background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
             border: 2px solid #fff;
@@ -263,7 +269,7 @@
             font-weight: bold;
         }
 
-        /* 🌈 قسم الثيمات والألوان الفخمة (بالأسفل) */
+        /* 🌈 قسم الثيمات والألوان الفخمة */
         .color-themes-section {
             width: 100%;
             margin-top: 25px;
@@ -284,7 +290,7 @@
 
         .themes-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 12px;
             width: 100%;
         }
@@ -310,7 +316,7 @@
 
         .theme-preview {
             width: 100%;
-            height: 35px;
+            height: 30px;
             border-radius: 8px;
             display: flex;
             overflow: hidden;
@@ -320,203 +326,87 @@
 
         .theme-name {
             font-weight: bold;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
-        /* 🟣 شاشة الدردشة والتواصل */
-        .chat-app-container {
+        /* 💎 قسم الرموز المميزة (100 رمز - 5 أعمدة) */
+        .symbols-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
             width: 100%;
-            height: 560px;
+            max-height: 520px;
+            overflow-y: auto;
+            padding: 5px;
+        }
+
+        @media (max-width: 600px) {
+            .symbols-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .symbol-card {
             background: var(--card-bg);
-            border: 1px solid var(--accent-blue);
-            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            height: 55px;
             display: flex;
-            overflow: hidden;
-            box-shadow: 0 0 25px var(--neon-glow);
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
-        .chat-sidebar {
-            width: 35%;
-            background: #111318;
-            border-left: 1px solid #262930;
+        .symbol-card:hover {
+            background: var(--accent-blue);
+            transform: scale(1.1);
+            box-shadow: 0 0 15px var(--neon-glow);
+            border-color: #fff;
+        }
+
+        /* 🔠 قسم الخطوط (Fonts) */
+        .fonts-list-container {
+            width: 100%;
             display: flex;
             flex-direction: column;
-            padding: 10px;
+            gap: 10px;
+            max-height: 450px;
+            overflow-y: auto;
+            margin-top: 15px;
         }
 
-        .sidebar-section-title {
-            font-size: 0.75rem;
-            color: #777;
-            margin: 8px 0 4px 0;
-            font-weight: bold;
-        }
-
-        .add-friend-box {
+        .font-row {
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 12px 15px;
             display: flex;
-            gap: 5px;
-            margin-bottom: 8px;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
         }
 
-        .add-friend-box input {
-            width: 100%;
-            background: #000;
-            border: 1px solid #333;
+        .font-text-display {
+            font-size: 1.2rem;
+            font-weight: bold;
             color: #fff;
-            padding: 6px;
-            border-radius: 6px;
-            font-size: 0.85rem;
+            word-break: break-all;
+            flex: 1;
         }
 
-        .add-friend-btn {
+        .font-copy-btn {
             background: var(--accent-blue);
-            border: none;
             color: #fff;
-            padding: 6px 10px;
+            border: none;
+            padding: 6px 14px;
             border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             white-space: nowrap;
-        }
-
-        .group-btn {
-            background: linear-gradient(135deg, #8a2be2, #0088ff);
-            width: 100%;
-            border: none;
-            color: #fff;
-            padding: 8px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.85rem;
-            margin-top: auto;
-        }
-
-        .friends-list {
-            flex: 1;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            margin-bottom: 10px;
-        }
-
-        .friend-item {
-            padding: 8px 10px;
-            background: #1a1d24;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
-        }
-
-        .friend-item img {
-            width: 28px; height: 28px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .friend-item.active, .friend-item:hover {
-            background: var(--accent-blue);
-        }
-
-        .chat-main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background: #0d0e12;
-        }
-
-        .chat-header {
-            padding: 12px;
-            background: #16181d;
-            border-bottom: 1px solid #262930;
-            font-weight: bold;
-        }
-
-        .chat-messages {
-            flex: 1;
-            padding: 15px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .msg-wrapper {
-            display: flex;
-            flex-direction: column;
-            max-width: 75%;
-        }
-
-        .msg-wrapper.mine { align-self: flex-start; }
-        .msg-wrapper.other { align-self: flex-end; }
-
-        .msg-sender-info {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            margin-bottom: 4px;
-        }
-
-        .msg-sender-info img {
-            width: 22px; height: 22px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 1px solid var(--accent-blue);
-        }
-
-        .msg-sender-name {
-            font-size: 0.75rem;
-            color: #aaa;
-            font-weight: bold;
-        }
-
-        .msg-bubble {
-            padding: 10px 14px;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            line-height: 1.4;
-            word-break: break-word;
-        }
-
-        .msg-wrapper.mine .msg-bubble {
-            background: var(--accent-blue);
-            color: #fff;
-            border-top-right-radius: 2px;
-        }
-
-        .msg-wrapper.other .msg-bubble {
-            background: #222630;
-            color: #fff;
-            border-top-left-radius: 2px;
-        }
-
-        .msg-bubble img {
-            max-width: 100%;
-            border-radius: 8px;
-            margin-top: 5px;
-        }
-
-        .chat-input-bar {
-            display: flex;
-            padding: 10px;
-            background: #16181d;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .chat-input-bar input[type="text"] {
-            flex: 1;
-            background: #000;
-            border: 1px solid #333;
-            color: #fff;
-            padding: 8px;
-            border-radius: 8px;
         }
 
         /* 🟣 النوافذ المنبثقة (Modals) */
@@ -593,40 +483,32 @@
         .error-msg {
             color: #ff4444; font-size: 0.85rem; margin-bottom: 10px; display: none;
         }
-
-        .group-friends-select {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            text-align: right;
-            max-height: 120px;
-            overflow-y: auto;
-            margin-bottom: 12px;
-            background: #000;
-            padding: 8px;
-            border-radius: 8px;
-        }
     </style>
 </head>
 <body>
 
+    <!-- شريط التنقل العلوي المحدث -->
     <div class="top-navbar">
         <div class="nav-item active" onclick="switchTab('colorsTab', this)">Null’s Magic</div>
-        <div class="nav-item" onclick="switchTab('chatTab', this)">الرسائل 💬</div>
+        <div class="nav-item" onclick="switchTab('symbolsTab', this)">الرموز المميزة ⭐</div>
     </div>
 
+    <!-- بروفايل المستخدم العائم -->
     <div class="profile-widget" onclick="openProfileModal()">
         <img id="headerAvatar" class="profile-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=NullsUser" alt="Avatar">
         <span id="headerName" class="profile-name">زائر</span>
     </div>
 
+    <!-- 1️⃣ قسم الألوان والنصوص الرئيسي -->
     <div id="colorsTab" class="page-section active">
         <div class="header-area">
             <h1>Nulls Magic</h1>
-            <button class="ai-btn" onclick="openAiModal()">🤖 Null’s AI</button>
+            <div class="header-btns">
+                <button class="action-btn" onclick="openFontsModal()">🔠 Fonts</button>
+                <button class="action-btn" onclick="openAiModal()">🤖 AI</button>
+            </div>
         </div>
 
-        <!-- حقل النص مع زر رينبو ومنع السكرول -->
         <div class="input-box">
             <input type="text" id="userInput" placeholder="اكتب النص هنا..." value="Nulls Magic" onfocus="preventAutoScroll(event)">
             <div class="color-pickers">
@@ -648,30 +530,26 @@
             </div>
         </div>
 
-        <!-- 🌈 قسم الثيمات والألوان الفخمة بالأسفل -->
         <div class="color-themes-section">
             <h2 class="section-title">اختر ثيم الألوان والواجهة الفخمة</h2>
             <div class="themes-grid">
                 
-                <!-- الطبيعي -->
                 <div class="theme-card" onclick="applyTheme('#0d1f12', '#14331d', '#2ecc71', 'rgba(46, 204, 113, 0.6)')">
                     <div class="theme-preview">
                         <div class="preview-color" style="background: #0d1f12;"></div>
                         <div class="preview-color" style="background: #2ecc71;"></div>
                     </div>
-                    <span class="theme-name">🍃 لون الطبيعي</span>
+                    <span class="theme-name">🍃 الطبيعي</span>
                 </div>
 
-                <!-- الجليد -->
                 <div class="theme-card" onclick="applyTheme('#0b192c', '#1e3e62', '#00d2ff', 'rgba(0, 210, 255, 0.6)')">
                     <div class="theme-preview">
                         <div class="preview-color" style="background: #0b192c;"></div>
                         <div class="preview-color" style="background: #00d2ff;"></div>
                     </div>
-                    <span class="theme-name">❄️ لون الجليد</span>
+                    <span class="theme-name">❄️ الجليد</span>
                 </div>
 
-                <!-- الذهب الملكي -->
                 <div class="theme-card" onclick="applyTheme('#12100e', '#2b261f', '#f1c40f', 'rgba(241, 196, 15, 0.6)')">
                     <div class="theme-preview">
                         <div class="preview-color" style="background: #12100e;"></div>
@@ -680,16 +558,14 @@
                     <span class="theme-name">👑 الذهب الفخم</span>
                 </div>
 
-                <!-- نيون سيبربنك -->
                 <div class="theme-card" onclick="applyTheme('#1a002c', '#2d004f', '#ff007f', 'rgba(255, 0, 127, 0.6)')">
                     <div class="theme-preview">
                         <div class="preview-color" style="background: #1a002c;"></div>
                         <div class="preview-color" style="background: #ff007f;"></div>
                     </div>
-                    <span class="theme-name">⚡ النيون الفخم</span>
+                    <span class="theme-name">⚡ النيون</span>
                 </div>
 
-                <!-- 🌈 ثيم رينبو المتحرك الجديد -->
                 <div class="theme-card" onclick="applyRainbowTheme()">
                     <div class="theme-preview">
                         <div class="preview-color" style="background: red;"></div>
@@ -703,65 +579,40 @@
         </div>
     </div>
 
-    <div id="chatTab" class="page-section">
-        <div class="chat-app-container">
-            <div class="chat-sidebar">
-                <div class="add-friend-box">
-                    <input type="text" id="friendUsernameInput" placeholder="اسم اليوزر للطلب...">
-                    <button class="add-friend-btn" onclick="addFriend()">إضافة</button>
-                </div>
-                
-                <div class="sidebar-section-title">المحادثات والقروبات</div>
-                <div class="friends-list" id="friendsList"></div>
+    <!-- 2️⃣ قسم الرموز المميزة (100 رمز - 5 رموز في كل صف) -->
+    <div id="symbolsTab" class="page-section">
+        <div class="header-area" style="margin-bottom: 15px;">
+            <h1 style="font-size: 1.8rem;">مكتبة الرموز (100 رمز)</h1>
+            <span style="font-size: 0.85rem; color: #888;">اضغط على أي رمز لنسخه مباشرة!</span>
+        </div>
+        <div class="symbols-grid" id="symbolsContainer"></div>
+    </div>
 
-                <button class="group-btn" onclick="openModal('createGroupModal')">➕ إنشاء قروب جديد</button>
-            </div>
-            <div class="chat-main">
-                <div class="chat-header" id="activeChatHeader">اختر شات لبدء المحادثة</div>
-                <div class="chat-messages" id="chatMessages"></div>
-                <div class="chat-input-bar">
-                    <label style="cursor:pointer;" title="إرفاق صورة">
-                        📷
-                        <input type="file" id="chatImgInput" accept="image/*" style="display:none;" onchange="sendChatImage(event)">
-                    </label>
-                    <input type="text" id="chatTextInput" placeholder="اكتب رسالة..." onkeypress="if(event.key==='Enter') sendChatMessage()">
-                    <button class="add-friend-btn" onclick="sendChatMessage()">إرسال</button>
-                </div>
-            </div>
+    <!-- نافذة الخطوط (Fonts Modal) -->
+    <div class="modal" id="fontsModal">
+        <div class="modal-content" style="max-width: 550px;">
+            <button class="close-btn" onclick="closeModal('fontsModal')">&times;</button>
+            <h3 style="color:#00d2ff; margin-bottom:12px;">مولد الخطوط الفخمة (Fonts)</h3>
+            <input type="text" id="fontInputText" class="custom-input" placeholder="اكتب نصك هنا لتوليد الخطوط..." value="Nulls Magic" oninput="generateFonts()">
+            
+            <div class="fonts-list-container" id="fontsResultsContainer"></div>
         </div>
     </div>
 
+    <!-- نوافذ التسجيل والبروفايل -->
     <div class="modal" id="welcomeModal">
         <div class="modal-content">
-            <h3 style="color:#00d2ff; margin-bottom:12px;" id="authTitle">يأهلا وسهلا نورت الموقع Null’s Magic V2 اول موقع عربي لنولز برول !</h3>
-            
+            <h3 style="color:#00d2ff; margin-bottom:12px;" id="authTitle">أهلاً بك في Null’s Magic V2</h3>
             <button style="background:#222; border:1px solid #444; color:#fff; padding:6px 12px; border-radius:12px; margin-bottom:12px; cursor:pointer;" onclick="scrollToInfo()">معلومات عن الموقع ⬇️</button>
-
             <div id="infoSection" style="display:none; text-align:right; font-size:0.8rem; color:#ccc; margin-bottom:12px; background:#000; padding:10px; border-radius:8px;">
-                💡 <b>حول الموقع:</b> أداة صممت لمجتمع Null's Brawl لتلوين الأسماء وتوفير بيئة تواصل متكاملة!
+                💡 <b>حول الموقع:</b> أداة متكاملة لمجتمع Null's Brawl لتلوين الأسماء والرموز والخطوط الفخمة!
             </div>
-
             <div id="errorMessage" class="error-msg"></div>
-
             <input type="text" id="authDisplayName" class="custom-input" placeholder="اسمك الكامل الظاهر">
-            <input type="text" id="authUsername" class="custom-input" placeholder="اسم المستخدم (اليوزر إنجليزي)">
+            <input type="text" id="authUsername" class="custom-input" placeholder="اسم المستخدم (إنجليزي)">
             <input type="password" id="authPassword" class="custom-input" placeholder="كلمة السر">
-
             <button class="main-btn" id="authSubmitBtn" onclick="handleAuthSubmit()">تسجيل حساب جديد</button>
             <button class="sub-link-btn" id="toggleAuthModeBtn" onclick="toggleAuthMode()">عندي حساب بالفعل</button>
-        </div>
-    </div>
-
-    <div class="modal" id="createGroupModal">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal('createGroupModal')">&times;</button>
-            <h3 style="color:#fff; margin-bottom:15px;">إنشاء قروب جديد</h3>
-
-            <input type="text" id="groupNameInput" class="custom-input" placeholder="اسم القروب...">
-            <div style="font-size:0.8rem; color:#aaa; margin-bottom:6px; text-align:right;">اختر الأعضاء:</div>
-            <div class="group-friends-select" id="groupFriendsSelect"></div>
-
-            <button class="main-btn" onclick="createGroup()">إنشاء القروب الآن</button>
         </div>
     </div>
 
@@ -769,13 +620,11 @@
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('profileModal')">&times;</button>
             <h3 style="color:#fff; margin-bottom:15px;">الملف الشخصي</h3>
-
             <label style="cursor:pointer; display:inline-block; margin-bottom:15px;">
                 <img id="editAvatarPreview" style="width:80px; height:80px; border-radius:50%; border:2px dashed var(--accent-blue);" src="" alt="Avatar">
                 <div style="font-size:0.75rem; color:#aaa; margin-top:5px;">📷 تغيير الصورة</div>
                 <input type="file" id="imageUploader" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
             </label>
-
             <input type="text" id="editDisplayNameInput" class="custom-input" placeholder="الاسم الظاهر">
             <div style="margin-bottom:10px; color:#00ff88; font-weight:bold;" id="profileUserDisplay"></div>
             <button class="main-btn" onclick="saveProfile()">حفظ التعديلات</button>
@@ -787,7 +636,7 @@
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('aiModal')">&times;</button>
             <div style="font-size: 1.1rem; color: #fff; margin-top: 15px;">
-                اوه نعتذر على ذلك لاكن Ai Magic باقي ماجاء للأسف
+                أوه نعتذر على ذلك، لكن AI Magic باقي ما جاء للأسف 🤖
             </div>
         </div>
     </div>
@@ -802,13 +651,9 @@
 
         let isLoginMode = false;
         let currentUser = null;
-        let activeChatId = null; 
-        let activeChatType = 'friend';
         let isTextRainbowMode = false;
 
         let dbUsers = JSON.parse(localStorage.getItem('nulls_db_users') || '{}');
-        let dbGroups = JSON.parse(localStorage.getItem('nulls_db_groups') || '{}');
-        let chats = JSON.parse(localStorage.getItem('nulls_db_chats') || '{}');
 
         window.addEventListener('DOMContentLoaded', () => {
             const savedSession = localStorage.getItem('nulls_active_user');
@@ -818,13 +663,116 @@
             } else {
                 openModal('welcomeModal');
             }
+            buildSymbolsGrid();
+            generateFonts();
         });
+
+        // 💎 بناء 100 رمز وترتيبها 5 في كل صف
+        const symbolsList = [
+            "👑", "⚡", "🔥", "💎", "⭐", "🌟", "✨", "💫", "💥", "🔥",
+            "💀", "☠️", "👻", "👽", "🤖", "🎃", "😺", "🦾", "🕶️", "👑",
+            "❤️", "🖤", "💙", "💚", "💛", "💜", "🧡", "💖", "💗", "💘",
+            "🗡️", "⚔️", "🛡️", "🏹", "🪓", "💣", "🧨", "🔮", "🧿", "🕹️",
+            "🏆", "🥇", "🥈", "🥉", "🏅", "🎖️", "🎪", "🎯", "🎲", "🎮",
+            "🦅", "🐺", "🦁", "🐯", "🐍", "🐲", "🐉", "🦈", "🦂", "🕷️",
+            "❄️", "🌊", "🌪️", "⚡", "☄️", "🌙", "☀️", "☁️", "⚡", "🔥",
+            "『", "』", "【", "】", "〖", "〗", "〈", "〉", "《", "》",
+            "「", "」", "［", "］", "｛", "｝", "【", "】", "『", "』",
+            "₪", "Ψ", "Ω", "§", "♠", "♣", "♥", "♦", " ▂▃", "▅▆▇"
+        ];
+
+        function buildSymbolsGrid() {
+            const container = document.getElementById('symbolsContainer');
+            container.innerHTML = '';
+            symbolsList.forEach(sym => {
+                const card = document.createElement('div');
+                card.className = 'symbol-card';
+                card.innerText = sym;
+                card.onclick = () => {
+                    navigator.clipboard.writeText(sym);
+                    card.style.background = '#00ff88';
+                    setTimeout(() => card.style.background = '', 300);
+                };
+                container.appendChild(card);
+            });
+        }
+
+        // 🔠 توليد الخطوط (بما فيها المربعات والدوائر والزخارف)
+        function generateFonts() {
+            const text = document.getElementById('fontInputText').value || "Nulls Magic";
+            const container = document.getElementById('fontsResultsContainer');
+            container.innerHTML = '';
+
+            // قواميس تحويل الأحرف
+            const fontStyles = [
+                { name: "مربعات ممتلئة ⬛", transform: (t) => t.split('').map(c => {
+                    const code = c.charCodeAt(0);
+                    if(code >= 65 && code <= 90) return String.fromCodePoint(127312 + code - 65);
+                    if(code >= 97 && code <= 122) return String.fromCodePoint(127344 + code - 97);
+                    return c;
+                }).join('') },
+                
+                { name: "دوائر سوداء 🔘", transform: (t) => t.split('').map(c => {
+                    const code = c.charCodeAt(0);
+                    if(code >= 65 && code <= 90) return String.fromCodePoint(127338 + code - 65);
+                    if(code >= 97 && code <= 122) return String.fromCodePoint(127338 + code - 97);
+                    return c;
+                }).join('') },
+
+                { name: "خط الإحاطة البارز 🅕", transform: (t) => t.split('').map(c => {
+                    const code = c.charCodeAt(0);
+                    if(code >= 65 && code <= 90) return String.fromCodePoint(127274 + code - 65);
+                    if(code >= 97 && code <= 122) return String.fromCodePoint(127300 + code - 97);
+                    return c;
+                }).join('') },
+
+                { name: "خط القوطي الفخم 𝕬", transform: (t) => t.split('').map(c => {
+                    const code = c.charCodeAt(0);
+                    if(code >= 65 && code <= 90) return String.fromCodePoint(120068 + code - 65);
+                    if(code >= 97 && code <= 122) return String.fromCodePoint(120094 + code - 97);
+                    return c;
+                }).join('') },
+
+                { name: "خط عريض فخم 𝐀", transform: (t) => t.split('').map(c => {
+                    const code = c.charCodeAt(0);
+                    if(code >= 65 && code <= 90) return String.fromCodePoint(120468 + code - 65);
+                    if(code >= 97 && code <= 122) return String.fromCodePoint(120494 + code - 97);
+                    return c;
+                }).join('') },
+
+                { name: "إطار أقواس مزخرفة ꧁꧂", transform: (t) => `꧁༺ ${t} ༻꧂` },
+                { name: "زخرفة السيبربنك ⚡", transform: (t) => `⚡ ${t.split('').join('•')} ⚡` },
+                { name: "زخرفة النجوم ✨", transform: (t) => `✨「 ${t} 」✨` },
+                { name: "زخرفة الملوك 👑", transform: (t) => `👑『 ${t} 』👑` },
+                { name: "زخرفة الأشرار 💀", transform: (t) => `☠️ [ ${t} ] ☠️` }
+            ];
+
+            fontStyles.forEach(style => {
+                const converted = style.transform(text);
+                const row = document.createElement('div');
+                row.className = 'font-row';
+                row.innerHTML = `
+                    <div style="font-size:0.75rem; color:#aaa; width:130px;">${style.name}</div>
+                    <div class="font-text-display">${converted}</div>
+                    <button class="font-copy-btn" onclick="copyFontText(this, '${converted}')">نسخ</button>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function copyFontText(btn, txt) {
+            navigator.clipboard.writeText(txt);
+            btn.innerText = 'تم!';
+            btn.style.background = '#00cc66';
+            setTimeout(() => {
+                btn.innerText = 'نسخ';
+                btn.style.background = 'var(--accent-blue)';
+            }, 1200);
+        }
 
         function preventAutoScroll(e) {
             const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-            setTimeout(() => {
-                window.scrollTo(0, currentScroll);
-            }, 0);
+            setTimeout(() => { window.scrollTo(0, currentScroll); }, 0);
         }
 
         function applyTheme(bgColor, cardBg, accentColor, glowColor) {
@@ -835,14 +783,12 @@
             document.documentElement.style.setProperty('--neon-glow', glowColor);
         }
 
-        // 🌈 تفعيل ثيم رينبو المتحرك للواجهة بالكامل
         function applyRainbowTheme() {
             document.body.classList.add('rainbow-theme');
             document.documentElement.style.setProperty('--accent-blue', '#ff007f');
             document.documentElement.style.setProperty('--neon-glow', 'rgba(255, 0, 127, 0.8)');
         }
 
-        // 🌈 تفعيل رينبو للنص
         function applyTextRainbow() {
             isTextRainbowMode = true;
             generateGradientText();
@@ -890,12 +836,6 @@
                 return;
             }
 
-            const isArabic = /[\u0600-\u06FF]/.test(uInput);
-            if (isArabic && uInput !== "حـربـي") {
-                showError("عذراً، اليوزرات يجب أن تكون بالأحرف الإنجليزية فقط!");
-                return;
-            }
-
             if (isLoginMode) {
                 if (dbUsers[uInput] && dbUsers[uInput].password === pInput) {
                     currentUser = dbUsers[uInput];
@@ -910,17 +850,13 @@
                     showError("هذا اليوزر مستخدم من قبل شخص آخر!");
                     return;
                 }
-
                 dbUsers[uInput] = {
                     username: uInput,
                     displayName: dName,
                     password: pInput,
-                    avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=" + uInput,
-                    friends: [],
-                    groups: []
+                    avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=" + uInput
                 };
-
-                saveUsersDB();
+                localStorage.setItem('nulls_db_users', JSON.stringify(dbUsers));
                 currentUser = dbUsers[uInput];
                 localStorage.setItem('nulls_active_user', uInput);
                 updateProfileUI();
@@ -934,7 +870,6 @@
             document.getElementById('editAvatarPreview').src = currentUser.avatar;
             document.getElementById('editDisplayNameInput').value = currentUser.displayName || '';
             document.getElementById('profileUserDisplay').innerText = "@" + currentUser.username;
-            renderFriendsAndGroups();
         }
 
         function handleImageUpload(e) {
@@ -952,7 +887,7 @@
         function saveProfile() {
             currentUser.displayName = document.getElementById('editDisplayNameInput').value.trim() || currentUser.username;
             dbUsers[currentUser.username] = currentUser;
-            saveUsersDB();
+            localStorage.setItem('nulls_db_users', JSON.stringify(dbUsers));
             updateProfileUI();
             closeModal('profileModal');
         }
@@ -960,196 +895,6 @@
         function logout() {
             localStorage.removeItem('nulls_active_user');
             location.reload();
-        }
-
-        function saveUsersDB() {
-            localStorage.setItem('nulls_db_users', JSON.stringify(dbUsers));
-        }
-
-        function addFriend() {
-            const fName = document.getElementById('friendUsernameInput').value.trim();
-            if (!fName || fName === currentUser.username) return;
-
-            if (!dbUsers[fName]) {
-                alert("اليوزر غير موجود!");
-                return;
-            }
-
-            if (!currentUser.friends.includes(fName)) {
-                currentUser.friends.push(fName);
-                saveProfile();
-            }
-            document.getElementById('friendUsernameInput').value = '';
-            renderFriendsAndGroups();
-        }
-
-        function renderFriendsAndGroups() {
-            const list = document.getElementById('friendsList');
-            const groupSelect = document.getElementById('groupFriendsSelect');
-            list.innerHTML = '';
-            groupSelect.innerHTML = '';
-
-            if (!currentUser) return;
-
-            const selfDiv = document.createElement('div');
-            selfDiv.className = 'friend-item' + (activeChatId === 'self' ? ' active' : '');
-            selfDiv.innerHTML = `<img src="${currentUser.avatar}"> <span>محادثة مع نفسي 👤</span>`;
-            selfDiv.onclick = () => selectChat('self', 'self');
-            list.appendChild(selfDiv);
-
-            if (currentUser.groups) {
-                currentUser.groups.forEach(gId => {
-                    const group = dbGroups[gId];
-                    if (group) {
-                        const div = document.createElement('div');
-                        div.className = 'friend-item' + (activeChatId === gId ? ' active' : '');
-                        div.innerHTML = `<span style="font-size:1.2rem;">👥</span> <span>${group.name}</span>`;
-                        div.onclick = () => selectChat(gId, 'group');
-                        list.appendChild(div);
-                    }
-                });
-            }
-
-            if (currentUser.friends) {
-                currentUser.friends.forEach(f => {
-                    const friendUser = dbUsers[f];
-                    if (friendUser) {
-                        const div = document.createElement('div');
-                        div.className = 'friend-item' + (activeChatId === f ? ' active' : '');
-                        div.innerHTML = `<img src="${friendUser.avatar}"> <span>${friendUser.displayName}</span>`;
-                        div.onclick = () => selectChat(f, 'friend');
-                        list.appendChild(div);
-
-                        groupSelect.innerHTML += `<label><input type="checkbox" value="${f}"> ${friendUser.displayName} (@${f})</label>`;
-                    }
-                });
-            }
-        }
-
-        function createGroup() {
-            const gName = document.getElementById('groupNameInput').value.trim();
-            if (!gName) return;
-
-            const selected = Array.from(document.querySelectorAll('#groupFriendsSelect input:checked')).map(cb => cb.value);
-            selected.push(currentUser.username);
-
-            const gId = 'group_' + Date.now();
-            dbGroups[gId] = { id: gId, name: gName, members: selected };
-
-            selected.forEach(u => {
-                if (dbUsers[u]) {
-                    if (!dbUsers[u].groups) dbUsers[u].groups = [];
-                    dbUsers[u].groups.push(gId);
-                }
-            });
-
-            localStorage.setItem('nulls_db_groups', JSON.stringify(dbGroups));
-            saveUsersDB();
-            closeModal('createGroupModal');
-            renderFriendsAndGroups();
-        }
-
-        function selectChat(id, type) {
-            activeChatId = id;
-            activeChatType = type;
-            renderFriendsAndGroups();
-
-            if (type === 'self') {
-                document.getElementById('activeChatHeader').innerText = "محادثة خاصة مع نفسك (رد تلقائي) 👤";
-            } else if (type === 'friend') {
-                document.getElementById('activeChatHeader').innerText = "المحادثة مع " + (dbUsers[id]?.displayName || id);
-            } else if (type === 'group') {
-                document.getElementById('activeChatHeader').innerText = "قروب: " + (dbGroups[id]?.name || "قروب");
-            }
-            renderMessages();
-        }
-
-        function getChatKey() {
-            if (!activeChatId) return null;
-            if (activeChatType === 'self') return 'self_' + currentUser.username;
-            if (activeChatType === 'group') return activeChatId;
-            return [currentUser.username, activeChatId].sort().join('_');
-        }
-
-        function sendChatMessage(imgData = null) {
-            const textInput = document.getElementById('chatTextInput');
-            const txt = textInput.value.trim();
-            if (!txt && !imgData) return;
-            const key = getChatKey();
-            if (!key) return;
-
-            if (!chats[key]) chats[key] = [];
-
-            const msgObj = {
-                sender: currentUser.username,
-                displayName: currentUser.displayName,
-                avatar: currentUser.avatar,
-                text: txt,
-                img: imgData
-            };
-
-            chats[key].push(msgObj);
-            textInput.value = '';
-
-            if (activeChatType === 'self') {
-                setTimeout(() => {
-                    chats[key].push({
-                        sender: currentUser.username + "_echo",
-                        displayName: currentUser.displayName,
-                        avatar: currentUser.avatar,
-                        text: txt,
-                        img: imgData
-                    });
-                    localStorage.setItem('nulls_db_chats', JSON.stringify(chats));
-                    renderMessages();
-                }, 400);
-            }
-
-            localStorage.setItem('nulls_db_chats', JSON.stringify(chats));
-            renderMessages();
-        }
-
-        function sendChatImage(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(evt) {
-                    sendChatMessage(evt.target.result);
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function renderMessages() {
-            const box = document.getElementById('chatMessages');
-            box.innerHTML = '';
-            const key = getChatKey();
-            if (!key || !chats[key]) return;
-
-            chats[key].forEach(m => {
-                const isMine = (m.sender === currentUser.username);
-
-                const wrapper = document.createElement('div');
-                wrapper.className = 'msg-wrapper ' + (isMine ? 'mine' : 'other');
-
-                const infoDiv = document.createElement('div');
-                infoDiv.className = 'msg-sender-info';
-                infoDiv.innerHTML = `<img src="${m.avatar || currentUser.avatar}"> <span class="msg-sender-name">${m.displayName || m.sender}</span>`;
-
-                const bubble = document.createElement('div');
-                bubble.className = 'msg-bubble';
-                if (m.text) bubble.innerText = m.text;
-                if (m.img) {
-                    const img = document.createElement('img');
-                    img.src = m.img;
-                    bubble.appendChild(img);
-                }
-
-                wrapper.appendChild(infoDiv);
-                wrapper.appendChild(bubble);
-                box.appendChild(wrapper);
-            });
-            box.scrollTop = box.scrollHeight;
         }
 
         function openModal(id) {
@@ -1166,6 +911,7 @@
 
         function openAiModal() { openModal('aiModal'); }
         function openProfileModal() { openModal('profileModal'); }
+        function openFontsModal() { openModal('fontsModal'); }
 
         function hexToRgb(hex) {
             const bigint = parseInt(hex.replace('#', ''), 16);
@@ -1200,7 +946,6 @@
             let previewHTML = '';
             let generatedCode = '';
             const len = text.length;
-
             const rainbowHexes = ['ff0000', 'ff7f00', 'ffff00', '00ff00', '0000ff', '4b0082', '8b00ff'];
 
             for (let i = 0; i < len; i++) {
@@ -1244,7 +989,7 @@
 
         userInput.addEventListener('input', () => { isTextRainbowMode = false; generateGradientText(); });
         color1Input.addEventListener('input', () => { isTextRainbowMode = false; generateGradientText(); });
-        color2Input.addEventListener('input', () => { isTextRainbowMode = false; generateGradientTest = generateGradientText; generateGradientText(); });
+        color2Input.addEventListener('input', () => { isTextRainbowMode = false; generateGradientText(); });
         color3Input.addEventListener('input', () => { isTextRainbowMode = false; generateGradientText(); });
 
         generateGradientText();
