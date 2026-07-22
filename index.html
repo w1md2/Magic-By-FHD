@@ -31,7 +31,7 @@
             overflow-x: hidden;
         }
 
-        /* 🔴 شريط المنيو العلوي (الرسائل - Null's Magic) */
+        /* 🔴 شريط المنيو العلوي */
         .top-navbar {
             width: 100%;
             background: #111318;
@@ -236,7 +236,7 @@
         /* 🟣 شاشة الدردشة والتواصل */
         .chat-app-container {
             width: 100%;
-            height: 520px;
+            height: 560px;
             background: var(--card-bg);
             border: 1px solid var(--accent-blue);
             border-radius: 16px;
@@ -246,7 +246,7 @@
         }
 
         .chat-sidebar {
-            width: 30%;
+            width: 35%;
             background: #111318;
             border-left: 1px solid #262930;
             display: flex;
@@ -254,10 +254,17 @@
             padding: 10px;
         }
 
+        .sidebar-section-title {
+            font-size: 0.75rem;
+            color: #777;
+            margin: 8px 0 4px 0;
+            font-weight: bold;
+        }
+
         .add-friend-box {
             display: flex;
             gap: 5px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .add-friend-box input {
@@ -277,6 +284,22 @@
             padding: 6px 10px;
             border-radius: 6px;
             cursor: pointer;
+            font-weight: bold;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+
+        .group-btn {
+            background: linear-gradient(135deg, #8a2be2, #0088ff);
+            width: 100%;
+            border: none;
+            color: #fff;
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
         }
 
         .friends-list {
@@ -288,12 +311,22 @@
         }
 
         .friend-item {
-            padding: 10px;
+            padding: 8px 10px;
             background: #1a1d24;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
             transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .friend-item img {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            object-fit: cover;
         }
 
         .friend-item.active, .friend-item:hover {
@@ -320,27 +353,61 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 15px;
+        }
+
+        /* هيكلة الرسائل المحسنة لتضمين الصورة والاسم */
+        .msg-wrapper {
+            display: flex;
+            flex-direction: column;
+            max-width: 75%;
+        }
+
+        .msg-wrapper.mine {
+            align-self: flex-start;
+        }
+
+        .msg-wrapper.other {
+            align-self: flex-end;
+        }
+
+        .msg-sender-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+
+        .msg-sender-info img {
+            width: 22px; height: 22px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .msg-sender-name {
+            font-size: 0.75rem;
+            color: #aaa;
+            font-weight: bold;
         }
 
         .msg-bubble {
-            max-width: 70%;
             padding: 10px 14px;
             border-radius: 12px;
             font-size: 0.95rem;
             line-height: 1.4;
+            word-break: break-word;
         }
 
-        .msg-mine {
-            align-self: flex-start;
+        .msg-wrapper.mine .msg-bubble {
             background: var(--accent-blue);
             color: #fff;
+            border-top-right-radius: 2px;
         }
 
-        .msg-other {
-            align-self: flex-end;
+        .msg-wrapper.other .msg-bubble {
             background: #222630;
             color: #fff;
+            border-top-left-radius: 2px;
         }
 
         .msg-bubble img {
@@ -387,7 +454,7 @@
             background: var(--card-bg);
             border: 1.5px solid var(--accent-blue);
             border-radius: 20px;
-            padding: 30px 25px;
+            padding: 25px 20px;
             width: 90%;
             max-width: 480px;
             text-align: center;
@@ -408,20 +475,20 @@
             width: 100%;
             background: #000;
             border: 1px solid var(--accent-blue);
-            padding: 12px;
+            padding: 10px;
             border-radius: 10px;
             color: #fff;
-            font-size: 1rem;
+            font-size: 0.95rem;
             text-align: center;
             outline: none;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .main-btn {
             background: linear-gradient(135deg, #0088ff, #00d2ff);
             color: #fff; border: none;
-            padding: 12px 30px; border-radius: 25px;
-            font-size: 1rem; font-weight: bold;
+            padding: 10px 25px; border-radius: 25px;
+            font-size: 0.95rem; font-weight: bold;
             cursor: pointer;
             box-shadow: 0 0 15px var(--neon-glow);
             width: 100%;
@@ -431,20 +498,27 @@
         .sub-link-btn {
             background: none; border: none;
             color: var(--accent-blue);
-            margin-top: 15px; cursor: pointer;
+            margin-top: 12px; cursor: pointer;
             text-decoration: underline;
             font-weight: bold;
-        }
-
-        .scroll-down-btn {
-            background: #222; border: 1px solid #444;
-            color: #fff; padding: 8px 15px;
-            border-radius: 15px; margin: 15px 0;
-            cursor: pointer; font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .error-msg {
             color: #ff4444; font-size: 0.85rem; margin-bottom: 10px; display: none;
+        }
+
+        .group-friends-select {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            text-align: right;
+            max-height: 120px;
+            overflow-y: auto;
+            margin-bottom: 12px;
+            background: #000;
+            padding: 8px;
+            border-radius: 8px;
         }
     </style>
 </head>
@@ -495,13 +569,17 @@
         <div class="chat-app-container">
             <div class="chat-sidebar">
                 <div class="add-friend-box">
-                    <input type="text" id="friendUsernameInput" placeholder="اسم اليوزر...">
+                    <input type="text" id="friendUsernameInput" placeholder="اسم اليوزر للطلب...">
                     <button class="add-friend-btn" onclick="addFriend()">إضافة</button>
                 </div>
+                
+                <button class="group-btn" onclick="openModal('createGroupModal')">➕ إنشاء قروب جديد</button>
+
+                <div class="sidebar-section-title">المحادثات الخاصة والقروبات</div>
                 <div class="friends-list" id="friendsList"></div>
             </div>
             <div class="chat-main">
-                <div class="chat-header" id="activeChatHeader">اختر صديقاً لبدء المحادثة</div>
+                <div class="chat-header" id="activeChatHeader">اختر شات لبدء المحادثة</div>
                 <div class="chat-messages" id="chatMessages"></div>
                 <div class="chat-input-bar">
                     <label style="cursor:pointer;" title="إرفاق صورة">
@@ -518,21 +596,36 @@
     <!-- 🟣 نافذة التسجيل / الدخول الأولية -->
     <div class="modal" id="welcomeModal">
         <div class="modal-content">
-            <h2 style="color:#00d2ff; margin-bottom:15px;" id="authTitle">يأهلا وسهلا نورت الموقع Null’s Magic V2 اول موقع عربي لنولز برول !</h2>
+            <h3 style="color:#00d2ff; margin-bottom:12px;" id="authTitle">يأهلا وسهلا نورت الموقع Null’s Magic V2 اول موقع عربي لنولز برول !</h3>
             
-            <button class="scroll-down-btn" onclick="scrollToInfo()">انزل لتحت لمعرفة التفاصيل ⬇️</button>
+            <button style="background:#222; border:1px solid #444; color:#fff; padding:6px 12px; border-radius:12px; margin-bottom:12px; cursor:pointer;" onclick="scrollToInfo()">معلومات عن الموقع ⬇️</button>
 
-            <div id="infoSection" style="display:none; text-align:right; font-size:0.85rem; color:#ccc; margin-bottom:15px; background:#000; padding:10px; border-radius:8px;">
-                💡 <b>حول الموقع:</b> أداة صممت خصيصاً لمجتمع Null's Brawl لتلوين الأسماء وصنع تدرجات ألوان احترافية مع نظام دردشة وتواصل مع باقي اللاعبين!
+            <div id="infoSection" style="display:none; text-align:right; font-size:0.8rem; color:#ccc; margin-bottom:12px; background:#000; padding:10px; border-radius:8px;">
+                💡 <b>حول الموقع:</b> أداة صممت لمجتمع Null's Brawl لتلوين الأسماء وتوفير بيئة تواصل متكاملة!
             </div>
 
             <div id="errorMessage" class="error-msg"></div>
 
-            <input type="text" id="authUsername" class="custom-input" placeholder="اليوزر (إنجليزية فقط أو حـرب)">
+            <input type="text" id="authDisplayName" class="custom-input" placeholder="اسمك الكامل (مثال: أحمد بطل نولز)">
+            <input type="text" id="authUsername" class="custom-input" placeholder="اليوزر باللغة الإنجليزية">
             <input type="password" id="authPassword" class="custom-input" placeholder="كلمة السر">
 
             <button class="main-btn" id="authSubmitBtn" onclick="handleAuthSubmit()">تسجيل حساب جديد</button>
             <button class="sub-link-btn" id="toggleAuthModeBtn" onclick="toggleAuthMode()">عندي حساب بالفعل</button>
+        </div>
+    </div>
+
+    <!-- 🟣 نافذة إنشاء قروب جديد -->
+    <div class="modal" id="createGroupModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('createGroupModal')">&times;</button>
+            <h3 style="color:#fff; margin-bottom:15px;">إنشاء قروب جديد</h3>
+
+            <input type="text" id="groupNameInput" class="custom-input" placeholder="اسم القروب...">
+            <div style="font-size:0.8rem; color:#aaa; margin-bottom:6px; text-align:right;">اختر الأعضاء:</div>
+            <div class="group-friends-select" id="groupFriendsSelect"></div>
+
+            <button class="main-btn" onclick="createGroup()">إنشاء القروب الآن</button>
         </div>
     </div>
 
@@ -548,8 +641,9 @@
                 <input type="file" id="imageUploader" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
             </label>
 
+            <input type="text" id="editDisplayNameInput" class="custom-input" placeholder="الاسم الظاهر">
             <div style="margin-bottom:10px; color:#00ff88; font-weight:bold;" id="profileUserDisplay"></div>
-            <button class="main-btn" onclick="saveProfile()">حفظ</button>
+            <button class="main-btn" onclick="saveProfile()">حفظ التعديلات</button>
             <button class="sub-link-btn" style="color:red;" onclick="logout()">تسجيل الخروج</button>
         </div>
     </div>
@@ -574,10 +668,11 @@
 
         let isLoginMode = false;
         let currentUser = null;
-        let activeFriend = null;
+        let activeChatId = null; 
+        let activeChatType = 'friend'; // 'self', 'friend', 'group'
 
-        // لقواعد اليوزرات والحفاظ على البيانات المحلية
         let dbUsers = JSON.parse(localStorage.getItem('nulls_db_users') || '{}');
+        let dbGroups = JSON.parse(localStorage.getItem('nulls_db_groups') || '{}');
         let chats = JSON.parse(localStorage.getItem('nulls_db_chats') || '{}');
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -601,9 +696,11 @@
             isLoginMode = !isLoginMode;
             document.getElementById('errorMessage').style.display = 'none';
             if (isLoginMode) {
+                document.getElementById('authDisplayName').style.display = 'none';
                 document.getElementById('authSubmitBtn').innerText = "تسجيل الدخول";
                 document.getElementById('toggleAuthModeBtn').innerText = "أنا جديد هنا (إنشاء حساب)";
             } else {
+                document.getElementById('authDisplayName').style.display = 'block';
                 document.getElementById('authSubmitBtn').innerText = "تسجيل حساب جديد";
                 document.getElementById('toggleAuthModeBtn').innerText = "عندي حساب بالفعل";
             }
@@ -623,41 +720,42 @@
         function handleAuthSubmit() {
             const uInput = document.getElementById('authUsername').value.trim();
             const pInput = document.getElementById('authPassword').value.trim();
+            const dName = document.getElementById('authDisplayName').value.trim();
 
-            if (!uInput || !pInput) {
-                showError("يرجى ملء جميع الحقول!");
+            if (!uInput || !pInput || (!isLoginMode && !dName)) {
+                showError("يرجى ملء جميع الحقول المطلوب!");
                 return;
             }
 
-            // التحقق من صلاحية اليوزر (لا يقبل عربي باستثناء 'حـرب')
+            // منع اليوزرات العربية بالكامل باستثناء 'حـربـي' المتاح مستقبلاً لمستخدم كاستثناء داخلي
             const isArabic = /[\u0600-\u06FF]/.test(uInput);
-            if (isArabic && uInput !== "حـرب") {
-                showError("عذراً، يمنع استخدام الأحرف العربية باليوزر باستثناء (حـرب)!");
+            if (isArabic && uInput !== "حـربـي") {
+                showError("عذراً، اليوزرات يجب أن تكون بالأحرف الإنجليزية فقط!");
                 return;
             }
 
             if (isLoginMode) {
-                // دخول
                 if (dbUsers[uInput] && dbUsers[uInput].password === pInput) {
                     currentUser = dbUsers[uInput];
                     localStorage.setItem('nulls_active_user', uInput);
                     updateProfileUI();
                     closeModal('welcomeModal');
                 } else {
-                    showError("خطأ في اليوزر أو كلمة السر!");
+                    showError("خطأ في بيانات تسجيل الدخول!");
                 }
             } else {
-                // تسجيل جديد
                 if (dbUsers[uInput]) {
-                    showError("هذا اليوزر مستخدم بالفعل، يرجى اختيار يوزر آخر!");
+                    showError("هذا اليوزر مستخدم من قبل شحص آخر!");
                     return;
                 }
 
                 dbUsers[uInput] = {
                     username: uInput,
+                    displayName: dName,
                     password: pInput,
                     avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=" + uInput,
-                    friends: []
+                    friends: [],
+                    groups: []
                 };
 
                 saveUsersDB();
@@ -669,11 +767,12 @@
         }
 
         function updateProfileUI() {
-            document.getElementById('headerName').innerText = currentUser.username;
+            document.getElementById('headerName').innerText = currentUser.displayName || currentUser.username;
             document.getElementById('headerAvatar').src = currentUser.avatar;
             document.getElementById('editAvatarPreview').src = currentUser.avatar;
+            document.getElementById('editDisplayNameInput').value = currentUser.displayName || '';
             document.getElementById('profileUserDisplay').innerText = "@" + currentUser.username;
-            renderFriends();
+            renderFriendsAndGroups();
         }
 
         function handleImageUpload(e) {
@@ -689,6 +788,7 @@
         }
 
         function saveProfile() {
+            currentUser.displayName = document.getElementById('editDisplayNameInput').value.trim() || currentUser.username;
             dbUsers[currentUser.username] = currentUser;
             saveUsersDB();
             updateProfileUI();
@@ -704,7 +804,7 @@
             localStorage.setItem('nulls_db_users', JSON.stringify(dbUsers));
         }
 
-        // ---- نظام المحادثات والدردشة ----
+        // ---- إدارة قائمة الأصدقاء والقروبات والمحادثة مع النفس ----
         function addFriend() {
             const fName = document.getElementById('friendUsernameInput').value.trim();
             if (!fName || fName === currentUser.username) return;
@@ -719,33 +819,104 @@
                 saveProfile();
             }
             document.getElementById('friendUsernameInput').value = '';
-            renderFriends();
+            renderFriendsAndGroups();
         }
 
-        function renderFriends() {
+        function renderFriendsAndGroups() {
             const list = document.getElementById('friendsList');
+            const groupSelect = document.getElementById('groupFriendsSelect');
             list.innerHTML = '';
-            if (!currentUser || !currentUser.friends) return;
+            groupSelect.innerHTML = '';
 
-            currentUser.friends.forEach(f => {
-                const div = document.createElement('div');
-                div.className = 'friend-item' + (activeFriend === f ? ' active' : '');
-                div.innerText = "@" + f;
-                div.onclick = () => selectFriend(f);
-                list.appendChild(div);
-            });
+            if (!currentUser) return;
+
+            // 1. خيار المحادثة مع النفس (Echo Bot)
+            const selfDiv = document.createElement('div');
+            selfDiv.className = 'friend-item' + (activeChatId === 'self' ? ' active' : '');
+            selfDiv.innerHTML = `<img src="${currentUser.avatar}"> <span>محادثة مع نفسي 👤</span>`;
+            selfDiv.onclick = () => selectChat('self', 'self');
+            list.appendChild(selfDiv);
+
+            // 2. قائمة القروبات
+            if (currentUser.groups) {
+                currentUser.groups.forEach(gId => {
+                    const group = dbGroups[gId];
+                    if (group) {
+                        const div = document.createElement('div');
+                        div.className = 'friend-item' + (activeChatId === gId ? ' active' : '');
+                        div.innerHTML = `<span style="font-size:1.2rem;">👥</span> <span>${group.name}</span>`;
+                        div.onclick = () => selectChat(gId, 'group');
+                        list.appendChild(div);
+                    }
+                });
+            }
+
+            // 3. قائمة الأصدقاء
+            if (currentUser.friends) {
+                currentUser.friends.forEach(f => {
+                    const friendUser = dbUsers[f];
+                    if (friendUser) {
+                        const div = document.createElement('div');
+                        div.className = 'friend-item' + (activeChatId === f ? ' active' : '');
+                        div.innerHTML = `<img src="${friendUser.avatar}"> <span>${friendUser.displayName}</span>`;
+                        div.onclick = () => selectChat(f, 'friend');
+                        list.appendChild(div);
+
+                        // خيارات تحديد الأعضاء للقروب
+                        groupSelect.innerHTML += `<label><input type="checkbox" value="${f}"> ${friendUser.displayName} (@${f})</label>`;
+                    }
+                });
+            }
         }
 
-        function selectFriend(f) {
-            activeFriend = f;
-            renderFriends();
-            document.getElementById('activeChatHeader').innerText = "الدردشة مع @" + f;
+        function createGroup() {
+            const gName = document.getElementById('groupNameInput').value.trim();
+            if (!gName) return;
+
+            const selected = Array.from(document.querySelectorAll('#groupFriendsSelect input:checked')).map(cb => cb.value);
+            selected.push(currentUser.username);
+
+            const gId = 'group_' + Date.now();
+            dbGroups[gId] = {
+                id: gId,
+                name: gName,
+                members: selected
+            };
+
+            // إضافته لكل المشاركين
+            selected.forEach(u => {
+                if (dbUsers[u]) {
+                    if (!dbUsers[u].groups) dbUsers[u].groups = [];
+                    dbUsers[u].groups.push(gId);
+                }
+            });
+
+            localStorage.setItem('nulls_db_groups', JSON.stringify(dbGroups));
+            saveUsersDB();
+            closeModal('createGroupModal');
+            renderFriendsAndGroups();
+        }
+
+        function selectChat(id, type) {
+            activeChatId = id;
+            activeChatType = type;
+            renderFriendsAndGroups();
+
+            if (type === 'self') {
+                document.getElementById('activeChatHeader').innerText = "محادثة خاصة مع نفسك (رد تلقائي) 👤";
+            } else if (type === 'friend') {
+                document.getElementById('activeChatHeader').innerText = "المحادثة مع " + (dbUsers[id]?.displayName || id);
+            } else if (type === 'group') {
+                document.getElementById('activeChatHeader').innerText = "قروب: " + (dbGroups[id]?.name || "قروب");
+            }
             renderMessages();
         }
 
         function getChatKey() {
-            if (!activeFriend) return null;
-            return [currentUser.username, activeFriend].sort().join('_');
+            if (!activeChatId) return null;
+            if (activeChatType === 'self') return 'self_' + currentUser.username;
+            if (activeChatType === 'group') return activeChatId;
+            return [currentUser.username, activeChatId].sort().join('_');
         }
 
         function sendChatMessage(imgData = null) {
@@ -757,14 +928,34 @@
 
             if (!chats[key]) chats[key] = [];
 
-            chats[key].push({
+            // تسجيل رسالتك الأصلية
+            const msgObj = {
                 sender: currentUser.username,
+                displayName: currentUser.displayName,
+                avatar: currentUser.avatar,
                 text: txt,
                 img: imgData
-            });
+            };
+
+            chats[key].push(msgObj);
+            textInput.value = '';
+
+            // إذا كنت تتحدث مع نفسك، سيرد عليك البوت مجسداً شخصيتك
+            if (activeChatType === 'self') {
+                setTimeout(() => {
+                    chats[key].push({
+                        sender: currentUser.username + "_echo",
+                        displayName: currentUser.displayName + " (نفسك)",
+                        avatar: currentUser.avatar,
+                        text: txt,
+                        img: imgData
+                    });
+                    localStorage.setItem('nulls_db_chats', JSON.stringify(chats));
+                    renderMessages();
+                }, 500);
+            }
 
             localStorage.setItem('nulls_db_chats', JSON.stringify(chats));
-            textInput.value = '';
             renderMessages();
         }
 
@@ -786,15 +977,28 @@
             if (!key || !chats[key]) return;
 
             chats[key].forEach(m => {
+                const isMine = (m.sender === currentUser.username);
+
+                const wrapper = document.createElement('div');
+                wrapper.className = 'msg-wrapper ' + (isMine ? 'mine' : 'other');
+
+                // هيدر الرسالة (صورة + اسم الشخص فوق الفقاعة)
+                const infoDiv = document.createElement('div');
+                infoDiv.className = 'msg-sender-info';
+                infoDiv.innerHTML = `<img src="${m.avatar || currentUser.avatar}"> <span class="msg-sender-name">${m.displayName || m.sender}</span>`;
+
                 const bubble = document.createElement('div');
-                bubble.className = 'msg-bubble ' + (m.sender === currentUser.username ? 'msg-mine' : 'msg-other');
+                bubble.className = 'msg-bubble';
                 if (m.text) bubble.innerText = m.text;
                 if (m.img) {
                     const img = document.createElement('img');
                     img.src = m.img;
                     bubble.appendChild(img);
                 }
-                box.appendChild(bubble);
+
+                wrapper.appendChild(infoDiv);
+                wrapper.appendChild(bubble);
+                box.appendChild(wrapper);
             });
             box.scrollTop = box.scrollHeight;
         }
