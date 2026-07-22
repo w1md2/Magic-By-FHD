@@ -156,11 +156,11 @@
             align-items: center;
             gap: 10px;
             margin-bottom: 25px;
+            flex-wrap: wrap;
         }
 
-        /* 🔒 منع السكرول التلقائي المزعج عند الكتابة */
         .input-box input[type="text"] {
-            width: 100%;
+            flex: 1;
             background: transparent;
             border: none;
             outline: none;
@@ -168,9 +168,10 @@
             font-size: 1.1rem;
             padding: 8px;
             scroll-margin: 0;
+            min-width: 150px;
         }
 
-        .color-pickers { display: flex; gap: 6px; }
+        .color-pickers { display: flex; gap: 6px; align-items: center; }
 
         .color-pickers input[type="color"] {
             -webkit-appearance: none;
@@ -185,6 +186,22 @@
             border: 2px solid #fff;
             border-radius: 50%;
         }
+
+        /* 🌈 زر رينبو الجديد */
+        .rainbow-btn {
+            background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+            border: 2px solid #fff;
+            color: #fff;
+            font-weight: bold;
+            padding: 5px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+            box-shadow: 0 0 10px rgba(255,255,255,0.4);
+            transition: transform 0.2s;
+        }
+        .rainbow-btn:hover { transform: scale(1.05); }
 
         .result-card {
             width: 100%;
@@ -599,10 +616,11 @@
             <button class="ai-btn" onclick="openAiModal()">🤖 Null’s AI</button>
         </div>
 
-        <!-- حقل النص مع دالة منع السكرول التلقائي عند الكتابة -->
+        <!-- حقل النص مع زر رينبو ومنع السكرول -->
         <div class="input-box">
             <input type="text" id="userInput" placeholder="اكتب النص هنا..." value="Nulls Magic" onfocus="preventAutoScroll(event)">
             <div class="color-pickers">
+                <button class="rainbow-btn" onclick="applyRainbowColors()">🌈 رينبو</button>
                 <input type="color" id="color1" value="#0088ff">
                 <input type="color" id="color2" value="#8a2be2">
                 <input type="color" id="color3" value="#ff007f">
@@ -766,6 +784,7 @@
         let currentUser = null;
         let activeChatId = null; 
         let activeChatType = 'friend';
+        let isRainbowMode = false;
 
         let dbUsers = JSON.parse(localStorage.getItem('nulls_db_users') || '{}');
         let dbGroups = JSON.parse(localStorage.getItem('nulls_db_groups') || '{}');
@@ -781,7 +800,6 @@
             }
         });
 
-        // دالة منع القفزة والسكرول التلقائي عند الكتابة في حقل النص
         function preventAutoScroll(e) {
             const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
             setTimeout(() => {
@@ -789,12 +807,17 @@
             }, 0);
         }
 
-        // دالة تغيير الثيمات والألوان
         function applyTheme(bgColor, cardBg, accentColor, glowColor) {
             document.documentElement.style.setProperty('--bg-color', bgColor);
             document.documentElement.style.setProperty('--card-bg', cardBg);
             document.documentElement.style.setProperty('--accent-blue', accentColor);
             document.documentElement.style.setProperty('--neon-glow', glowColor);
+        }
+
+        // 🌈 دالة تفعيل رينبو
+        function applyRainbowColors() {
+            isRainbowMode = true;
+            generateGradientText();
         }
 
         function switchTab(tabId, el) {
@@ -1150,6 +1173,8 @@
             let generatedCode = '';
             const len = text.length;
 
+            const rainbowHexes = ['ff0000', 'ff7f00', 'ffff00', '00ff00', '0000ff', '4b0082', '8b00ff'];
+
             for (let i = 0; i < len; i++) {
                 const char = text[i];
                 if (char === ' ') {
@@ -1158,8 +1183,14 @@
                     continue;
                 }
 
-                const factor = len > 1 ? i / (len - 1) : 0;
-                const hexColor = get3PointGradientColor(factor);
+                let hexColor = '';
+                if (isRainbowMode) {
+                    const rainbowIndex = Math.floor((i / len) * rainbowHexes.length);
+                    hexColor = rainbowHexes[Math.min(rainbowIndex, rainbowHexes.length - 1)];
+                } else {
+                    const factor = len > 1 ? i / (len - 1) : 0;
+                    hexColor = get3PointGradientColor(factor);
+                }
 
                 generatedCode += `<c${hexColor}>${char}</c>`;
                 previewHTML += `<span style="color: #${hexColor}">${char}</span>`;
@@ -1183,10 +1214,10 @@
             });
         }
 
-        userInput.addEventListener('input', generateGradientText);
-        color1Input.addEventListener('input', generateGradientText);
-        color2Input.addEventListener('input', generateGradientText);
-        color3Input.addEventListener('input', generateGradientText);
+        userInput.addEventListener('input', () => { isRainbowMode = false; generateGradientText(); });
+        color1Input.addEventListener('input', () => { isRainbowMode = false; generateGradientText(); });
+        color2Input.addEventListener('input', () => { isRainbowMode = false; generateGradientText(); });
+        color3Input.addEventListener('input', () => { isRainbowMode = false; generateGradientText(); });
 
         generateGradientText();
     </script>
