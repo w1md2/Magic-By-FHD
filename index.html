@@ -338,6 +338,7 @@
             display: flex;
             flex-direction: column;
             background: #0d0e12;
+            overflow: hidden;
         }
 
         .chat-header {
@@ -345,6 +346,19 @@
             background: #16181d;
             border-bottom: 1px solid #262930;
             font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .group-info-btn {
+            background: #222630;
+            color: #00d2ff;
+            border: 1px solid #0088ff;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            cursor: pointer;
         }
 
         .chat-messages {
@@ -354,6 +368,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
+            scroll-behavior: smooth;
         }
 
         /* هيكلة الرسائل المحسنة لتضمين الصورة والاسم */
@@ -363,19 +378,15 @@
             max-width: 75%;
         }
 
-        .msg-wrapper.mine {
-            align-self: flex-start;
-        }
-
-        .msg-wrapper.other {
-            align-self: flex-end;
-        }
+        .msg-wrapper.mine { align-self: flex-start; }
+        .msg-wrapper.other { align-self: flex-end; }
 
         .msg-sender-info {
             display: flex;
             align-items: center;
             gap: 6px;
             margin-bottom: 4px;
+            cursor: pointer;
         }
 
         .msg-sender-info img {
@@ -388,6 +399,14 @@
             font-size: 0.75rem;
             color: #aaa;
             font-weight: bold;
+        }
+
+        .role-badge {
+            font-size: 0.65rem;
+            padding: 1px 6px;
+            border-radius: 8px;
+            background: #333;
+            color: #ffcc00;
         }
 
         .msg-bubble {
@@ -495,6 +514,17 @@
             margin-top: 5px;
         }
 
+        .promote-btn {
+            background: linear-gradient(135deg, #ff9900, #ff5500);
+            color: #fff; border: none;
+            padding: 10px 25px; border-radius: 25px;
+            font-size: 0.95rem; font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 153, 0, 0.4);
+            width: 100%;
+            margin-top: 10px;
+        }
+
         .sub-link-btn {
             background: none; border: none;
             color: var(--accent-blue);
@@ -508,17 +538,35 @@
             color: #ff4444; font-size: 0.85rem; margin-bottom: 10px; display: none;
         }
 
-        .group-friends-select {
+        .group-friends-select, .group-members-list {
             display: flex;
             flex-direction: column;
             gap: 6px;
             text-align: right;
-            max-height: 120px;
+            max-height: 180px;
             overflow-y: auto;
             margin-bottom: 12px;
             background: #000;
             padding: 8px;
             border-radius: 8px;
+        }
+
+        .group-member-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px;
+            border-bottom: 1px solid #222;
+        }
+
+        .kick-btn {
+            background: #ff3333;
+            color: #fff;
+            border: none;
+            padding: 3px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.75rem;
         }
     </style>
 </head>
@@ -530,7 +578,7 @@
         <div class="nav-item" onclick="switchTab('chatTab', this)">الرسائل 💬</div>
     </div>
 
-    <!-- بروفايل المستخدم بالزاوية -->
+    <!-- بروفايل المستخدم العائم -->
     <div class="profile-widget" onclick="openProfileModal()">
         <img id="headerAvatar" class="profile-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=NullsUser" alt="Avatar">
         <span id="headerName" class="profile-name">زائر</span>
@@ -579,7 +627,10 @@
                 <div class="friends-list" id="friendsList"></div>
             </div>
             <div class="chat-main">
-                <div class="chat-header" id="activeChatHeader">اختر شات لبدء المحادثة</div>
+                <div class="chat-header">
+                    <span id="activeChatHeader">اختر شات لبدء المحادثة</span>
+                    <button id="groupInfoBtn" class="group-info-btn" style="display:none;" onclick="openGroupSettings()">إدارة القروب ⚙️</button>
+                </div>
                 <div class="chat-messages" id="chatMessages"></div>
                 <div class="chat-input-bar">
                     <label style="cursor:pointer;" title="إرفاق صورة">
@@ -629,22 +680,43 @@
         </div>
     </div>
 
-    <!-- 🟣 نافذة البروفايل والتعديل -->
+    <!-- 🟣 نافذة إدارة وتفاصيل القروب -->
+    <div class="modal" id="groupSettingsModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('groupSettingsModal')">&times;</button>
+            <h3 style="color:#fff; margin-bottom:15px;" id="groupSettingsTitle">تفاصيل القروب</h3>
+
+            <input type="text" id="editGroupNameInput" class="custom-input" placeholder="اسم القروب الجديدة">
+            <button class="main-btn" id="updateGroupNameBtn" style="margin-bottom:15px;" onclick="updateGroupName()">تعديل اسم القروب</button>
+
+            <div style="font-size:0.8rem; color:#aaa; margin-bottom:6px; text-align:right;">قائمة الأعضاء والرتب:</div>
+            <div class="group-members-list" id="groupMembersList"></div>
+
+            <button class="main-btn" style="background:red; margin-top:10px; display:none;" id="deleteGroupBtn" onclick="deleteCurrentGroup()">حذف القروب بالكامل 🗑️</button>
+        </div>
+    </div>
+
+    <!-- 🟣 نافذة معاينة بروفايل العضو والتعديل/الترقية -->
     <div class="modal" id="profileModal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('profileModal')">&times;</button>
-            <h3 style="color:#fff; margin-bottom:15px;">الملف الشخصي</h3>
+            <h3 style="color:#fff; margin-bottom:15px;" id="profileModalTitle">الملف الشخصي</h3>
 
             <label style="cursor:pointer; display:inline-block; margin-bottom:15px;">
                 <img id="editAvatarPreview" style="width:80px; height:80px; border-radius:50%; border:2px dashed var(--accent-blue);" src="" alt="Avatar">
-                <div style="font-size:0.75rem; color:#aaa; margin-top:5px;">📷 تغيير الصورة</div>
+                <div style="font-size:0.75rem; color:#aaa; margin-top:5px;" id="changeAvatarText">📷 تغيير الصورة</div>
                 <input type="file" id="imageUploader" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
             </label>
 
             <input type="text" id="editDisplayNameInput" class="custom-input" placeholder="الاسم الظاهر">
             <div style="margin-bottom:10px; color:#00ff88; font-weight:bold;" id="profileUserDisplay"></div>
-            <button class="main-btn" onclick="saveProfile()">حفظ التعديلات</button>
-            <button class="sub-link-btn" style="color:red;" onclick="logout()">تسجيل الخروج</button>
+            
+            <button class="main-btn" id="saveProfileBtn" onclick="saveProfile()">حفظ التعديلات</button>
+            
+            <!-- زر الترقية الخاص داخل القروب -->
+            <button class="promote-btn" id="promoteUserBtn" style="display:none;" onclick="promoteTargetUser()">ترقية العضو ⬆️</button>
+
+            <button class="sub-link-btn" style="color:red;" id="logoutBtn" onclick="logout()">تسجيل الخروج</button>
         </div>
     </div>
 
@@ -670,6 +742,7 @@
         let currentUser = null;
         let activeChatId = null; 
         let activeChatType = 'friend'; // 'self', 'friend', 'group'
+        let targetProfileUser = null; // العضو المعروض بروفايله حالياً
 
         let dbUsers = JSON.parse(localStorage.getItem('nulls_db_users') || '{}');
         let dbGroups = JSON.parse(localStorage.getItem('nulls_db_groups') || '{}');
@@ -727,7 +800,6 @@
                 return;
             }
 
-            // منع اليوزرات العربية بالكامل باستثناء 'حـربـي' المتاح مستقبلاً لمستخدم كاستثناء داخلي
             const isArabic = /[\u0600-\u06FF]/.test(uInput);
             if (isArabic && uInput !== "حـربـي") {
                 showError("عذراً، اليوزرات يجب أن تكون بالأحرف الإنجليزية فقط!");
@@ -769,9 +841,6 @@
         function updateProfileUI() {
             document.getElementById('headerName').innerText = currentUser.displayName || currentUser.username;
             document.getElementById('headerAvatar').src = currentUser.avatar;
-            document.getElementById('editAvatarPreview').src = currentUser.avatar;
-            document.getElementById('editDisplayNameInput').value = currentUser.displayName || '';
-            document.getElementById('profileUserDisplay').innerText = "@" + currentUser.username;
             renderFriendsAndGroups();
         }
 
@@ -804,7 +873,11 @@
             localStorage.setItem('nulls_db_users', JSON.stringify(dbUsers));
         }
 
-        // ---- إدارة قائمة الأصدقاء والقروبات والمحادثة مع النفس ----
+        function saveGroupsDB() {
+            localStorage.setItem('nulls_db_groups', JSON.stringify(dbGroups));
+        }
+
+        // ---- إدارة قائمة الأصدقاء والقروبات ----
         function addFriend() {
             const fName = document.getElementById('friendUsernameInput').value.trim();
             if (!fName || fName === currentUser.username) return;
@@ -830,7 +903,7 @@
 
             if (!currentUser) return;
 
-            // 1. خيار المحادثة مع النفس (Echo Bot)
+            // 1. خيار المحادثة مع النفس
             const selfDiv = document.createElement('div');
             selfDiv.className = 'friend-item' + (activeChatId === 'self' ? ' active' : '');
             selfDiv.innerHTML = `<img src="${currentUser.avatar}"> <span>محادثة مع نفسي 👤</span>`;
@@ -862,7 +935,6 @@
                         div.onclick = () => selectChat(f, 'friend');
                         list.appendChild(div);
 
-                        // خيارات تحديد الأعضاء للقروب
                         groupSelect.innerHTML += `<label><input type="checkbox" value="${f}"> ${friendUser.displayName} (@${f})</label>`;
                     }
                 });
@@ -877,13 +949,19 @@
             selected.push(currentUser.username);
 
             const gId = 'group_' + Date.now();
+            
+            // تهيئة الرتب: منشئ القروب يكون "الرئيس"
+            let roles = {};
+            roles[currentUser.username] = "الرئيس";
+
             dbGroups[gId] = {
                 id: gId,
                 name: gName,
-                members: selected
+                owner: currentUser.username,
+                members: selected,
+                roles: roles
             };
 
-            // إضافته لكل المشاركين
             selected.forEach(u => {
                 if (dbUsers[u]) {
                     if (!dbUsers[u].groups) dbUsers[u].groups = [];
@@ -891,7 +969,7 @@
                 }
             });
 
-            localStorage.setItem('nulls_db_groups', JSON.stringify(dbGroups));
+            saveGroupsDB();
             saveUsersDB();
             closeModal('createGroupModal');
             renderFriendsAndGroups();
@@ -902,12 +980,17 @@
             activeChatType = type;
             renderFriendsAndGroups();
 
+            const groupInfoBtn = document.getElementById('groupInfoBtn');
+
             if (type === 'self') {
                 document.getElementById('activeChatHeader').innerText = "محادثة خاصة مع نفسك (رد تلقائي) 👤";
+                groupInfoBtn.style.display = 'none';
             } else if (type === 'friend') {
                 document.getElementById('activeChatHeader').innerText = "المحادثة مع " + (dbUsers[id]?.displayName || id);
+                groupInfoBtn.style.display = 'none';
             } else if (type === 'group') {
                 document.getElementById('activeChatHeader').innerText = "قروب: " + (dbGroups[id]?.name || "قروب");
+                groupInfoBtn.style.display = 'block';
             }
             renderMessages();
         }
@@ -928,7 +1011,6 @@
 
             if (!chats[key]) chats[key] = [];
 
-            // تسجيل رسالتك الأصلية
             const msgObj = {
                 sender: currentUser.username,
                 displayName: currentUser.displayName,
@@ -940,7 +1022,6 @@
             chats[key].push(msgObj);
             textInput.value = '';
 
-            // إذا كنت تتحدث مع نفسك، سيرد عليك البوت مجسداً شخصيتك
             if (activeChatType === 'self') {
                 setTimeout(() => {
                     chats[key].push({
@@ -952,7 +1033,7 @@
                     });
                     localStorage.setItem('nulls_db_chats', JSON.stringify(chats));
                     renderMessages();
-                }, 500);
+                }, 400);
             }
 
             localStorage.setItem('nulls_db_chats', JSON.stringify(chats));
@@ -976,16 +1057,25 @@
             const key = getChatKey();
             if (!key || !chats[key]) return;
 
+            const group = (activeChatType === 'group') ? dbGroups[activeChatId] : null;
+
             chats[key].forEach(m => {
                 const isMine = (m.sender === currentUser.username);
 
                 const wrapper = document.createElement('div');
                 wrapper.className = 'msg-wrapper ' + (isMine ? 'mine' : 'other');
 
-                // هيدر الرسالة (صورة + اسم الشخص فوق الفقاعة)
+                // هيدر الرسالة
                 const infoDiv = document.createElement('div');
                 infoDiv.className = 'msg-sender-info';
-                infoDiv.innerHTML = `<img src="${m.avatar || currentUser.avatar}"> <span class="msg-sender-name">${m.displayName || m.sender}</span>`;
+                infoDiv.onclick = () => inspectUserProfile(m.sender);
+
+                let roleBadgeHTML = '';
+                if (group && group.roles && group.roles[m.sender]) {
+                    roleBadgeHTML = `<span class="role-badge">${group.roles[m.sender]}</span>`;
+                }
+
+                infoDiv.innerHTML = `<img src="${m.avatar || currentUser.avatar}"> <span class="msg-sender-name">${m.displayName || m.sender}</span> ${roleBadgeHTML}`;
 
                 const bubble = document.createElement('div');
                 bubble.className = 'msg-bubble';
@@ -1003,7 +1093,146 @@
             box.scrollTop = box.scrollHeight;
         }
 
-        // المودالات
+        // ---- معاينة بروفايل العضو والترقيات ----
+        function inspectUserProfile(username) {
+            targetProfileUser = username;
+            const isSelf = (username === currentUser.username || username === currentUser.username + "_echo");
+
+            document.getElementById('profileModalTitle').innerText = isSelf ? "الملف الشخصي" : "معاينة الملف الشخصي";
+            
+            const targetData = dbUsers[username] || { displayName: currentUser.displayName, avatar: currentUser.avatar, username: username };
+
+            document.getElementById('editAvatarPreview').src = targetData.avatar;
+            document.getElementById('editDisplayNameInput').value = targetData.displayName || targetData.username;
+            document.getElementById('profileUserDisplay').innerText = "@" + targetData.username;
+
+            if (isSelf) {
+                document.getElementById('editDisplayNameInput').disabled = false;
+                document.getElementById('changeAvatarText').style.display = 'block';
+                document.getElementById('saveProfileBtn').style.display = 'block';
+                document.getElementById('logoutBtn').style.display = 'block';
+                document.getElementById('promoteUserBtn').style.display = 'none';
+            } else {
+                document.getElementById('editDisplayNameInput').disabled = true;
+                document.getElementById('changeAvatarText').style.display = 'none';
+                document.getElementById('saveProfileBtn').style.display = 'none';
+                document.getElementById('logoutBtn').style.display = 'none';
+
+                // إظهار زر الترقية إذا كان المستخدم الحالي رئيس بالقروب والهدف عضو بالقروب
+                if (activeChatType === 'group' && dbGroups[activeChatId]) {
+                    const group = dbGroups[activeChatId];
+                    const myRole = group.roles[currentUser.username] || "عضو";
+                    if (myRole === "الرئيس") {
+                        document.getElementById('promoteUserBtn').style.display = 'block';
+                    } else {
+                        document.getElementById('promoteUserBtn').style.display = 'none';
+                    }
+                } else {
+                    document.getElementById('promoteUserBtn').style.display = 'none';
+                }
+            }
+
+            openModal('profileModal');
+        }
+
+        function promoteTargetUser() {
+            if (!activeChatId || activeChatType !== 'group' || !targetProfileUser) return;
+            const group = dbGroups[activeChatId];
+            if (!group) return;
+
+            const currentRole = group.roles[targetProfileUser] || "عضو";
+
+            if (currentRole === "عضو") {
+                group.roles[targetProfileUser] = "وكيل";
+                alert(`تم ترقية ${targetProfileUser} إلى (وكيل)!`);
+            } else if (currentRole === "وكيل") {
+                group.roles[targetProfileUser] = "نائب";
+                alert(`تم ترقية ${targetProfileUser} إلى (نائب)!`);
+            } else {
+                alert("هذا العضو وصل لأعلى ترقية ممكنة (نائب)!");
+            }
+
+            saveGroupsDB();
+            closeModal('profileModal');
+            renderMessages();
+        }
+
+        // ---- إدارة القروب (تعديل الاسم/الطرود/الحذف) ----
+        function openGroupSettings() {
+            if (activeChatType !== 'group' || !activeChatId) return;
+            const group = dbGroups[activeChatId];
+            if (!group) return;
+
+            document.getElementById('groupSettingsTitle').innerText = "إدارة القروب: " + group.name;
+            document.getElementById('editGroupNameInput').value = group.name;
+
+            const myRole = group.roles[currentUser.username] || "عضو";
+            const canManage = (myRole === "الرئيس" || myRole === "نائب");
+
+            document.getElementById('updateGroupNameBtn').style.display = canManage ? 'block' : 'none';
+            document.getElementById('deleteGroupBtn').style.display = (myRole === "الرئيس") ? 'block' : 'none';
+
+            const membersList = document.getElementById('groupMembersList');
+            membersList.innerHTML = '';
+
+            group.members.forEach(m => {
+                const uData = dbUsers[m] || { displayName: m };
+                const role = group.roles[m] || "عضو";
+
+                const item = document.createElement('div');
+                item.className = 'group-member-item';
+
+                let kickBtnHTML = '';
+                if (canManage && m !== currentUser.username && role !== "الرئيس") {
+                    kickBtnHTML = `<button class="kick-btn" onclick="kickMember('${m}')">طرد</button>`;
+                }
+
+                item.innerHTML = `
+                    <div>
+                        <b>${uData.displayName}</b> <small style="color:#ffcc00;">(${role})</small>
+                    </div>
+                    ${kickBtnHTML}
+                `;
+                membersList.appendChild(item);
+            });
+
+            openModal('groupSettingsModal');
+        }
+
+        function updateGroupName() {
+            const newName = document.getElementById('editGroupNameInput').value.trim();
+            if (!newName || activeChatType !== 'group') return;
+            dbGroups[activeChatId].name = newName;
+            saveGroupsDB();
+            renderFriendsAndGroups();
+            document.getElementById('activeChatHeader').innerText = "قروب: " + newName;
+            closeModal('groupSettingsModal');
+        }
+
+        function kickMember(username) {
+            if (activeChatType !== 'group') return;
+            const group = dbGroups[activeChatId];
+            group.members = group.members.filter(m => m !== username);
+            delete group.roles[username];
+
+            saveGroupsDB();
+            openGroupSettings();
+            renderMessages();
+        }
+
+        function deleteCurrentGroup() {
+            if (confirm("هل أنت تأكد من إرادتك لحذف القروب نهائياً؟")) {
+                delete dbGroups[activeChatId];
+                saveGroupsDB();
+                closeModal('groupSettingsModal');
+                activeChatId = null;
+                renderFriendsAndGroups();
+                document.getElementById('activeChatHeader').innerText = "اختر شات لبدء المحادثة";
+                document.getElementById('chatMessages').innerHTML = '';
+            }
+        }
+
+        // المودالات العامة
         function openModal(id) {
             const m = document.getElementById(id);
             m.style.display = 'flex';
@@ -1017,7 +1246,7 @@
         }
 
         function openAiModal() { openModal('aiModal'); }
-        function openProfileModal() { openModal('profileModal'); }
+        function openProfileModal() { inspectUserProfile(currentUser.username); }
 
         // مولد الألوان والتدرجات
         function hexToRgb(hex) {
