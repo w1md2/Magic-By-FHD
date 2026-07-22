@@ -3,14 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nulls Magic V2 - Ultimate Platform</title>
+    <title>Null's Magic V2 - Full System</title>
     <style>
+        /* ==========================================
+           1. Basic CSS Variables and Reset
+           ========================================== */
         :root {
-            --bg-color: #0d0e12;
+            --primary-bg: #0d0e12;
             --card-bg: #16181d;
             --accent-blue: #0088ff;
-            --neon-glow: rgba(0, 136, 255, 0.6);
-            --text-color: #ffffff;
+            --accent-purple: #8a2be2;
+            --accent-pink: #ff007f;
+            --text-main: #ffffff;
+            --text-muted: #aaaaaa;
+            --border-color: rgba(0, 136, 255, 0.3);
+            --danger-color: #ff3333;
+            --success-color: #00ff88;
+            --warning-color: #ffcc00;
         }
 
         * {
@@ -18,319 +27,246 @@
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            background-color: var(--primary-bg);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            position: relative;
             overflow-x: hidden;
         }
 
-        /* 🔴 شريط المنيو العلوي */
-        .top-navbar {
+        /* ==========================================
+           2. Navigation Header
+           ========================================== */
+        .navbar {
             width: 100%;
             background: #111318;
-            border-bottom: 1px solid rgba(0, 136, 255, 0.3);
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: center;
+            align-items: center;
             gap: 15px;
-            padding: 12px 20px;
+            padding: 12px;
             position: sticky;
             top: 0;
-            z-index: 50;
+            z-index: 100;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
-        .nav-item {
-            padding: 8px 20px;
-            border-radius: 20px;
+        .nav-btn {
+            padding: 10px 20px;
+            border-radius: 25px;
             background: #1a1d24;
-            color: #aaa;
+            color: var(--text-muted);
             cursor: pointer;
             font-weight: bold;
-            transition: all 0.3s ease;
             border: 1px solid transparent;
+            transition: all 0.3s ease;
         }
 
-        .nav-item.active, .nav-item:hover {
+        .nav-btn:hover {
+            color: var(--text-main);
+            border-color: var(--accent-blue);
+        }
+
+        .nav-btn.active {
             background: var(--accent-blue);
-            color: #fff;
-            box-shadow: 0 0 12px var(--neon-glow);
-            border-color: rgba(255,255,255,0.3);
+            color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 136, 255, 0.5);
         }
 
-        /* 🟢 بروفايل المستخدم العائم */
+        /* ==========================================
+           3. Profile Widget
+           ========================================== */
         .profile-widget {
             position: absolute;
-            top: 60px;
+            top: 10px;
             right: 20px;
             display: flex;
-            flex-direction: column;
             align-items: center;
+            gap: 10px;
             cursor: pointer;
-            transition: transform 0.3s ease;
-            z-index: 10;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 5px 12px;
+            border-radius: 30px;
+            border: 1px solid var(--border-color);
         }
 
-        .profile-widget:hover { transform: scale(1.05); }
-
         .profile-avatar {
-            width: 50px; height: 50px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             border: 2px solid var(--accent-blue);
-            box-shadow: 0 0 10px var(--neon-glow);
             object-fit: cover;
-            background-color: #222;
+            background: #222;
         }
 
         .profile-name {
             font-size: 0.85rem;
             font-weight: bold;
-            margin-top: 4px;
-            color: #fff;
-            text-shadow: 0 0 5px rgba(0,136,255,0.5);
-            max-width: 90px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            text-align: center;
+            color: var(--text-main);
         }
 
-        .page-section {
+        /* ==========================================
+           4. Layout Container Sections
+           ========================================== */
+        .main-container {
             width: 100%;
-            max-width: 750px;
-            display: none;
-            padding: 30px 20px;
+            max-width: 900px;
+            padding: 20px;
+            display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        .page-section.active { display: flex; }
-
-        .header-area {
-            display: flex;
+        .section {
+            width: 100%;
+            display: none;
+            flex-direction: column;
             align-items: center;
-            justify-content: space-between;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .section.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ==========================================
+           5. Color Generator Section
+           ========================================== */
+        .section-title {
+            font-size: 2.2rem;
+            color: var(--accent-blue);
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(0, 136, 255, 0.3);
+        }
+
+        .tool-card {
             width: 100%;
-            margin-bottom: 25px;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: linear-gradient(45deg, #0088ff, #00d2ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 15px rgba(0, 136, 255, 0.3);
-        }
-
-        .ai-btn {
-            background: linear-gradient(135deg, #0088ff, #8a2be2);
-            color: #fff;
-            border: 1px solid rgba(0, 136, 255, 0.5);
-            padding: 10px 18px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 0 15px rgba(0, 136, 255, 0.4);
-            transition: all 0.3s ease;
-        }
-
-        .ai-btn:hover { transform: scale(1.05); }
-
-        /* الألوان والنص */
-        .input-box {
-            width: 100%;
-            background-color: #000000;
-            border: 2px solid var(--accent-blue);
+            background: var(--card-bg);
             border-radius: 12px;
-            padding: 8px 15px;
-            box-shadow: 0 0 15px var(--neon-glow), inset 0 0 10px rgba(0, 136, 255, 0.2);
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+
+        .input-group {
+            width: 100%;
+            background: #000;
+            border: 2px solid var(--accent-blue);
+            border-radius: 10px;
+            padding: 10px;
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
         }
 
-        .input-box input[type="text"] {
-            width: 100%;
+        .input-group input[type="text"] {
+            flex: 1;
             background: transparent;
             border: none;
             outline: none;
-            color: #fff;
+            color: var(--text-main);
             font-size: 1.1rem;
-            padding: 8px;
         }
 
-        .color-pickers { display: flex; gap: 6px; }
+        .color-pickers {
+            display: flex;
+            gap: 6px;
+        }
 
         .color-pickers input[type="color"] {
-            -webkit-appearance: none;
             border: none;
-            width: 28px; height: 28px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             cursor: pointer;
             background: none;
         }
 
-        .color-pickers input[type="color"]::-webkit-color-swatch {
-            border: 2px solid #fff;
-            border-radius: 50%;
-        }
-
-        .result-card {
-            width: 100%;
-            background-color: var(--card-bg);
-            border: 1px solid #282c34;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: right;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-        }
-
-        .text-preview {
+        .preview-box {
             font-size: 1.4rem;
             font-weight: bold;
-            min-height: 40px;
-            margin-bottom: 15px;
-            padding: 10px;
-            background-color: #0d0e12;
+            min-height: 50px;
+            background: #0d0e12;
             border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 15px;
             word-break: break-all;
-        }
-
-        .code-output-container {
             display: flex;
             align-items: center;
+            justify-content: center;
+            border: 1px dashed #333;
+        }
+
+        .code-box {
+            display: flex;
             justify-content: space-between;
-            background-color: #000;
-            border: 1px solid #333;
+            background: #000;
             border-radius: 8px;
-            padding: 8px 12px;
+            padding: 10px;
+            align-items: center;
+            border: 1px solid #222;
         }
 
         .code-output {
-            font-family: monospace;
-            color: #00ff88;
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--success-color);
             direction: ltr;
             overflow-x: auto;
-            white-space: nowrap;
             width: 80%;
-        }
-
-        .copy-btn {
-            background-color: var(--accent-blue);
-            color: #fff;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        /* 🟣 شاشة الدردشة والتواصل */
-        .chat-app-container {
-            width: 100%;
-            height: 560px;
-            background: var(--card-bg);
-            border: 1px solid var(--accent-blue);
-            border-radius: 16px;
-            display: flex;
-            overflow: hidden;
-            box-shadow: 0 0 25px var(--neon-glow);
-        }
-
-        .chat-sidebar {
-            width: 35%;
-            background: #111318;
-            border-left: 1px solid #262930;
-            display: flex;
-            flex-direction: column;
-            padding: 10px;
-        }
-
-        .sidebar-section-title {
-            font-size: 0.75rem;
-            color: #777;
-            margin: 8px 0 4px 0;
-            font-weight: bold;
-        }
-
-        .add-friend-box {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 8px;
-        }
-
-        .add-friend-box input {
-            width: 100%;
-            background: #000;
-            border: 1px solid #333;
-            color: #fff;
-            padding: 6px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-        }
-
-        .add-friend-btn {
-            background: var(--accent-blue);
-            border: none;
-            color: #fff;
-            padding: 6px 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.8rem;
             white-space: nowrap;
         }
 
-        .group-btn {
-            background: linear-gradient(135deg, #8a2be2, #0088ff);
-            width: 100%;
-            border: none;
+        .action-btn {
+            background: var(--accent-blue);
             color: #fff;
-            padding: 8px;
+            border: none;
+            padding: 8px 18px;
             border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.85rem;
-            margin-bottom: 10px;
-        }
-
-        .friends-list {
-            flex: 1;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .friend-item {
-            padding: 8px 10px;
-            background: #1a1d24;
-            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
             transition: background 0.2s;
+        }
+
+        .action-btn:hover {
+            background: #0066cc;
+        }
+
+        /* ==========================================
+           6. Chat App Layout & Styles
+           ========================================== */
+        .chat-app {
+            width: 100%;
+            height: 600px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
             display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .friend-item img {
-            width: 28px; height: 28px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .friend-item.active, .friend-item:hover {
-            background: var(--accent-blue);
+        .chat-sidebar {
+            width: 32%;
+            background: #111318;
+            border-left: 1px solid #222;
+            display: flex;
+            flex-direction: column;
+            padding: 12px;
         }
 
         .chat-main {
@@ -338,27 +274,80 @@
             display: flex;
             flex-direction: column;
             background: #0d0e12;
-            overflow: hidden;
+        }
+
+        .add-friend-box {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 12px;
+        }
+
+        .add-friend-box input {
+            width: 100%;
+            background: #000;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            outline: none;
+        }
+
+        .btn-small {
+            background: var(--accent-blue);
+            border: none;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .list-container {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .list-item {
+            padding: 10px;
+            background: #1a1d24;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.2s;
+        }
+
+        .list-item:hover {
+            background: #252a34;
+        }
+
+        .list-item.active {
+            background: var(--accent-blue);
+        }
+
+        .list-item img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
         }
 
         .chat-header {
-            padding: 12px;
+            padding: 15px;
             background: #16181d;
-            border-bottom: 1px solid #262930;
-            font-weight: bold;
+            border-bottom: 1px solid #222;
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        .group-info-btn {
-            background: #222630;
-            color: #00d2ff;
-            border: 1px solid #0088ff;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
         }
 
         .chat-messages {
@@ -367,961 +356,846 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            scroll-behavior: smooth;
+            gap: 12px;
         }
 
-        /* هيكلة الرسائل المحسنة لتضمين الصورة والاسم */
-        .msg-wrapper {
+        .message-wrapper {
             display: flex;
             flex-direction: column;
             max-width: 75%;
         }
 
-        .msg-wrapper.mine { align-self: flex-start; }
-        .msg-wrapper.other { align-self: flex-end; }
+        .message-wrapper.mine {
+            align-self: flex-start;
+        }
 
-        .msg-sender-info {
-            display: flex;
-            align-items: center;
-            gap: 6px;
+        .message-wrapper.other {
+            align-self: flex-end;
+        }
+
+        .message-header {
+            font-size: 0.75rem;
+            color: var(--text-muted);
             margin-bottom: 4px;
             cursor: pointer;
+            display: flex;
+            gap: 6px;
+            align-items: center;
         }
 
-        .msg-sender-info img {
-            width: 22px; height: 22px;
+        .message-header img {
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .msg-sender-name {
-            font-size: 0.75rem;
-            color: #aaa;
-            font-weight: bold;
         }
 
         .role-badge {
-            font-size: 0.65rem;
-            padding: 1px 6px;
-            border-radius: 8px;
             background: #333;
-            color: #ffcc00;
+            color: var(--warning-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: bold;
         }
 
-        .msg-bubble {
+        .message-body {
             padding: 10px 14px;
-            border-radius: 12px;
+            border-radius: 10px;
             font-size: 0.95rem;
-            line-height: 1.4;
-            word-break: break-word;
-        }
-
-        .msg-wrapper.mine .msg-bubble {
-            background: var(--accent-blue);
-            color: #fff;
-            border-top-right-radius: 2px;
-        }
-
-        .msg-wrapper.other .msg-bubble {
             background: #222630;
-            color: #fff;
-            border-top-left-radius: 2px;
+            word-break: break-word;
+            line-height: 1.4;
         }
 
-        .msg-bubble img {
+        .message-wrapper.mine .message-body {
+            background: var(--accent-blue);
+        }
+
+        .message-body img {
             max-width: 100%;
             border-radius: 8px;
-            margin-top: 5px;
+            margin-top: 6px;
         }
 
-        .chat-input-bar {
+        .chat-input-area {
             display: flex;
-            padding: 10px;
+            padding: 12px;
             background: #16181d;
             gap: 8px;
             align-items: center;
+            border-top: 1px solid #222;
         }
 
-        .chat-input-bar input[type="text"] {
+        .chat-input-area input[type="text"] {
             flex: 1;
             background: #000;
             border: 1px solid #333;
             color: #fff;
-            padding: 8px;
+            padding: 10px;
             border-radius: 8px;
+            outline: none;
         }
 
-        /* 🟣 النوافذ المنبثقة (Modals) */
-        .modal {
+        /* ==========================================
+           7. Modals & Overlay Windows
+           ========================================== */
+        .modal-overlay {
             display: none;
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.88);
-            backdrop-filter: blur(8px);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
             justify-content: center;
             align-items: center;
-            z-index: 100;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            z-index: 200;
+            backdrop-filter: blur(5px);
         }
 
-        .modal.show { display: flex; opacity: 1; }
+        .modal-overlay.show {
+            display: flex;
+        }
 
-        .modal-content {
-            position: relative;
+        .modal-card {
             background: var(--card-bg);
-            border: 1.5px solid var(--accent-blue);
-            border-radius: 20px;
-            padding: 25px 20px;
+            border: 1px solid var(--accent-blue);
+            border-radius: 15px;
+            padding: 25px;
             width: 90%;
-            max-width: 480px;
+            max-width: 420px;
             text-align: center;
-            box-shadow: 0 0 30px var(--neon-glow);
-            max-height: 90vh;
-            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 136, 255, 0.2);
         }
 
-        .close-btn {
+        .modal-close {
             position: absolute;
-            top: 12px; left: 18px;
-            background: none; border: none;
-            color: #aaa; font-size: 1.8rem;
+            top: 12px;
+            left: 18px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.8rem;
             cursor: pointer;
         }
 
-        .custom-input {
+        .form-input {
             width: 100%;
             background: #000;
             border: 1px solid var(--accent-blue);
             padding: 10px;
-            border-radius: 10px;
+            border-radius: 8px;
             color: #fff;
-            font-size: 0.95rem;
-            text-align: center;
+            margin-bottom: 12px;
             outline: none;
-            margin-bottom: 10px;
         }
 
-        .main-btn {
-            background: linear-gradient(135deg, #0088ff, #00d2ff);
-            color: #fff; border: none;
-            padding: 10px 25px; border-radius: 25px;
-            font-size: 0.95rem; font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 0 15px var(--neon-glow);
+        .btn-full {
+            background: var(--accent-blue);
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 20px;
             width: 100%;
-            margin-top: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 8px;
         }
 
-        .promote-btn {
-            background: linear-gradient(135deg, #ff9900, #ff5500);
-            color: #fff; border: none;
-            padding: 10px 25px; border-radius: 25px;
-            font-size: 0.95rem; font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 0 15px rgba(255, 153, 0, 0.4);
+        .btn-orange {
+            background: #ff9900;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 20px;
             width: 100%;
+            cursor: pointer;
+            font-weight: bold;
             margin-top: 10px;
         }
 
-        .sub-link-btn {
-            background: none; border: none;
-            color: var(--accent-blue);
-            margin-top: 12px; cursor: pointer;
-            text-decoration: underline;
-            font-weight: bold;
-            font-size: 0.85rem;
-        }
-
-        .error-msg {
-            color: #ff4444; font-size: 0.85rem; margin-bottom: 10px; display: none;
-        }
-
-        .group-friends-select, .group-members-list {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            text-align: right;
-            max-height: 180px;
-            overflow-y: auto;
-            margin-bottom: 12px;
-            background: #000;
-            padding: 8px;
-            border-radius: 8px;
-        }
-
-        .group-member-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 6px;
-            border-bottom: 1px solid #222;
-        }
-
-        .kick-btn {
-            background: #ff3333;
+        .btn-danger {
+            background: var(--danger-color);
             color: #fff;
             border: none;
-            padding: 3px 8px;
-            border-radius: 6px;
+            padding: 10px;
+            border-radius: 20px;
+            width: 100%;
             cursor: pointer;
-            font-size: 0.75rem;
+            font-weight: bold;
+            margin-top: 10px;
         }
+
+        /* Helper Classes */
+        .text-center { text-align: center; }
+        .mt-10 { margin-top: 10px; }
+        .mb-10 { margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
-    <!-- الشريط العلوي للتنقل -->
-    <div class="top-navbar">
-        <div class="nav-item active" onclick="switchTab('colorsTab', this)">Null’s Magic</div>
-        <div class="nav-item" onclick="switchTab('chatTab', this)">الرسائل 💬</div>
+    <!-- Header Navigation -->
+    <div class="navbar">
+        <button class="nav-btn active" onclick="switchTab('colors-tab', this)">Null’s Magic 🎨</button>
+        <button class="nav-btn" onclick="switchTab('chat-tab', this)">الرسائل 💬</button>
     </div>
 
-    <!-- بروفايل المستخدم العائم -->
-    <div class="profile-widget" onclick="openProfileModal()">
-        <img id="headerAvatar" class="profile-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=NullsUser" alt="Avatar">
-        <span id="headerName" class="profile-name">زائر</span>
+    <!-- User Profile Top Right -->
+    <div class="profile-widget" onclick="openProfileModal(currentUser.username)">
+        <img id="headAvatar" class="profile-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=Nulls" alt="Avatar">
+        <span id="headName" class="profile-name">زائر</span>
     </div>
 
-    <!-- 1. قسم الألوان والواجهة الأساسية -->
-    <div id="colorsTab" class="page-section active">
-        <div class="header-area">
-            <h1>Nulls Magic</h1>
-            <button class="ai-btn" onclick="openAiModal()">🤖 Null’s AI</button>
-        </div>
+    <div class="main-container">
 
-        <div class="input-box">
-            <input type="text" id="userInput" placeholder="اكتب النص هنا..." value="Nulls Magic">
-            <div class="color-pickers">
-                <input type="color" id="color1" value="#0088ff">
-                <input type="color" id="color2" value="#8a2be2">
-                <input type="color" id="color3" value="#ff007f">
-            </div>
-        </div>
-
-        <div class="result-card">
-            <div style="font-size: 0.9rem; color: #888; margin-bottom: 10px;">الشكل داخل اللعبة:</div>
-            <div class="text-preview" id="textPreview"></div>
-
-            <div style="font-size: 0.9rem; color: #888; margin-bottom: 10px;">الكود المنسوخ (Nulls Colors):</div>
-            <div class="code-output-container">
-                <div class="code-output" id="codeOutput"></div>
-                <button class="copy-btn" onclick="copyCode()">نسخ الكود</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 2. قسم الرسائل والتواصل -->
-    <div id="chatTab" class="page-section">
-        <div class="chat-app-container">
-            <div class="chat-sidebar">
-                <div class="add-friend-box">
-                    <input type="text" id="friendUsernameInput" placeholder="اسم اليوزر للطلب...">
-                    <button class="add-friend-btn" onclick="addFriend()">إضافة</button>
+        <!-- ==========================================
+             Section 1: Gradient Generator
+             ========================================== -->
+        <div id="colors-tab" class="section active">
+            <h1 class="section-title">Nulls Magic V2</h1>
+            
+            <div class="tool-card">
+                <div class="input-group">
+                    <input type="text" id="userInputText" placeholder="اكتب النص هنا..." value="Nulls Magic">
+                    <div class="color-pickers">
+                        <input type="color" id="colorPicker1" value="#0088ff">
+                        <input type="color" id="colorPicker2" value="#8a2be2">
+                        <input type="color" id="colorPicker3" value="#ff007f">
+                    </div>
                 </div>
-                
-                <button class="group-btn" onclick="openModal('createGroupModal')">➕ إنشاء قروب جديد</button>
 
-                <div class="sidebar-section-title">المحادثات الخاصة والقروبات</div>
-                <div class="friends-list" id="friendsList"></div>
-            </div>
-            <div class="chat-main">
-                <div class="chat-header">
-                    <span id="activeChatHeader">اختر شات لبدء المحادثة</span>
-                    <button id="groupInfoBtn" class="group-info-btn" style="display:none;" onclick="openGroupSettings()">إدارة القروب ⚙️</button>
-                </div>
-                <div class="chat-messages" id="chatMessages"></div>
-                <div class="chat-input-bar">
-                    <label style="cursor:pointer;" title="إرفاق صورة">
-                        📷
-                        <input type="file" id="chatImgInput" accept="image/*" style="display:none;" onchange="sendChatImage(event)">
-                    </label>
-                    <input type="text" id="chatTextInput" placeholder="اكتب رسالة..." onkeypress="if(event.key==='Enter') sendChatMessage()">
-                    <button class="add-friend-btn" onclick="sendChatMessage()">إرسال</button>
+                <div class="preview-box" id="previewOutput"></div>
+
+                <div class="code-box">
+                    <div class="code-output" id="codeOutputText"></div>
+                    <button class="action-btn" onclick="copyGeneratedCode()">نسخ الكود</button>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- 🟣 نافذة التسجيل / الدخول الأولية -->
-    <div class="modal" id="welcomeModal">
-        <div class="modal-content">
-            <h3 style="color:#00d2ff; margin-bottom:12px;" id="authTitle">يأهلا وسهلا نورت الموقع Null’s Magic V2 اول موقع عربي لنولز برول !</h3>
-            
-            <button style="background:#222; border:1px solid #444; color:#fff; padding:6px 12px; border-radius:12px; margin-bottom:12px; cursor:pointer;" onclick="scrollToInfo()">معلومات عن الموقع ⬇️</button>
+        <!-- ==========================================
+             Section 2: Multi-Chat System
+             ========================================== -->
+        <div id="chat-tab" class="section">
+            <div class="chat-app">
+                <!-- Chat Sidebar -->
+                <div class="chat-sidebar">
+                    <div class="add-friend-box">
+                        <input type="text" id="friendInputName" placeholder="اسم اليوزر...">
+                        <button class="btn-small" onclick="addNewFriend()">إضافة</button>
+                    </div>
+                    <button class="btn-small" style="background:#8a2be2; margin-bottom:10px;" onclick="openModal('groupCreateModal')">➕ إنشاء قروب</button>
+                    <div class="list-container" id="chatFriendsList"></div>
+                </div>
 
-            <div id="infoSection" style="display:none; text-align:right; font-size:0.8rem; color:#ccc; margin-bottom:12px; background:#000; padding:10px; border-radius:8px;">
-                💡 <b>حول الموقع:</b> أداة صممت لمجتمع Null's Brawl لتلوين الأسماء وتوفير بيئة تواصل متكاملة!
-            </div>
-
-            <div id="errorMessage" class="error-msg"></div>
-
-            <input type="text" id="authDisplayName" class="custom-input" placeholder="اسمك الكامل (مثال: أحمد بطل نولز)">
-            <input type="text" id="authUsername" class="custom-input" placeholder="اليوزر باللغة الإنجليزية">
-            <input type="password" id="authPassword" class="custom-input" placeholder="كلمة السر">
-
-            <button class="main-btn" id="authSubmitBtn" onclick="handleAuthSubmit()">تسجيل حساب جديد</button>
-            <button class="sub-link-btn" id="toggleAuthModeBtn" onclick="toggleAuthMode()">عندي حساب بالفعل</button>
-        </div>
-    </div>
-
-    <!-- 🟣 نافذة إنشاء قروب جديد -->
-    <div class="modal" id="createGroupModal">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal('createGroupModal')">&times;</button>
-            <h3 style="color:#fff; margin-bottom:15px;">إنشاء قروب جديد</h3>
-
-            <input type="text" id="groupNameInput" class="custom-input" placeholder="اسم القروب...">
-            <div style="font-size:0.8rem; color:#aaa; margin-bottom:6px; text-align:right;">اختر الأعضاء:</div>
-            <div class="group-friends-select" id="groupFriendsSelect"></div>
-
-            <button class="main-btn" onclick="createGroup()">إنشاء القروب الآن</button>
-        </div>
-    </div>
-
-    <!-- 🟣 نافذة إدارة وتفاصيل القروب -->
-    <div class="modal" id="groupSettingsModal">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal('groupSettingsModal')">&times;</button>
-            <h3 style="color:#fff; margin-bottom:15px;" id="groupSettingsTitle">تفاصيل القروب</h3>
-
-            <input type="text" id="editGroupNameInput" class="custom-input" placeholder="اسم القروب الجديدة">
-            <button class="main-btn" id="updateGroupNameBtn" style="margin-bottom:15px;" onclick="updateGroupName()">تعديل اسم القروب</button>
-
-            <div style="font-size:0.8rem; color:#aaa; margin-bottom:6px; text-align:right;">قائمة الأعضاء والرتب:</div>
-            <div class="group-members-list" id="groupMembersList"></div>
-
-            <button class="main-btn" style="background:red; margin-top:10px; display:none;" id="deleteGroupBtn" onclick="deleteCurrentGroup()">حذف القروب بالكامل 🗑️</button>
-        </div>
-    </div>
-
-    <!-- 🟣 نافذة معاينة بروفايل العضو والتعديل/الترقية -->
-    <div class="modal" id="profileModal">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal('profileModal')">&times;</button>
-            <h3 style="color:#fff; margin-bottom:15px;" id="profileModalTitle">الملف الشخصي</h3>
-
-            <label style="cursor:pointer; display:inline-block; margin-bottom:15px;">
-                <img id="editAvatarPreview" style="width:80px; height:80px; border-radius:50%; border:2px dashed var(--accent-blue);" src="" alt="Avatar">
-                <div style="font-size:0.75rem; color:#aaa; margin-top:5px;" id="changeAvatarText">📷 تغيير الصورة</div>
-                <input type="file" id="imageUploader" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
-            </label>
-
-            <input type="text" id="editDisplayNameInput" class="custom-input" placeholder="الاسم الظاهر">
-            <div style="margin-bottom:10px; color:#00ff88; font-weight:bold;" id="profileUserDisplay"></div>
-            
-            <button class="main-btn" id="saveProfileBtn" onclick="saveProfile()">حفظ التعديلات</button>
-            
-            <!-- زر الترقية الخاص داخل القروب -->
-            <button class="promote-btn" id="promoteUserBtn" style="display:none;" onclick="promoteTargetUser()">ترقية العضو ⬆️</button>
-
-            <button class="sub-link-btn" style="color:red;" id="logoutBtn" onclick="logout()">تسجيل الخروج</button>
-        </div>
-    </div>
-
-    <!-- 🔴 نافذة تنبيه AI Magic -->
-    <div class="modal" id="aiModal">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal('aiModal')">&times;</button>
-            <div style="font-size: 1.1rem; color: #fff; margin-top: 15px;">
-                اوه نعتذر على ذلك لاكن Ai Magic باقي ماجاء للأسف
+                <!-- Chat Main Window -->
+                <div class="chat-main">
+                    <div class="chat-header">
+                        <span id="chatHeaderTitle">اختر محادثة</span>
+                        <button id="groupManageBtn" class="btn-small" style="display:none;" onclick="openGroupSettings()">إدارة القروب ⚙️</button>
+                    </div>
+                    
+                    <div class="chat-messages" id="chatMessageDisplay"></div>
+                    
+                    <div class="chat-input-area">
+                        <label style="cursor:pointer;" title="إرفاق صورة">
+                            📷
+                            <input type="file" id="imageFileInput" accept="image/*" style="display:none;" onchange="handleImageUpload(event)">
+                        </label>
+                        <input type="text" id="chatMessageInput" placeholder="اكتب رسالتك..." onkeypress="handleKeyPress(event)">
+                        <button class="btn-small" onclick="dispatchMessage()">إرسال</button>
+                    </div>
+                </div>
             </div>
         </div>
+
     </div>
 
+    <!-- ==========================================
+         Modals Configuration
+         ========================================== -->
+
+    <!-- Authentication Modal -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal-card">
+            <h3 style="color:var(--accent-blue); margin-bottom:15px;">تسجيل الدخول / حساب جديد</h3>
+            <div id="authErrorMessage" style="color:red; font-size:0.85rem; display:none; margin-bottom:100px;"></div>
+            <input type="text" id="authDisplayName" class="form-input" placeholder="الاسم الظاهر">
+            <input type="text" id="authUsername" class="form-input" placeholder="اسم المستخدم (إنجليزي)">
+            <input type="password" id="authPassword" class="form-input" placeholder="كلمة السر">
+            <button class="btn-full" onclick="handleAuthSubmit()">دخول</button>
+        </div>
+    </div>
+
+    <!-- Create Group Modal -->
+    <div class="modal-overlay" id="groupCreateModal">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal('groupCreateModal')">&times;</button>
+            <h3>إنشاء مجموعة جديدة</h3>
+            <input type="text" id="newGroupName" class="form-input" placeholder="اسم القروب..." style="margin-top:15px;">
+            <div id="groupFriendChecklist" style="text-align:right; max-height:140px; overflow-y:auto; margin-bottom:10px;"></div>
+            <button class="btn-full" onclick="createNewGroup()">إنشاء الآن</button>
+        </div>
+    </div>
+
+    <!-- Manage Group Modal -->
+    <div class="modal-overlay" id="groupSettingsModal">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal('groupSettingsModal')">&times;</button>
+            <h3>إدارة القروب</h3>
+            <input type="text" id="groupNameEditInput" class="form-input" placeholder="اسم القروب الجديد" style="margin-top:15px;">
+            <button class="btn-full" id="renameGroupBtn" onclick="updateGroupName()">تعديل الاسم</button>
+            <div id="groupMemberListContainer" style="text-align:right; margin:15px 0; max-height:160px; overflow-y:auto;"></div>
+            <button class="btn-danger" id="deleteGroupBtn" style="display:none;" onclick="removeGroup()">حذف القروب 🗑️</button>
+        </div>
+    </div>
+
+    <!-- Profile & Promotion Modal -->
+    <div class="modal-overlay" id="profileViewModal">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal('profileViewModal')">&times;</button>
+            <h3 id="profileModalTitle">الملف الشخصي</h3>
+            <img id="profileModalImage" style="width:80px; height:80px; border-radius:50%; margin:15px 0; border:2px solid var(--accent-blue);" src="">
+            <input type="text" id="profileNameEditInput" class="form-input" placeholder="الاسم الظاهر">
+            <button class="btn-full" id="saveProfileBtn" onclick="saveProfileChanges()">حفظ التغيرات</button>
+            <button class="btn-orange" id="promoteUserBtn" style="display:none;" onclick="promoteSelectedMember()">ترقية الرتبة ⬆️</button>
+            <button class="btn-danger" id="logoutBtn" onclick="triggerLogout()">تسجيل الخروج</button>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         JavaScript Code Base
+         ========================================== -->
     <script>
-        const userInput = document.getElementById('userInput');
-        const color1Input = document.getElementById('color1');
-        const color2Input = document.getElementById('color2');
-        const color3Input = document.getElementById('color3');
-        const textPreview = document.getElementById('textPreview');
-        const codeOutput = document.getElementById('codeOutput');
-
-        let isLoginMode = false;
+        /* ------------------------------------------
+           Global Application State Variables
+           ------------------------------------------ */
         let currentUser = null;
-        let activeChatId = null; 
-        let activeChatType = 'friend'; // 'self', 'friend', 'group'
-        let targetProfileUser = null; // العضو المعروض بروفايله حالياً
+        let activeChatId = null;
+        let activeChatType = 'self';
+        let selectedTargetUsername = null;
 
-        let dbUsers = JSON.parse(localStorage.getItem('nulls_db_users') || '{}');
-        let dbGroups = JSON.parse(localStorage.getItem('nulls_db_groups') || '{}');
-        let chats = JSON.parse(localStorage.getItem('nulls_db_chats') || '{}');
+        /* Local Storage Database Keys */
+        let usersDatabase = JSON.parse(localStorage.getItem('n_users_db') || '{}');
+        let groupsDatabase = JSON.parse(localStorage.getItem('n_groups_db') || '{}');
+        let chatsDatabase = JSON.parse(localStorage.getItem('n_chats_db') || '{}');
 
+        /* ------------------------------------------
+           Initialization & Session Handlers
+           ------------------------------------------ */
         window.addEventListener('DOMContentLoaded', () => {
-            const savedSession = localStorage.getItem('nulls_active_user');
-            if (savedSession && dbUsers[savedSession]) {
-                currentUser = dbUsers[savedSession];
-                updateProfileUI();
-            } else {
-                openModal('welcomeModal');
-            }
+            initializeApplicationSession();
+            bindColorGeneratorEvents();
+            generateGradientText();
         });
 
-        function switchTab(tabId, el) {
-            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            el.classList.add('active');
-        }
-
-        function toggleAuthMode() {
-            isLoginMode = !isLoginMode;
-            document.getElementById('errorMessage').style.display = 'none';
-            if (isLoginMode) {
-                document.getElementById('authDisplayName').style.display = 'none';
-                document.getElementById('authSubmitBtn').innerText = "تسجيل الدخول";
-                document.getElementById('toggleAuthModeBtn').innerText = "أنا جديد هنا (إنشاء حساب)";
+        function initializeApplicationSession() {
+            let activeSessionToken = localStorage.getItem('n_active_session');
+            if (activeSessionToken && usersDatabase[activeSessionToken]) {
+                currentUser = usersDatabase[activeSessionToken];
+                refreshUserProfileHeader();
             } else {
-                document.getElementById('authDisplayName').style.display = 'block';
-                document.getElementById('authSubmitBtn').innerText = "تسجيل حساب جديد";
-                document.getElementById('toggleAuthModeBtn').innerText = "عندي حساب بالفعل";
+                openModal('authModal');
             }
         }
 
-        function scrollToInfo() {
-            const info = document.getElementById('infoSection');
-            info.style.display = info.style.display === 'none' ? 'block' : 'none';
+        function refreshUserProfileHeader() {
+            document.getElementById('headName').innerText = currentUser.displayName;
+            document.getElementById('headAvatar').src = currentUser.avatar;
+            renderChatSidebarList();
         }
 
-        function showError(msg) {
-            const errBox = document.getElementById('errorMessage');
-            errBox.innerText = msg;
-            errBox.style.display = 'block';
+        /* ------------------------------------------
+           Tab Switching Logic
+           ------------------------------------------ */
+        function switchTab(targetTabId, triggerButton) {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(targetTabId).classList.add('active');
+            triggerButton.classList.add('active');
         }
 
+        /* ------------------------------------------
+           User Authentication Handlers
+           ------------------------------------------ */
         function handleAuthSubmit() {
-            const uInput = document.getElementById('authUsername').value.trim();
-            const pInput = document.getElementById('authPassword').value.trim();
-            const dName = document.getElementById('authDisplayName').value.trim();
+            let usernameInput = document.getElementById('authUsername').value.trim();
+            let passwordInput = document.getElementById('authPassword').value.trim();
+            let displayNameInput = document.getElementById('authDisplayName').value.trim();
 
-            if (!uInput || !pInput || (!isLoginMode && !dName)) {
-                showError("يرجى ملء جميع الحقول المطلوب!");
+            if (!usernameInput || !passwordInput) {
+                showAuthError("يرجى ملء جميع الحقول المطلوبة!");
                 return;
             }
 
-            const isArabic = /[\u0600-\u06FF]/.test(uInput);
-            if (isArabic && uInput !== "حـربـي") {
-                showError("عذراً، اليوزرات يجب أن تكون بالأحرف الإنجليزية فقط!");
-                return;
-            }
-
-            if (isLoginMode) {
-                if (dbUsers[uInput] && dbUsers[uInput].password === pInput) {
-                    currentUser = dbUsers[uInput];
-                    localStorage.setItem('nulls_active_user', uInput);
-                    updateProfileUI();
-                    closeModal('welcomeModal');
+            if (usersDatabase[usernameInput]) {
+                if (usersDatabase[usernameInput].password === passwordInput) {
+                    currentUser = usersDatabase[usernameInput];
                 } else {
-                    showError("خطأ في بيانات تسجيل الدخول!");
-                }
-            } else {
-                if (dbUsers[uInput]) {
-                    showError("هذا اليوزر مستخدم من قبل شحص آخر!");
+                    showAuthError("كلمة المرور غير صحيحة!");
                     return;
                 }
-
-                dbUsers[uInput] = {
-                    username: uInput,
-                    displayName: dName,
-                    password: pInput,
-                    avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=" + uInput,
+            } else {
+                currentUser = {
+                    username: usernameInput,
+                    displayName: displayNameInput || usernameInput,
+                    password: passwordInput,
+                    avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=" + usernameInput,
                     friends: [],
                     groups: []
                 };
-
-                saveUsersDB();
-                currentUser = dbUsers[uInput];
-                localStorage.setItem('nulls_active_user', uInput);
-                updateProfileUI();
-                closeModal('welcomeModal');
+                usersDatabase[usernameInput] = currentUser;
+                saveUsersToStorage();
             }
+
+            localStorage.setItem('n_active_session', usernameInput);
+            refreshUserProfileHeader();
+            closeModal('authModal');
         }
 
-        function updateProfileUI() {
-            document.getElementById('headerName').innerText = currentUser.displayName || currentUser.username;
-            document.getElementById('headerAvatar').src = currentUser.avatar;
-            renderFriendsAndGroups();
+        function showAuthError(messageText) {
+            let errorContainer = document.getElementById('authErrorMessage');
+            errorContainer.innerText = messageText;
+            errorContainer.style.display = 'block';
         }
 
-        function handleImageUpload(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(evt) {
-                    currentUser.avatar = evt.target.result;
-                    document.getElementById('editAvatarPreview').src = currentUser.avatar;
-                }
-                reader.readAsDataURL(file);
-            }
+        function triggerLogout() {
+            localStorage.removeItem('n_active_session');
+            window.location.reload();
         }
 
-        function saveProfile() {
-            currentUser.displayName = document.getElementById('editDisplayNameInput').value.trim() || currentUser.username;
-            dbUsers[currentUser.username] = currentUser;
-            saveUsersDB();
-            updateProfileUI();
-            closeModal('profileModal');
-        }
-
-        function logout() {
-            localStorage.removeItem('nulls_active_user');
-            location.reload();
-        }
-
-        function saveUsersDB() {
-            localStorage.setItem('nulls_db_users', JSON.stringify(dbUsers));
-        }
-
-        function saveGroupsDB() {
-            localStorage.setItem('nulls_db_groups', JSON.stringify(dbGroups));
-        }
-
-        // ---- إدارة قائمة الأصدقاء والقروبات ----
-        function addFriend() {
-            const fName = document.getElementById('friendUsernameInput').value.trim();
-            if (!fName || fName === currentUser.username) return;
-
-            if (!dbUsers[fName]) {
-                alert("اليوزر غير موجود!");
+        /* ------------------------------------------
+           Chat & Friends Sidebar Management
+           ------------------------------------------ */
+        function addNewFriend() {
+            let targetFriendUsername = document.getElementById('friendInputName').value.trim();
+            if (!targetFriendUsername || !usersDatabase[targetFriendUsername] || targetFriendUsername === currentUser.username) {
                 return;
             }
 
-            if (!currentUser.friends.includes(fName)) {
-                currentUser.friends.push(fName);
-                saveProfile();
+            if (!currentUser.friends.includes(targetFriendUsername)) {
+                currentUser.friends.push(targetFriendUsername);
+                usersDatabase[currentUser.username] = currentUser;
+                saveUsersToStorage();
             }
-            document.getElementById('friendUsernameInput').value = '';
-            renderFriendsAndGroups();
+
+            document.getElementById('friendInputName').value = '';
+            renderChatSidebarList();
         }
 
-        function renderFriendsAndGroups() {
-            const list = document.getElementById('friendsList');
-            const groupSelect = document.getElementById('groupFriendsSelect');
-            list.innerHTML = '';
-            groupSelect.innerHTML = '';
-
-            if (!currentUser) return;
-
-            // 1. خيار المحادثة مع النفس
-            const selfDiv = document.createElement('div');
-            selfDiv.className = 'friend-item' + (activeChatId === 'self' ? ' active' : '');
-            selfDiv.innerHTML = `<img src="${currentUser.avatar}"> <span>محادثة مع نفسي 👤</span>`;
-            selfDiv.onclick = () => selectChat('self', 'self');
-            list.appendChild(selfDiv);
-
-            // 2. قائمة القروبات
-            if (currentUser.groups) {
-                currentUser.groups.forEach(gId => {
-                    const group = dbGroups[gId];
-                    if (group) {
-                        const div = document.createElement('div');
-                        div.className = 'friend-item' + (activeChatId === gId ? ' active' : '');
-                        div.innerHTML = `<span style="font-size:1.2rem;">👥</span> <span>${group.name}</span>`;
-                        div.onclick = () => selectChat(gId, 'group');
-                        list.appendChild(div);
-                    }
-                });
-            }
-
-            // 3. قائمة الأصدقاء
-            if (currentUser.friends) {
-                currentUser.friends.forEach(f => {
-                    const friendUser = dbUsers[f];
-                    if (friendUser) {
-                        const div = document.createElement('div');
-                        div.className = 'friend-item' + (activeChatId === f ? ' active' : '');
-                        div.innerHTML = `<img src="${friendUser.avatar}"> <span>${friendUser.displayName}</span>`;
-                        div.onclick = () => selectChat(f, 'friend');
-                        list.appendChild(div);
-
-                        groupSelect.innerHTML += `<label><input type="checkbox" value="${f}"> ${friendUser.displayName} (@${f})</label>`;
-                    }
-                });
-            }
-        }
-
-        function createGroup() {
-            const gName = document.getElementById('groupNameInput').value.trim();
-            if (!gName) return;
-
-            const selected = Array.from(document.querySelectorAll('#groupFriendsSelect input:checked')).map(cb => cb.value);
-            selected.push(currentUser.username);
-
-            const gId = 'group_' + Date.now();
+        function renderChatSidebarList() {
+            let sidebarContainer = document.getElementById('chatFriendsList');
+            let groupChecklistContainer = document.getElementById('groupFriendChecklist');
             
-            // تهيئة الرتب: منشئ القروب يكون "الرئيس"
-            let roles = {};
-            roles[currentUser.username] = "الرئيس";
+            sidebarContainer.innerHTML = '';
+            groupChecklistContainer.innerHTML = '';
 
-            dbGroups[gId] = {
-                id: gId,
-                name: gName,
-                owner: currentUser.username,
-                members: selected,
-                roles: roles
-            };
+            /* Personal Chat Self Option */
+            let selfChatItem = document.createElement('div');
+            selfChatItem.className = 'list-item' + (activeChatId === 'self' ? ' active' : '');
+            selfChatItem.innerHTML = `<span>👤 رسائلي الخاصة (نفسي)</span>`;
+            selfChatItem.onclick = () => selectActiveChat('self', 'self');
+            sidebarContainer.appendChild(selfChatItem);
 
-            selected.forEach(u => {
-                if (dbUsers[u]) {
-                    if (!dbUsers[u].groups) dbUsers[u].groups = [];
-                    dbUsers[u].groups.push(gId);
+            /* Group Items */
+            currentUser.groups?.forEach(groupId => {
+                if (groupsDatabase[groupId]) {
+                    let groupItem = document.createElement('div');
+                    groupItem.className = 'list-item' + (activeChatId === groupId ? ' active' : '');
+                    groupItem.innerHTML = `👥 <span>${groupsDatabase[groupId].name}</span>`;
+                    groupItem.onclick = () => selectActiveChat(groupId, 'group');
+                    sidebarContainer.appendChild(groupItem);
                 }
             });
 
-            saveGroupsDB();
-            saveUsersDB();
-            closeModal('createGroupModal');
-            renderFriendsAndGroups();
+            /* Friends Items */
+            currentUser.friends?.forEach(friendUsername => {
+                if (usersDatabase[friendUsername]) {
+                    let friendItem = document.createElement('div');
+                    friendItem.className = 'list-item' + (activeChatId === friendUsername ? ' active' : '');
+                    friendItem.innerHTML = `<img src="${usersDatabase[friendUsername].avatar}"> <span>${usersDatabase[friendUsername].displayName}</span>`;
+                    friendItem.onclick = () => selectActiveChat(friendUsername, 'friend');
+                    sidebarContainer.appendChild(friendItem);
+
+                    groupChecklistContainer.innerHTML += `
+                        <label style="display:block; margin-bottom:5px;">
+                            <input type="checkbox" value="${friendUsername}"> ${usersDatabase[friendUsername].displayName}
+                        </label>`;
+                }
+            });
         }
 
-        function selectChat(id, type) {
-            activeChatId = id;
-            activeChatType = type;
-            renderFriendsAndGroups();
+        /* ------------------------------------------
+           Group Creation & Role Systems
+           ------------------------------------------ */
+        function createNewGroup() {
+            let groupTitleInput = document.getElementById('newGroupName').value.trim();
+            if (!groupTitleInput) return;
 
-            const groupInfoBtn = document.getElementById('groupInfoBtn');
+            let selectedFriendCheckboxes = Array.from(document.querySelectorAll('#groupFriendChecklist input:checked')).map(c => c.value);
+            selectedFriendCheckboxes.push(currentUser.username);
 
-            if (type === 'self') {
-                document.getElementById('activeChatHeader').innerText = "محادثة خاصة مع نفسك (رد تلقائي) 👤";
-                groupInfoBtn.style.display = 'none';
-            } else if (type === 'friend') {
-                document.getElementById('activeChatHeader').innerText = "المحادثة مع " + (dbUsers[id]?.displayName || id);
-                groupInfoBtn.style.display = 'none';
-            } else if (type === 'group') {
-                document.getElementById('activeChatHeader').innerText = "قروب: " + (dbGroups[id]?.name || "قروب");
-                groupInfoBtn.style.display = 'block';
-            }
-            renderMessages();
-        }
+            let newGroupId = 'group_' + Date.now();
+            let memberRolesMap = {};
+            memberRolesMap[currentUser.username] = "الرئيس";
 
-        function getChatKey() {
-            if (!activeChatId) return null;
-            if (activeChatType === 'self') return 'self_' + currentUser.username;
-            if (activeChatType === 'group') return activeChatId;
-            return [currentUser.username, activeChatId].sort().join('_');
-        }
-
-        function sendChatMessage(imgData = null) {
-            const textInput = document.getElementById('chatTextInput');
-            const txt = textInput.value.trim();
-            if (!txt && !imgData) return;
-            const key = getChatKey();
-            if (!key) return;
-
-            if (!chats[key]) chats[key] = [];
-
-            const msgObj = {
-                sender: currentUser.username,
-                displayName: currentUser.displayName,
-                avatar: currentUser.avatar,
-                text: txt,
-                img: imgData
+            groupsDatabase[newGroupId] = {
+                id: newGroupId,
+                name: groupTitleInput,
+                owner: currentUser.username,
+                members: selectedFriendCheckboxes,
+                roles: memberRolesMap
             };
 
-            chats[key].push(msgObj);
-            textInput.value = '';
+            selectedFriendCheckboxes.forEach(username => {
+                if (usersDatabase[username]) {
+                    usersDatabase[username].groups = usersDatabase[username].groups || [];
+                    usersDatabase[username].groups.push(newGroupId);
+                }
+            });
 
+            saveGroupsToStorage();
+            saveUsersToStorage();
+            closeModal('groupCreateModal');
+            renderChatSidebarList();
+        }
+
+        function selectActiveChat(chatIdentifier, chatType) {
+            activeChatId = chatIdentifier;
+            activeChatType = chatType;
+            
+            renderChatSidebarList();
+
+            let manageGroupBtn = document.getElementById('groupManageBtn');
+            let headerTitleSpan = document.getElementById('chatHeaderTitle');
+
+            if (chatType === 'group') {
+                manageGroupBtn.style.display = 'block';
+                headerTitleSpan.innerText = groupsDatabase[chatIdentifier]?.name || "مجموعة";
+            } else if (chatType === 'friend') {
+                manageGroupBtn.style.display = 'none';
+                headerTitleSpan.innerText = usersDatabase[chatIdentifier]?.displayName || "محادثة";
+            } else {
+                manageGroupBtn.style.display = 'none';
+                headerTitleSpan.innerText = "الملاحظات الشخصية";
+            }
+
+            renderChatMessages();
+        }
+
+        /* ------------------------------------------
+           Chat Messaging Logic
+           ------------------------------------------ */
+        function getStorageChatKey() {
+            if (activeChatType === 'self') return 'chat_self_' + currentUser.username;
+            if (activeChatType === 'group') return activeChatId;
+            return [currentUser.username, activeChatId].sort().join('_chat_');
+        }
+
+        function dispatchMessage(imageUrl = null) {
+            let messageTextInput = document.getElementById('chatMessageInput');
+            let messageContent = messageTextInput.value.trim();
+
+            if (!messageContent && !imageUrl) return;
+
+            let storageKey = getStorageChatKey();
+            if (!storageKey) return;
+
+            chatsDatabase[storageKey] = chatsDatabase[storageKey] || [];
+            
+            let newMessageObject = {
+                sender: currentUser.username,
+                name: currentUser.displayName,
+                avatar: currentUser.avatar,
+                text: messageContent,
+                img: imageUrl,
+                timestamp: Date.now()
+            };
+
+            chatsDatabase[storageKey].push(newMessageObject);
+            messageTextInput.value = '';
+
+            /* Auto Sync for Self Chat */
             if (activeChatType === 'self') {
                 setTimeout(() => {
-                    chats[key].push({
-                        sender: currentUser.username + "_echo",
-                        displayName: currentUser.displayName + " (نفسك)",
-                        avatar: currentUser.avatar,
-                        text: txt,
-                        img: imgData
-                    });
-                    localStorage.setItem('nulls_db_chats', JSON.stringify(chats));
-                    renderMessages();
-                }, 400);
+                    saveChatsToStorage();
+                    renderChatMessages();
+                }, 100);
             }
 
-            localStorage.setItem('nulls_db_chats', JSON.stringify(chats));
-            renderMessages();
+            saveChatsToStorage();
+            renderChatMessages();
         }
 
-        function sendChatImage(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(evt) {
-                    sendChatMessage(evt.target.result);
-                }
-                reader.readAsDataURL(file);
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                dispatchMessage();
             }
         }
 
-        function renderMessages() {
-            const box = document.getElementById('chatMessages');
-            box.innerHTML = '';
-            const key = getChatKey();
-            if (!key || !chats[key]) return;
+        function handleImageUpload(event) {
+            let selectedFile = event.target.files[0];
+            if (selectedFile) {
+                let fileReader = new FileReader();
+                fileReader.onload = (fileEvent) => {
+                    dispatchMessage(fileEvent.target.result);
+                };
+                fileReader.readAsDataURL(selectedFile);
+            }
+        }
 
-            const group = (activeChatType === 'group') ? dbGroups[activeChatId] : null;
+        function renderChatMessages() {
+            let messagesDisplayBox = document.getElementById('chatMessageDisplay');
+            messagesDisplayBox.innerHTML = '';
 
-            chats[key].forEach(m => {
-                const isMine = (m.sender === currentUser.username);
+            let storageKey = getStorageChatKey();
+            if (!storageKey || !chatsDatabase[storageKey]) return;
 
-                const wrapper = document.createElement('div');
-                wrapper.className = 'msg-wrapper ' + (isMine ? 'mine' : 'other');
+            let currentGroupContext = (activeChatType === 'group') ? groupsDatabase[activeChatId] : null;
 
-                // هيدر الرسالة
-                const infoDiv = document.createElement('div');
-                infoDiv.className = 'msg-sender-info';
-                infoDiv.onclick = () => inspectUserProfile(m.sender);
+            chatsDatabase[storageKey].forEach(msg => {
+                let isUserOwnerOfMessage = (msg.sender === currentUser.username);
+                
+                let wrapperDiv = document.createElement('div');
+                wrapperDiv.className = 'message-wrapper ' + (isUserOwnerOfMessage ? 'mine' : 'other');
 
-                let roleBadgeHTML = '';
-                if (group && group.roles && group.roles[m.sender]) {
-                    roleBadgeHTML = `<span class="role-badge">${group.roles[m.sender]}</span>`;
-                }
+                let headerDiv = document.createElement('div');
+                headerDiv.className = 'message-header';
+                headerDiv.onclick = () => openProfileModal(msg.sender);
 
-                infoDiv.innerHTML = `<img src="${m.avatar || currentUser.avatar}"> <span class="msg-sender-name">${m.displayName || m.sender}</span> ${roleBadgeHTML}`;
+                let userGroupRoleBadge = (currentGroupContext && currentGroupContext.roles && currentGroupContext.roles[msg.sender])
+                    ? `<span class="role-badge">${currentGroupContext.roles[msg.sender]}</span>`
+                    : '';
 
-                const bubble = document.createElement('div');
-                bubble.className = 'msg-bubble';
-                if (m.text) bubble.innerText = m.text;
-                if (m.img) {
-                    const img = document.createElement('img');
-                    img.src = m.img;
-                    bubble.appendChild(img);
-                }
+                headerDiv.innerHTML = `<img src="${msg.avatar}"> <span>${msg.name}</span> ${userGroupRoleBadge}`;
 
-                wrapper.appendChild(infoDiv);
-                wrapper.appendChild(bubble);
-                box.appendChild(wrapper);
+                let bodyDiv = document.createElement('div');
+                bodyDiv.className = 'message-body';
+                
+                if (msg.text) bodyDiv.innerText = msg.text;
+                if (msg.img) bodyDiv.innerHTML += `<br><img src="${msg.img}">`;
+
+                wrapperDiv.appendChild(headerDiv);
+                wrapperDiv.appendChild(bodyDiv);
+                messagesDisplayBox.appendChild(wrapperDiv);
             });
-            box.scrollTop = box.scrollHeight;
+
+            messagesDisplayBox.scrollTop = messagesDisplayBox.scrollHeight;
         }
 
-        // ---- معاينة بروفايل العضو والترقيات ----
-        function inspectUserProfile(username) {
-            targetProfileUser = username;
-            const isSelf = (username === currentUser.username || username === currentUser.username + "_echo");
+        /* ------------------------------------------
+           Profile and Modal Management Logic
+           ------------------------------------------ */
+        function openProfileModal(targetUsername) {
+            selectedTargetUsername = targetUsername;
+            let isOwnProfile = (targetUsername === currentUser.username);
+            let profileData = usersDatabase[targetUsername] || { displayName: currentUser.displayName, avatar: currentUser.avatar };
 
-            document.getElementById('profileModalTitle').innerText = isSelf ? "الملف الشخصي" : "معاينة الملف الشخصي";
+            document.getElementById('profileModalTitle').innerText = isOwnProfile ? "الملف الشخصي" : "معاينة الملف";
+            document.getElementById('profileModalImage').src = profileData.avatar;
+            document.getElementById('profileNameEditInput').value = profileData.displayName;
+            document.getElementById('profileNameEditInput').disabled = !isOwnProfile;
             
-            const targetData = dbUsers[username] || { displayName: currentUser.displayName, avatar: currentUser.avatar, username: username };
+            document.getElementById('saveProfileBtn').style.display = isOwnProfile ? 'block' : 'none';
+            document.getElementById('logoutBtn').style.display = isOwnProfile ? 'block' : 'none';
 
-            document.getElementById('editAvatarPreview').src = targetData.avatar;
-            document.getElementById('editDisplayNameInput').value = targetData.displayName || targetData.username;
-            document.getElementById('profileUserDisplay').innerText = "@" + targetData.username;
-
-            if (isSelf) {
-                document.getElementById('editDisplayNameInput').disabled = false;
-                document.getElementById('changeAvatarText').style.display = 'block';
-                document.getElementById('saveProfileBtn').style.display = 'block';
-                document.getElementById('logoutBtn').style.display = 'block';
-                document.getElementById('promoteUserBtn').style.display = 'none';
+            let promoteBtn = document.getElementById('promoteUserBtn');
+            if (activeChatType === 'group' && groupsDatabase[activeChatId] && !isOwnProfile) {
+                let currentUserRole = groupsDatabase[activeChatId].roles[currentUser.username] || "عضو";
+                promoteBtn.style.display = (currentUserRole === "الرئيس") ? 'block' : 'none';
             } else {
-                document.getElementById('editDisplayNameInput').disabled = true;
-                document.getElementById('changeAvatarText').style.display = 'none';
-                document.getElementById('saveProfileBtn').style.display = 'none';
-                document.getElementById('logoutBtn').style.display = 'none';
-
-                // إظهار زر الترقية إذا كان المستخدم الحالي رئيس بالقروب والهدف عضو بالقروب
-                if (activeChatType === 'group' && dbGroups[activeChatId]) {
-                    const group = dbGroups[activeChatId];
-                    const myRole = group.roles[currentUser.username] || "عضو";
-                    if (myRole === "الرئيس") {
-                        document.getElementById('promoteUserBtn').style.display = 'block';
-                    } else {
-                        document.getElementById('promoteUserBtn').style.display = 'none';
-                    }
-                } else {
-                    document.getElementById('promoteUserBtn').style.display = 'none';
-                }
+                promoteBtn.style.display = 'none';
             }
 
-            openModal('profileModal');
+            openModal('profileViewModal');
         }
 
-        function promoteTargetUser() {
-            if (!activeChatId || activeChatType !== 'group' || !targetProfileUser) return;
-            const group = dbGroups[activeChatId];
-            if (!group) return;
+        function saveProfileChanges() {
+            let updatedName = document.getElementById('profileNameEditInput').value.trim();
+            if (updatedName) {
+                currentUser.displayName = updatedName;
+                usersDatabase[currentUser.username] = currentUser;
+                saveUsersToStorage();
+                refreshUserProfileHeader();
+                closeModal('profileViewModal');
+            }
+        }
 
-            const currentRole = group.roles[targetProfileUser] || "عضو";
+        function promoteSelectedMember() {
+            if (!activeChatId || activeChatType !== 'group' || !selectedTargetUsername) return;
 
-            if (currentRole === "عضو") {
-                group.roles[targetProfileUser] = "وكيل";
-                alert(`تم ترقية ${targetProfileUser} إلى (وكيل)!`);
-            } else if (currentRole === "وكيل") {
-                group.roles[targetProfileUser] = "نائب";
-                alert(`تم ترقية ${targetProfileUser} إلى (نائب)!`);
-            } else {
-                alert("هذا العضو وصل لأعلى ترقية ممكنة (نائب)!");
+            let group = groupsDatabase[activeChatId];
+            let currentMemberRole = group.roles[selectedTargetUsername] || "عضو";
+
+            if (currentMemberRole === "عضو") {
+                group.roles[selectedTargetUsername] = "وكيل";
+            } else if (currentMemberRole === "وكيل") {
+                group.roles[selectedTargetUsername] = "نائب";
             }
 
-            saveGroupsDB();
-            closeModal('profileModal');
-            renderMessages();
+            saveGroupsToStorage();
+            closeModal('profileViewModal');
+            renderChatMessages();
         }
 
-        // ---- إدارة القروب (تعديل الاسم/الطرود/الحذف) ----
         function openGroupSettings() {
-            if (activeChatType !== 'group' || !activeChatId) return;
-            const group = dbGroups[activeChatId];
-            if (!group) return;
+            let currentGroup = groupsDatabase[activeChatId];
+            if (!currentGroup) return;
 
-            document.getElementById('groupSettingsTitle').innerText = "إدارة القروب: " + group.name;
-            document.getElementById('editGroupNameInput').value = group.name;
+            document.getElementById('groupNameEditInput').value = currentGroup.name;
+            let myRoleInGroup = currentGroup.roles[currentUser.username] || "عضو";
+            let hasManagementRights = (myRoleInGroup === "الرئيس" || myRoleInGroup === "نائب");
 
-            const myRole = group.roles[currentUser.username] || "عضو";
-            const canManage = (myRole === "الرئيس" || myRole === "نائب");
+            document.getElementById('renameGroupBtn').style.display = hasManagementRights ? 'block' : 'none';
+            document.getElementById('deleteGroupBtn').style.display = (myRoleInGroup === "الرئيس") ? 'block' : 'none';
 
-            document.getElementById('updateGroupNameBtn').style.display = canManage ? 'block' : 'none';
-            document.getElementById('deleteGroupBtn').style.display = (myRole === "الرئيس") ? 'block' : 'none';
+            let memberListContainer = document.getElementById('groupMemberListContainer');
+            memberListContainer.innerHTML = '';
 
-            const membersList = document.getElementById('groupMembersList');
-            membersList.innerHTML = '';
+            currentGroup.members.forEach(memberUsername => {
+                let memberRole = currentGroup.roles[memberUsername] || "عضو";
+                let kickButtonHTML = (hasManagementRights && memberUsername !== currentUser.username && memberRole !== "الرئيس")
+                    ? `<button class="btn-small" style="background:var(--danger-color)" onclick="kickMemberFromGroup('${memberUsername}')">طرد</button>`
+                    : '';
 
-            group.members.forEach(m => {
-                const uData = dbUsers[m] || { displayName: m };
-                const role = group.roles[m] || "عضو";
-
-                const item = document.createElement('div');
-                item.className = 'group-member-item';
-
-                let kickBtnHTML = '';
-                if (canManage && m !== currentUser.username && role !== "الرئيس") {
-                    kickBtnHTML = `<button class="kick-btn" onclick="kickMember('${m}')">طرد</button>`;
-                }
-
-                item.innerHTML = `
-                    <div>
-                        <b>${uData.displayName}</b> <small style="color:#ffcc00;">(${role})</small>
-                    </div>
-                    ${kickBtnHTML}
-                `;
-                membersList.appendChild(item);
+                memberListContainer.innerHTML += `
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; background:#111; padding:6px; border-radius:6px;">
+                        <span>${usersDatabase[memberUsername]?.displayName || memberUsername} (${memberRole})</span>
+                        ${kickButtonHTML}
+                    </div>`;
             });
 
             openModal('groupSettingsModal');
         }
 
         function updateGroupName() {
-            const newName = document.getElementById('editGroupNameInput').value.trim();
-            if (!newName || activeChatType !== 'group') return;
-            dbGroups[activeChatId].name = newName;
-            saveGroupsDB();
-            renderFriendsAndGroups();
-            document.getElementById('activeChatHeader').innerText = "قروب: " + newName;
-            closeModal('groupSettingsModal');
+            let newTitle = document.getElementById('groupNameEditInput').value.trim();
+            if (newTitle && groupsDatabase[activeChatId]) {
+                groupsDatabase[activeChatId].name = newTitle;
+                saveGroupsToStorage();
+                renderChatSidebarList();
+                closeModal('groupSettingsModal');
+            }
         }
 
-        function kickMember(username) {
-            if (activeChatType !== 'group') return;
-            const group = dbGroups[activeChatId];
-            group.members = group.members.filter(m => m !== username);
-            delete group.roles[username];
-
-            saveGroupsDB();
-            openGroupSettings();
-            renderMessages();
+        function kickMemberFromGroup(memberUsername) {
+            let group = groupsDatabase[activeChatId];
+            if (group) {
+                group.members = group.members.filter(m => m !== memberUsername);
+                delete group.roles[memberUsername];
+                saveGroupsToStorage();
+                openGroupSettings();
+                renderChatMessages();
+            }
         }
 
-        function deleteCurrentGroup() {
-            if (confirm("هل أنت تأكد من إرادتك لحذف القروب نهائياً؟")) {
-                delete dbGroups[activeChatId];
-                saveGroupsDB();
+        function removeGroup() {
+            if (groupsDatabase[activeChatId]) {
+                delete groupsDatabase[activeChatId];
+                saveGroupsToStorage();
                 closeModal('groupSettingsModal');
                 activeChatId = null;
-                renderFriendsAndGroups();
-                document.getElementById('activeChatHeader').innerText = "اختر شات لبدء المحادثة";
-                document.getElementById('chatMessages').innerHTML = '';
+                renderChatSidebarList();
             }
         }
 
-        // المودالات العامة
-        function openModal(id) {
-            const m = document.getElementById(id);
-            m.style.display = 'flex';
-            setTimeout(() => m.classList.add('show'), 10);
+        /* ------------------------------------------
+           Gradient Color Generator Core Algorithm
+           ------------------------------------------ */
+        function bindColorGeneratorEvents() {
+            document.getElementById('userInputText').addEventListener('input', generateGradientText);
+            document.getElementById('colorPicker1').addEventListener('input', generateGradientText);
+            document.getElementById('colorPicker2').addEventListener('input', generateGradientText);
+            document.getElementById('colorPicker3').addEventListener('input', generateGradientText);
         }
 
-        function closeModal(id) {
-            const m = document.getElementById(id);
-            m.classList.remove('show');
-            setTimeout(() => m.style.display = 'none', 300);
+        function hexToRgbComponents(hexColor) {
+            let parsedHex = parseInt(hexColor.replace('#', ''), 16);
+            return {
+                r: (parsedHex >> 16) & 255,
+                g: (parsedHex >> 8) & 255,
+                b: parsedHex & 255
+            };
         }
 
-        function openAiModal() { openModal('aiModal'); }
-        function openProfileModal() { inspectUserProfile(currentUser.username); }
+        function interpolateHexColors(colorHex1, colorHex2, factorRatio) {
+            let rgb1 = hexToRgbComponents(colorHex1);
+            let rgb2 = hexToRgbComponents(colorHex2);
 
-        // مولد الألوان والتدرجات
-        function hexToRgb(hex) {
-            const bigint = parseInt(hex.replace('#', ''), 16);
-            return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 };
-        }
+            let interpolatedRed = Math.round(rgb1.r + factorRatio * (rgb2.r - rgb1.r)).toString(16).padStart(2, '0');
+            let interpolatedGreen = Math.round(rgb1.g + factorRatio * (rgb2.g - rgb1.g)).toString(16).padStart(2, '0');
+            let interpolatedBlue = Math.round(rgb1.b + factorRatio * (rgb2.b - rgb1.b)).toString(16).padStart(2, '0');
 
-        function interpolateColor(c1Hex, c2Hex, factor) {
-            const c1 = hexToRgb(c1Hex);
-            const c2 = hexToRgb(c2Hex);
-            const r = Math.round(c1.r + factor * (c2.r - c1.r)).toString(16).padStart(2, '0');
-            const g = Math.round(c1.g + factor * (c2.g - c1.g)).toString(16).padStart(2, '0');
-            const b = Math.round(c1.b + factor * (c2.b - c1.b)).toString(16).padStart(2, '0');
-            return `${r}${g}${b}`;
-        }
-
-        function get3PointGradientColor(factor) {
-            if (factor <= 0.5) {
-                return interpolateColor(color1Input.value, color2Input.value, factor * 2);
-            } else {
-                return interpolateColor(color2Input.value, color3Input.value, (factor - 0.5) * 2);
-            }
+            return interpolatedRed + interpolatedGreen + interpolatedBlue;
         }
 
         function generateGradientText() {
-            const text = userInput.value;
-            if (!text) {
-                textPreview.innerHTML = '';
-                codeOutput.innerText = '';
-                return;
-            }
+            let textInput = document.getElementById('userInputText').value;
+            let hex1 = document.getElementById('colorPicker1').value;
+            let hex2 = document.getElementById('colorPicker2').value;
+            let hex3 = document.getElementById('colorPicker3').value;
 
-            let previewHTML = '';
-            let generatedCode = '';
-            const len = text.length;
+            let formattedHtmlOutput = '';
+            let rawCodeOutput = '';
+            let stringLength = textInput.length;
 
-            for (let i = 0; i < len; i++) {
-                const char = text[i];
-                if (char === ' ') {
-                    previewHTML += ' ';
-                    generatedCode += ' ';
+            for (let i = 0; i < stringLength; i++) {
+                if (textInput[i] === ' ') {
+                    formattedHtmlOutput += ' ';
+                    rawCodeOutput += ' ';
                     continue;
                 }
 
-                const factor = len > 1 ? i / (len - 1) : 0;
-                const hexColor = get3PointGradientColor(factor);
+                let progressionRatio = stringLength > 1 ? i / (stringLength - 1) : 0;
+                let calculatedColorHex = '';
 
-                generatedCode += `<c${hexColor}>${char}</c>`;
-                previewHTML += `<span style="color: #${hexColor}">${char}</span>`;
+                if (progressionRatio <= 0.5) {
+                    calculatedColorHex = interpolateHexColors(hex1, hex2, progressionRatio * 2);
+                } else {
+                    calculatedColorHex = interpolateHexColors(hex2, hex3, (progressionRatio - 0.5) * 2);
+                }
+
+                rawCodeOutput += `<c${calculatedColorHex}>${textInput[i]}</c>`;
+                formattedHtmlOutput += `<span style="color:#${calculatedColorHex}">${textInput[i]}</span>`;
             }
 
-            textPreview.innerHTML = previewHTML;
-            codeOutput.innerText = generatedCode;
+            document.getElementById('previewOutput').innerHTML = formattedHtmlOutput || '...';
+            document.getElementById('codeOutputText').innerText = rawCodeOutput;
         }
 
-        function copyCode() {
-            const code = codeOutput.innerText;
-            if (!code) return;
-            navigator.clipboard.writeText(code).then(() => {
-                const btn = document.querySelector('.copy-btn');
-                btn.innerText = 'تم النسخ!';
-                btn.style.backgroundColor = '#00cc66';
-                setTimeout(() => {
-                    btn.innerText = 'نسخ الكود';
-                    btn.style.backgroundColor = 'var(--accent-blue)';
-                }, 1500);
-            });
+        function copyGeneratedCode() {
+            let codeText = document.getElementById('codeOutputText').innerText;
+            if (codeText) {
+                navigator.clipboard.writeText(codeText);
+                alert("تم نسخ الكود بنجاح!");
+            }
         }
 
-        userInput.addEventListener('input', generateGradientText);
-        color1Input.addEventListener('input', generateGradientText);
-        color2Input.addEventListener('input', generateGradientText);
-        color3Input.addEventListener('input', generateGradientText);
+        /* ------------------------------------------
+           LocalStorage Helper Persistence Methods
+           ------------------------------------------ */
+        function saveUsersToStorage() {
+            localStorage.setItem('n_users_db', JSON.stringify(usersDatabase));
+        }
 
-        generateGradientText();
+        function saveGroupsToStorage() {
+            localStorage.setItem('n_groups_db', JSON.stringify(groupsDatabase));
+        }
+
+        function saveChatsToStorage() {
+            localStorage.setItem('n_chats_db', JSON.stringify(chatsDatabase));
+        }
+
+        /* Modal Helpers */
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('show');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
     </script>
 </body>
 </html>
