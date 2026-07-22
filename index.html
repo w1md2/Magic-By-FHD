@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nulls Magic V2 - Text Colorizer</title>
+    <title>Nulls Magic V2 - Ultimate Platform</title>
     <style>
         :root {
             --bg-color: #0d0e12;
@@ -23,19 +23,51 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
             position: relative;
+            overflow-x: hidden;
         }
 
-        /* 🟢 بروفايل المستخدم بالزاوية العلوية */
+        /* 🔴 شريط المنيو العلوي (الرسائل - Null's Magic) */
+        .top-navbar {
+            width: 100%;
+            background: #111318;
+            border-bottom: 1px solid rgba(0, 136, 255, 0.3);
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 12px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .nav-item {
+            padding: 8px 20px;
+            border-radius: 20px;
+            background: #1a1d24;
+            color: #aaa;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .nav-item.active, .nav-item:hover {
+            background: var(--accent-blue);
+            color: #fff;
+            box-shadow: 0 0 12px var(--neon-glow);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        /* 🟢 بروفايل المستخدم العائم */
         .profile-widget {
             position: absolute;
-            top: 20px;
+            top: 60px;
             right: 20px;
             display: flex;
             flex-direction: column;
@@ -45,13 +77,10 @@
             z-index: 10;
         }
 
-        .profile-widget:hover {
-            transform: scale(1.05);
-        }
+        .profile-widget:hover { transform: scale(1.05); }
 
         .profile-avatar {
-            width: 50px;
-            height: 50px;
+            width: 50px; height: 50px;
             border-radius: 50%;
             border: 2px solid var(--accent-blue);
             box-shadow: 0 0 10px var(--neon-glow);
@@ -72,17 +101,22 @@
             text-align: center;
         }
 
-        .container {
+        .page-section {
             width: 100%;
-            max-width: 700px;
-            text-align: center;
-            margin-top: 40px;
+            max-width: 750px;
+            display: none;
+            padding: 30px 20px;
+            flex-direction: column;
+            align-items: center;
         }
+
+        .page-section.active { display: flex; }
 
         .header-area {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            width: 100%;
             margin-bottom: 25px;
         }
 
@@ -105,20 +139,13 @@
             font-weight: bold;
             box-shadow: 0 0 15px rgba(0, 136, 255, 0.4);
             transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.95rem;
         }
 
-        .ai-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 22px rgba(0, 136, 255, 0.8);
-        }
+        .ai-btn:hover { transform: scale(1.05); }
 
-        /* الشريط الأسود المضيء */
+        /* الألوان والنص */
         .input-box {
-            position: relative;
+            width: 100%;
             background-color: #000000;
             border: 2px solid var(--accent-blue);
             border-radius: 12px;
@@ -128,11 +155,6 @@
             align-items: center;
             gap: 10px;
             margin-bottom: 25px;
-            transition: all 0.3s ease;
-        }
-
-        .input-box:focus-within {
-            box-shadow: 0 0 25px var(--accent-blue), inset 0 0 15px rgba(0, 136, 255, 0.4);
         }
 
         .input-box input[type="text"] {
@@ -142,28 +164,18 @@
             outline: none;
             color: #fff;
             font-size: 1.1rem;
-            padding: 10px;
+            padding: 8px;
         }
 
-        /* 3 دوائر الألوان */
-        .color-pickers {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+        .color-pickers { display: flex; gap: 6px; }
 
         .color-pickers input[type="color"] {
             -webkit-appearance: none;
             border: none;
-            width: 28px;
-            height: 28px;
+            width: 28px; height: 28px;
             border-radius: 50%;
             cursor: pointer;
             background: none;
-        }
-
-        .color-pickers input[type="color"]::-webkit-color-swatch-wrapper {
-            padding: 0;
         }
 
         .color-pickers input[type="color"]::-webkit-color-swatch {
@@ -171,8 +183,8 @@
             border-radius: 50%;
         }
 
-        /* منطقة المعاينة والنتيجة */
         .result-card {
+            width: 100%;
             background-color: var(--card-bg);
             border: 1px solid #282c34;
             border-radius: 12px;
@@ -181,21 +193,15 @@
             box-shadow: 0 8px 24px rgba(0,0,0,0.5);
         }
 
-        .preview-title {
-            font-size: 0.9rem;
-            color: #888;
-            margin-bottom: 10px;
-        }
-
         .text-preview {
             font-size: 1.4rem;
             font-weight: bold;
             min-height: 40px;
-            word-break: break-all;
             margin-bottom: 15px;
             padding: 10px;
             background-color: #0d0e12;
             border-radius: 8px;
+            word-break: break-all;
         }
 
         .code-output-container {
@@ -211,7 +217,6 @@
         .code-output {
             font-family: monospace;
             color: #00ff88;
-            font-size: 0.95rem;
             direction: ltr;
             overflow-x: auto;
             white-space: nowrap;
@@ -226,19 +231,147 @@
             border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
+        }
+
+        /* 🟣 شاشة الدردشة والتواصل */
+        .chat-app-container {
+            width: 100%;
+            height: 520px;
+            background: var(--card-bg);
+            border: 1px solid var(--accent-blue);
+            border-radius: 16px;
+            display: flex;
+            overflow: hidden;
+            box-shadow: 0 0 25px var(--neon-glow);
+        }
+
+        .chat-sidebar {
+            width: 30%;
+            background: #111318;
+            border-left: 1px solid #262930;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+        }
+
+        .add-friend-box {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .add-friend-box input {
+            width: 100%;
+            background: #000;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 6px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        .add-friend-btn {
+            background: var(--accent-blue);
+            border: none;
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .friends-list {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .friend-item {
+            padding: 10px;
+            background: #1a1d24;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
             transition: background 0.2s;
         }
 
-        .copy-btn:hover {
-            background-color: #0066cc;
+        .friend-item.active, .friend-item:hover {
+            background: var(--accent-blue);
         }
 
-        /* 🟣 التصميم الذكي للنووافذ المنبثقة (Modals) والأنيميشن */
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #0d0e12;
+        }
+
+        .chat-header {
+            padding: 12px;
+            background: #16181d;
+            border-bottom: 1px solid #262930;
+            font-weight: bold;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .msg-bubble {
+            max-width: 70%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .msg-mine {
+            align-self: flex-start;
+            background: var(--accent-blue);
+            color: #fff;
+        }
+
+        .msg-other {
+            align-self: flex-end;
+            background: #222630;
+            color: #fff;
+        }
+
+        .msg-bubble img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-top: 5px;
+        }
+
+        .chat-input-bar {
+            display: flex;
+            padding: 10px;
+            background: #16181d;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .chat-input-bar input[type="text"] {
+            flex: 1;
+            background: #000;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        /* 🟣 النوافذ المنبثقة (Modals) */
         .modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.88);
             backdrop-filter: blur(8px);
             justify-content: center;
             align-items: center;
@@ -247,10 +380,7 @@
             transition: opacity 0.3s ease;
         }
 
-        .modal.show {
-            display: flex;
-            opacity: 1;
-        }
+        .modal.show { display: flex; opacity: 1; }
 
         .modal-content {
             position: relative;
@@ -262,47 +392,16 @@
             max-width: 480px;
             text-align: center;
             box-shadow: 0 0 30px var(--neon-glow);
-            transform: scale(0.8);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .modal.show .modal-content {
-            transform: scale(1);
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .close-btn {
             position: absolute;
-            top: 12px;
-            left: 18px;
-            background: none;
-            border: none;
-            color: #aaa;
-            font-size: 1.8rem;
+            top: 12px; left: 18px;
+            background: none; border: none;
+            color: #aaa; font-size: 1.8rem;
             cursor: pointer;
-            transition: color 0.2s, transform 0.2s;
-        }
-
-        .close-btn:hover {
-            color: #fff;
-            transform: scale(1.2);
-        }
-
-        .modal-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: #fff;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            background: linear-gradient(45deg, #00d2ff, #0088ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .input-label {
-            display: block;
-            font-size: 0.95rem;
-            color: #bbb;
-            margin-bottom: 10px;
         }
 
         .custom-input {
@@ -315,97 +414,75 @@
             font-size: 1rem;
             text-align: center;
             outline: none;
-            margin-bottom: 20px;
-            box-shadow: inset 0 0 8px rgba(0, 136, 255, 0.3);
+            margin-bottom: 12px;
         }
 
         .main-btn {
             background: linear-gradient(135deg, #0088ff, #00d2ff);
-            color: #fff;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            font-size: 1rem;
-            font-weight: bold;
+            color: #fff; border: none;
+            padding: 12px 30px; border-radius: 25px;
+            font-size: 1rem; font-weight: bold;
             cursor: pointer;
             box-shadow: 0 0 15px var(--neon-glow);
-            transition: all 0.3s ease;
             width: 100%;
+            margin-top: 5px;
         }
 
-        .main-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 25px var(--accent-blue);
+        .sub-link-btn {
+            background: none; border: none;
+            color: var(--accent-blue);
+            margin-top: 15px; cursor: pointer;
+            text-decoration: underline;
+            font-weight: bold;
         }
 
-        /* رفع وتغيير الصورة بالبروفايل */
-        .avatar-upload-label {
-            display: inline-block;
-            position: relative;
-            cursor: pointer;
-            margin-bottom: 15px;
+        .scroll-down-btn {
+            background: #222; border: 1px solid #444;
+            color: #fff; padding: 8px 15px;
+            border-radius: 15px; margin: 15px 0;
+            cursor: pointer; font-size: 0.9rem;
         }
 
-        .avatar-preview-edit {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            border: 2px dashed var(--accent-blue);
-            object-fit: cover;
-            background: #000;
-            transition: opacity 0.3s;
-        }
-
-        .avatar-upload-label:hover .avatar-preview-edit {
-            opacity: 0.7;
-        }
-
-        .avatar-upload-hint {
-            position: absolute;
-            bottom: -5px;
-            right: 50%;
-            transform: translateX(50%);
-            background: rgba(0, 0, 0, 0.8);
-            color: #fff;
-            font-size: 0.75rem;
-            padding: 2px 8px;
-            border-radius: 10px;
-            border: 1px solid var(--accent-blue);
-            white-space: nowrap;
+        .error-msg {
+            color: #ff4444; font-size: 0.85rem; margin-bottom: 10px; display: none;
         }
     </style>
 </head>
 <body>
 
-    <!-- 🟢 دائرة البروفايل بالزاوية العلوية -->
+    <!-- الشريط العلوي للتنقل -->
+    <div class="top-navbar">
+        <div class="nav-item active" onclick="switchTab('colorsTab', this)">Null’s Magic</div>
+        <div class="nav-item" onclick="switchTab('chatTab', this)">الرسائل 💬</div>
+    </div>
+
+    <!-- بروفايل المستخدم بالزاوية -->
     <div class="profile-widget" onclick="openProfileModal()">
         <img id="headerAvatar" class="profile-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=NullsUser" alt="Avatar">
         <span id="headerName" class="profile-name">زائر</span>
     </div>
 
-    <div class="container">
+    <!-- 1. قسم الألوان والواجهة الأساسية -->
+    <div id="colorsTab" class="page-section active">
         <div class="header-area">
             <h1>Nulls Magic</h1>
             <button class="ai-btn" onclick="openAiModal()">🤖 Null’s AI</button>
         </div>
 
-        <!-- الشريط الأسود المضيء -->
         <div class="input-box">
             <input type="text" id="userInput" placeholder="اكتب النص هنا..." value="Nulls Magic">
-            
             <div class="color-pickers">
-                <input type="color" id="color1" value="#0088ff" title="اللون الأول">
-                <input type="color" id="color2" value="#8a2be2" title="اللون الثاني">
-                <input type="color" id="color3" value="#ff007f" title="اللون الثالث">
+                <input type="color" id="color1" value="#0088ff">
+                <input type="color" id="color2" value="#8a2be2">
+                <input type="color" id="color3" value="#ff007f">
             </div>
         </div>
 
-        <!-- المعاينة وأكواد نولز -->
         <div class="result-card">
-            <div class="preview-title">الشكل داخل اللعبة:</div>
+            <div style="font-size: 0.9rem; color: #888; margin-bottom: 10px;">الشكل داخل اللعبة:</div>
             <div class="text-preview" id="textPreview"></div>
 
-            <div class="preview-title">الكود المنسوخ (Nulls Colors):</div>
+            <div style="font-size: 0.9rem; color: #888; margin-bottom: 10px;">الكود المنسوخ (Nulls Colors):</div>
             <div class="code-output-container">
                 <div class="code-output" id="codeOutput"></div>
                 <button class="copy-btn" onclick="copyCode()">نسخ الكود</button>
@@ -413,36 +490,67 @@
         </div>
     </div>
 
-    <!-- 🔵 مودال الترحيب والتسجيل التلقائي عند فتح الموقع -->
-    <div class="modal" id="welcomeModal">
-        <div class="modal-content">
-            <div class="modal-title">
-                يأهلا وسهلا نورت الموقع Null’s Magic V2 اول موقع عربي لنولز برول !
+    <!-- 2. قسم الرسائل والتواصل -->
+    <div id="chatTab" class="page-section">
+        <div class="chat-app-container">
+            <div class="chat-sidebar">
+                <div class="add-friend-box">
+                    <input type="text" id="friendUsernameInput" placeholder="اسم اليوزر...">
+                    <button class="add-friend-btn" onclick="addFriend()">إضافة</button>
+                </div>
+                <div class="friends-list" id="friendsList"></div>
             </div>
-            
-            <label class="input-label">اكتب اسمك لو سمحت ☺️❤️</label>
-            <input type="text" id="welcomeNameInput" class="custom-input" placeholder="اسمك الكريم..." autofocus>
-            
-            <button class="main-btn" onclick="submitWelcome()">تسجيل الدخول</button>
+            <div class="chat-main">
+                <div class="chat-header" id="activeChatHeader">اختر صديقاً لبدء المحادثة</div>
+                <div class="chat-messages" id="chatMessages"></div>
+                <div class="chat-input-bar">
+                    <label style="cursor:pointer;" title="إرفاق صورة">
+                        📷
+                        <input type="file" id="chatImgInput" accept="image/*" style="display:none;" onchange="sendChatImage(event)">
+                    </label>
+                    <input type="text" id="chatTextInput" placeholder="اكتب رسالة..." onkeypress="if(event.key==='Enter') sendChatMessage()">
+                    <button class="add-friend-btn" onclick="sendChatMessage()">إرسال</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- 🟣 مودال تعديل البروفايل والصورة -->
+    <!-- 🟣 نافذة التسجيل / الدخول الأولية -->
+    <div class="modal" id="welcomeModal">
+        <div class="modal-content">
+            <h2 style="color:#00d2ff; margin-bottom:15px;" id="authTitle">يأهلا وسهلا نورت الموقع Null’s Magic V2 اول موقع عربي لنولز برول !</h2>
+            
+            <button class="scroll-down-btn" onclick="scrollToInfo()">انزل لتحت لمعرفة التفاصيل ⬇️</button>
+
+            <div id="infoSection" style="display:none; text-align:right; font-size:0.85rem; color:#ccc; margin-bottom:15px; background:#000; padding:10px; border-radius:8px;">
+                💡 <b>حول الموقع:</b> أداة صممت خصيصاً لمجتمع Null's Brawl لتلوين الأسماء وصنع تدرجات ألوان احترافية مع نظام دردشة وتواصل مع باقي اللاعبين!
+            </div>
+
+            <div id="errorMessage" class="error-msg"></div>
+
+            <input type="text" id="authUsername" class="custom-input" placeholder="اليوزر (إنجليزية فقط أو حـرب)">
+            <input type="password" id="authPassword" class="custom-input" placeholder="كلمة السر">
+
+            <button class="main-btn" id="authSubmitBtn" onclick="handleAuthSubmit()">تسجيل حساب جديد</button>
+            <button class="sub-link-btn" id="toggleAuthModeBtn" onclick="toggleAuthMode()">عندي حساب بالفعل</button>
+        </div>
+    </div>
+
+    <!-- 🟣 نافذة البروفايل والتعديل -->
     <div class="modal" id="profileModal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('profileModal')">&times;</button>
-            <div class="modal-title">تعديل الملف الشخصي</div>
+            <h3 style="color:#fff; margin-bottom:15px;">الملف الشخصي</h3>
 
-            <label class="avatar-upload-label" title="اضغط لتغيير الصورة">
-                <img id="editAvatarPreview" class="avatar-preview-edit" src="" alt="Avatar Edit">
-                <span class="avatar-upload-hint">📷 تغيير</span>
+            <label style="cursor:pointer; display:inline-block; margin-bottom:15px;">
+                <img id="editAvatarPreview" style="width:80px; height:80px; border-radius:50%; border:2px dashed var(--accent-blue);" src="" alt="Avatar">
+                <div style="font-size:0.75rem; color:#aaa; margin-top:5px;">📷 تغيير الصورة</div>
                 <input type="file" id="imageUploader" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
             </label>
 
-            <label class="input-label">اسم المستخدم:</label>
-            <input type="text" id="editNameInput" class="custom-input">
-
-            <button class="main-btn" onclick="saveProfile()">حفظ التعديلات</button>
+            <div style="margin-bottom:10px; color:#00ff88; font-weight:bold;" id="profileUserDisplay"></div>
+            <button class="main-btn" onclick="saveProfile()">حفظ</button>
+            <button class="sub-link-btn" style="color:red;" onclick="logout()">تسجيل الخروج</button>
         </div>
     </div>
 
@@ -450,7 +558,7 @@
     <div class="modal" id="aiModal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('aiModal')">&times;</button>
-            <div style="font-size: 1.1rem; color: #fff; margin-top: 15px; line-height: 1.5;">
+            <div style="font-size: 1.1rem; color: #fff; margin-top: 15px;">
                 اوه نعتذر على ذلك لاكن Ai Magic باقي ماجاء للأسف
             </div>
         </div>
@@ -464,46 +572,108 @@
         const textPreview = document.getElementById('textPreview');
         const codeOutput = document.getElementById('codeOutput');
 
-        // بيانات البروفايل
-        let currentUser = {
-            name: "زائر",
-            avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=NullsUser"
-        };
+        let isLoginMode = false;
+        let currentUser = null;
+        let activeFriend = null;
 
-        // تشغيل الترحيب مباشرة عند تحميل الصفحة
+        // لقواعد اليوزرات والحفاظ على البيانات المحلية
+        let dbUsers = JSON.parse(localStorage.getItem('nulls_db_users') || '{}');
+        let chats = JSON.parse(localStorage.getItem('nulls_db_chats') || '{}');
+
         window.addEventListener('DOMContentLoaded', () => {
-            const savedData = localStorage.getItem('nulls_user');
-            if (savedData) {
-                currentUser = JSON.parse(savedData);
+            const savedSession = localStorage.getItem('nulls_active_user');
+            if (savedSession && dbUsers[savedSession]) {
+                currentUser = dbUsers[savedSession];
                 updateProfileUI();
             } else {
                 openModal('welcomeModal');
             }
         });
 
+        function switchTab(tabId, el) {
+            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            el.classList.add('active');
+        }
+
+        function toggleAuthMode() {
+            isLoginMode = !isLoginMode;
+            document.getElementById('errorMessage').style.display = 'none';
+            if (isLoginMode) {
+                document.getElementById('authSubmitBtn').innerText = "تسجيل الدخول";
+                document.getElementById('toggleAuthModeBtn').innerText = "أنا جديد هنا (إنشاء حساب)";
+            } else {
+                document.getElementById('authSubmitBtn').innerText = "تسجيل حساب جديد";
+                document.getElementById('toggleAuthModeBtn').innerText = "عندي حساب بالفعل";
+            }
+        }
+
+        function scrollToInfo() {
+            const info = document.getElementById('infoSection');
+            info.style.display = info.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function showError(msg) {
+            const errBox = document.getElementById('errorMessage');
+            errBox.innerText = msg;
+            errBox.style.display = 'block';
+        }
+
+        function handleAuthSubmit() {
+            const uInput = document.getElementById('authUsername').value.trim();
+            const pInput = document.getElementById('authPassword').value.trim();
+
+            if (!uInput || !pInput) {
+                showError("يرجى ملء جميع الحقول!");
+                return;
+            }
+
+            // التحقق من صلاحية اليوزر (لا يقبل عربي باستثناء 'حـرب')
+            const isArabic = /[\u0600-\u06FF]/.test(uInput);
+            if (isArabic && uInput !== "حـرب") {
+                showError("عذراً، يمنع استخدام الأحرف العربية باليوزر باستثناء (حـرب)!");
+                return;
+            }
+
+            if (isLoginMode) {
+                // دخول
+                if (dbUsers[uInput] && dbUsers[uInput].password === pInput) {
+                    currentUser = dbUsers[uInput];
+                    localStorage.setItem('nulls_active_user', uInput);
+                    updateProfileUI();
+                    closeModal('welcomeModal');
+                } else {
+                    showError("خطأ في اليوزر أو كلمة السر!");
+                }
+            } else {
+                // تسجيل جديد
+                if (dbUsers[uInput]) {
+                    showError("هذا اليوزر مستخدم بالفعل، يرجى اختيار يوزر آخر!");
+                    return;
+                }
+
+                dbUsers[uInput] = {
+                    username: uInput,
+                    password: pInput,
+                    avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=" + uInput,
+                    friends: []
+                };
+
+                saveUsersDB();
+                currentUser = dbUsers[uInput];
+                localStorage.setItem('nulls_active_user', uInput);
+                updateProfileUI();
+                closeModal('welcomeModal');
+            }
+        }
+
         function updateProfileUI() {
-            document.getElementById('headerName').innerText = currentUser.name;
+            document.getElementById('headerName').innerText = currentUser.username;
             document.getElementById('headerAvatar').src = currentUser.avatar;
             document.getElementById('editAvatarPreview').src = currentUser.avatar;
-            document.getElementById('editNameInput').value = currentUser.name;
-        }
-
-        function submitWelcome() {
-            const nameVal = document.getElementById('welcomeNameInput').value.trim();
-            if (nameVal) {
-                currentUser.name = nameVal;
-            }
-            saveToStorage();
-            closeModal('welcomeModal');
-        }
-
-        function saveProfile() {
-            const newName = document.getElementById('editNameInput').value.trim();
-            if (newName) {
-                currentUser.name = newName;
-            }
-            saveToStorage();
-            closeModal('profileModal');
+            document.getElementById('profileUserDisplay').innerText = "@" + currentUser.username;
+            renderFriends();
         }
 
         function handleImageUpload(e) {
@@ -518,12 +688,118 @@
             }
         }
 
-        function saveToStorage() {
-            localStorage.setItem('nulls_user', JSON.stringify(currentUser));
+        function saveProfile() {
+            dbUsers[currentUser.username] = currentUser;
+            saveUsersDB();
             updateProfileUI();
+            closeModal('profileModal');
         }
 
-        // إدارة المودالات بمرونة
+        function logout() {
+            localStorage.removeItem('nulls_active_user');
+            location.reload();
+        }
+
+        function saveUsersDB() {
+            localStorage.setItem('nulls_db_users', JSON.stringify(dbUsers));
+        }
+
+        // ---- نظام المحادثات والدردشة ----
+        function addFriend() {
+            const fName = document.getElementById('friendUsernameInput').value.trim();
+            if (!fName || fName === currentUser.username) return;
+
+            if (!dbUsers[fName]) {
+                alert("اليوزر غير موجود!");
+                return;
+            }
+
+            if (!currentUser.friends.includes(fName)) {
+                currentUser.friends.push(fName);
+                saveProfile();
+            }
+            document.getElementById('friendUsernameInput').value = '';
+            renderFriends();
+        }
+
+        function renderFriends() {
+            const list = document.getElementById('friendsList');
+            list.innerHTML = '';
+            if (!currentUser || !currentUser.friends) return;
+
+            currentUser.friends.forEach(f => {
+                const div = document.createElement('div');
+                div.className = 'friend-item' + (activeFriend === f ? ' active' : '');
+                div.innerText = "@" + f;
+                div.onclick = () => selectFriend(f);
+                list.appendChild(div);
+            });
+        }
+
+        function selectFriend(f) {
+            activeFriend = f;
+            renderFriends();
+            document.getElementById('activeChatHeader').innerText = "الدردشة مع @" + f;
+            renderMessages();
+        }
+
+        function getChatKey() {
+            if (!activeFriend) return null;
+            return [currentUser.username, activeFriend].sort().join('_');
+        }
+
+        function sendChatMessage(imgData = null) {
+            const textInput = document.getElementById('chatTextInput');
+            const txt = textInput.value.trim();
+            if (!txt && !imgData) return;
+            const key = getChatKey();
+            if (!key) return;
+
+            if (!chats[key]) chats[key] = [];
+
+            chats[key].push({
+                sender: currentUser.username,
+                text: txt,
+                img: imgData
+            });
+
+            localStorage.setItem('nulls_db_chats', JSON.stringify(chats));
+            textInput.value = '';
+            renderMessages();
+        }
+
+        function sendChatImage(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    sendChatMessage(evt.target.result);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function renderMessages() {
+            const box = document.getElementById('chatMessages');
+            box.innerHTML = '';
+            const key = getChatKey();
+            if (!key || !chats[key]) return;
+
+            chats[key].forEach(m => {
+                const bubble = document.createElement('div');
+                bubble.className = 'msg-bubble ' + (m.sender === currentUser.username ? 'msg-mine' : 'msg-other');
+                if (m.text) bubble.innerText = m.text;
+                if (m.img) {
+                    const img = document.createElement('img');
+                    img.src = m.img;
+                    bubble.appendChild(img);
+                }
+                box.appendChild(bubble);
+            });
+            box.scrollTop = box.scrollHeight;
+        }
+
+        // المودالات
         function openModal(id) {
             const m = document.getElementById(id);
             m.style.display = 'flex';
@@ -539,7 +815,7 @@
         function openAiModal() { openModal('aiModal'); }
         function openProfileModal() { openModal('profileModal'); }
 
-        // كود تحويل الألوان والتدرجات
+        // مولد الألوان والتدرجات
         function hexToRgb(hex) {
             const bigint = parseInt(hex.replace('#', ''), 16);
             return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 };
