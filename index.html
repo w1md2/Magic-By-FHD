@@ -243,7 +243,7 @@
         .add-box {
             display: flex;
             gap: 5px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .add-box input {
@@ -327,19 +327,21 @@
         .msg-wrap.other { align-self: flex-end; }
 
         .msg-head {
-            font-size: 0.72rem;
+            font-size: 0.78rem;
             color: var(--text-sub);
             margin-bottom: 3px;
             cursor: pointer;
             display: flex;
             gap: 5px;
             align-items: center;
+            font-weight: bold;
         }
 
         .msg-head img {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
+            border: 1px solid var(--blue-accent);
         }
 
         .role-tag {
@@ -386,6 +388,14 @@
             padding: 8px;
             border-radius: 6px;
             outline: none;
+        }
+
+        .quick-group-bar {
+            display: flex;
+            gap: 5px;
+            margin-top: 8px;
+            padding-top: 5px;
+            border-top: 1px solid #222;
         }
 
         /* النوافذ المنبثقة Modal */
@@ -478,16 +488,19 @@
 </head>
 <body>
 
+    <!-- الشريط العلوي -->
     <div class="navbar">
         <button class="nav-btn active" onclick="tab('colors', this)">Null’s Magic 🎨</button>
         <button class="nav-btn" onclick="tab('chat', this)">الرسائل 💬</button>
     </div>
 
+    <!-- البروفايل العلوي -->
     <div class="profile-widget" onclick="openProfile(currentUser.username)">
         <img id="headAvatar" class="profile-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=Nulls" alt="Avatar">
         <span id="headName" class="profile-name">زائر</span>
     </div>
 
+    <!-- قسم الألوان الرئيسي -->
     <div id="colors" class="section active">
         <h1>Nulls Magic</h1>
         <button class="ai-btn" onclick="openM('aiM')">🤖 Null’s AI</button>
@@ -510,15 +523,20 @@
         </div>
     </div>
 
+    <!-- قسم الشات والرسائل -->
     <div id="chat" class="section">
         <div class="chat-app">
             <div class="chat-sidebar">
                 <div class="add-box">
-                    <input type="text" id="fInp" placeholder="اسم اليوزر...">
+                    <input type="text" id="fInp" placeholder="اسم اليوزر المستهدف...">
                     <button class="btn-sm" onclick="addF()">إضافة</button>
                 </div>
-                <button class="btn-sm" style="background:var(--purple-accent); margin-bottom:8px;" onclick="openM('gM')">➕ إنشاء قروب</button>
                 <div class="friends-list" id="fList"></div>
+                
+                <!-- شريط القروبات السريع تحت -->
+                <div class="quick-group-bar">
+                    <button class="btn-sm" style="background:var(--purple-accent); width:100%;" onclick="openM('gM')">➕ إنشــاء قـروب</button>
+                </div>
             </div>
             <div class="chat-main">
                 <div class="chat-header">
@@ -535,27 +553,30 @@
         </div>
     </div>
 
+    <!-- نافذة الترحيب وتسجيل الدخول -->
     <div class="modal" id="authM">
         <div class="modal-card">
             <h3 style="color:var(--blue-accent); margin-bottom:12px;">أهلاً بك في Null’s Magic V2</h3>
             <div id="err" style="color:#ff3333; font-size:0.8rem; display:none; margin-bottom:8px;"></div>
-            <input type="text" id="aDisp" class="inp" placeholder="الاسم الظاهر">
-            <input type="text" id="aUser" class="inp" placeholder="اسم المستخدم (بالإنجليزي)">
+            <input type="text" id="aDisp" class="inp" placeholder="الاسم الظاهر كامل (عربي أو إنجليزي)">
+            <input type="text" id="aUser" class="inp" placeholder="اسم المستخدم (اليوزر إنجليزي فقط)">
             <input type="password" id="aPass" class="inp" placeholder="كلمة السر">
             <button class="btn-main" onclick="authSubmit()">دخول / تسجيل جديد</button>
         </div>
     </div>
 
+    <!-- نافذة إنشاء قروب -->
     <div class="modal" id="gM">
         <div class="modal-card">
             <button class="close" onclick="closeM('gM')">&times;</button>
             <h3>إنشاء مجموعة جديدة</h3>
             <input type="text" id="gName" class="inp" placeholder="اسم القروب..." style="margin-top:12px;">
             <div id="gFriends" style="text-align:right; max-height:130px; overflow-y:auto; margin-bottom:10px;"></div>
-            <button class="btn-main" onclick="createG()">إنشاء</button>
+            <button class="btn-main" onclick="createG()">إنشاء القروب</button>
         </div>
     </div>
 
+    <!-- نافذة إدارة القروب والرتب -->
     <div class="modal" id="gSetM">
         <div class="modal-card">
             <button class="close" onclick="closeM('gSetM')">&times;</button>
@@ -567,6 +588,7 @@
         </div>
     </div>
 
+    <!-- نافذة البروفايل الشخصي والترقية -->
     <div class="modal" id="pM">
         <div class="modal-card">
             <button class="close" onclick="closeM('pM')">&times;</button>
@@ -579,6 +601,7 @@
         </div>
     </div>
 
+    <!-- نافذة الذكاء الاصطناعي -->
     <div class="modal" id="aiM">
         <div class="modal-card">
             <button class="close" onclick="closeM('aiM')">&times;</button>
@@ -616,6 +639,13 @@
             let d = document.getElementById('aDisp').value.trim();
 
             if(!u || !p) return showErr("يرجى إدخال اسم المستخدم وكلمة السر!");
+
+            // التحقق من اليوزر (منع الحروف العربية إلا ليوزر "حـربـي" فقط)
+            let arabicPattern = /[\u0600-\u06FF]/;
+            if (arabicPattern.test(u) && u !== "حـربـي" && u !== "حربي") {
+                return showErr("غير مسموح بأسماء مستخدمين باللغة العربية!");
+            }
+
             if(dbU[u]) {
                 if(dbU[u].password === p) { currentUser = dbU[u]; }
                 else return showErr("كلمة السر غير صحيحة!");
@@ -666,7 +696,7 @@
 
             let self = document.createElement('div');
             self.className = 'friend-item' + (activeChatId === 'self' ? ' active' : '');
-            self.innerHTML = `<span>👤 رسائلي الخاصة (نفسي)</span>`;
+            self.innerHTML = `<span>👤 ${currentUser.displayName} (نفسي)</span>`;
             self.onclick = () => selChat('self', 'self');
             list.appendChild(self);
 
@@ -719,7 +749,7 @@
             activeChatId = id; activeType = type;
             renderList();
             document.getElementById('gSetBtn').style.display = (type === 'group') ? 'block' : 'none';
-            document.getElementById('cHead').innerText = (type==='group') ? dbG[id]?.name : (type==='friend'? dbU[id]?.displayName : "ملاحظاتي الشخصية");
+            document.getElementById('cHead').innerText = (type==='group') ? dbG[id]?.name : (type==='friend'? dbU[id]?.displayName : currentUser.displayName + " (محادثة مع نفسي)");
             renderMsgs();
         }
 
@@ -735,15 +765,27 @@
             let k = getKey(); if(!k) return;
 
             dbC[k] = dbC[k] || [];
-            dbC[k].push({ sender: currentUser.username, name: currentUser.displayName, av: currentUser.avatar, text: txt, img: img });
+            
+            // إضافة الرسالة الأصلية
+            dbC[k].push({ sender: currentUser.username, name: currentUser.displayName, av: currentUser.avatar, text: txt, img: img, isBot: false });
             document.getElementById('mInp').value = '';
 
+            // الرد الآلي إذا كان الشخص يتحدث مع نفسه
             if(activeType === 'self') {
                 setTimeout(() => {
+                    dbC[k].push({ 
+                        sender: currentUser.username, 
+                        name: currentUser.displayName, 
+                        av: currentUser.avatar, 
+                        text: txt, 
+                        img: img, 
+                        isBot: true 
+                    });
                     localStorage.setItem('n_chats_db', JSON.stringify(dbC));
                     renderMsgs();
-                }, 100);
+                }, 400);
             }
+
             localStorage.setItem('n_chats_db', JSON.stringify(dbC));
             renderMsgs();
         }
@@ -763,7 +805,7 @@
             let group = (activeType === 'group') ? dbG[activeChatId] : null;
 
             dbC[k].forEach(m => {
-                let mine = (m.sender === currentUser.username);
+                let mine = (m.sender === currentUser.username && !m.isBot);
                 let wrap = document.createElement('div');
                 wrap.className = 'msg-wrap ' + (mine ? 'mine' : 'other');
 
@@ -772,6 +814,8 @@
                 head.onclick = () => openProfile(m.sender);
 
                 let rTag = (group && group.roles && group.roles[m.sender]) ? `<span class="role-tag">${group.roles[m.sender]}</span>` : '';
+                
+                // إظهار الاسم والصورة فوق كل رسالة لجميع الحالات
                 head.innerHTML = `<img src="${m.av}"> <span>${m.name}</span> ${rTag}`;
 
                 let body = document.createElement('div');
