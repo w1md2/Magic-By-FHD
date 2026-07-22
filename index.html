@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nulls Magic - Text Colorizer</title>
+    <style>
+        :root {
+            --bg-color: #0d0e12;
+            --card-bg: #16181d;
+            --accent-blue: #0088ff;
+            --neon-glow: rgba(0, 136, 255, 0.6);
+            --text-color: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+            background: linear-gradient(45deg, #0088ff, #00d2ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(0, 136, 255, 0.3);
+        }
+
+        /* الشريط الأسود ذو الحواف الزرقاء الماعة */
+        .input-box {
+            position: relative;
+            background-color: #000000;
+            border: 2px solid var(--accent-blue);
+            border-radius: 12px;
+            padding: 8px 15px;
+            box-shadow: 0 0 15px var(--neon-glow), inset 0 0 10px rgba(0, 136, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .input-box:focus-within {
+            box-shadow: 0 0 25px var(--accent-blue), inset 0 0 15px rgba(0, 136, 255, 0.4);
+        }
+
+        .input-box input[type="text"] {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-size: 1.1rem;
+            padding: 10px;
+        }
+
+        .color-pickers {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .color-pickers label {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .color-pickers input[type="color"] {
+            -webkit-appearance: none;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            background: none;
+        }
+
+        .color-pickers input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        .color-pickers input[type="color"]::-webkit-color-swatch {
+            border: 2px solid #fff;
+            border-radius: 50%;
+        }
+
+        /* منطقة المعاينة والنتيجة */
+        .result-card {
+            background-color: var(--card-bg);
+            border: 1px solid #282c34;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: right;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+        }
+
+        .preview-title {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .text-preview {
+            font-size: 1.4rem;
+            font-weight: bold;
+            min-height: 40px;
+            word-break: break-all;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #0d0e12;
+            border-radius: 8px;
+        }
+
+        .code-output-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #000;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 8px 12px;
+        }
+
+        .code-output {
+            font-family: monospace;
+            color: #00ff88;
+            font-size: 0.95rem;
+            direction: ltr;
+            overflow-x: auto;
+            white-space: nowrap;
+            width: 80%;
+        }
+
+        .copy-btn {
+            background-color: var(--accent-blue);
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .copy-btn:hover {
+            background-color: #0066cc;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Nulls Magic</h1>
+
+        <!-- شريط النص بستايل النيون -->
+        <div class="input-box">
+            <input type="text" id="userInput" placeholder="اكتب النص هنا..." value="Nulls Magic">
+            
+            <div class="color-pickers">
+                <label>التدريج:</label>
+                <input type="color" id="color1" value="#0088ff">
+                <input type="color" id="color2" value="#ff007f">
+            </div>
+        </div>
+
+        <!-- نتيجة المعاينة والكود -->
+        <div class="result-card">
+            <div class="preview-title">الشكل داخل اللعبة:</div>
+            <div class="text-preview" id="textPreview"></div>
+
+            <div class="preview-title">الكود المنسوخ (Nulls Colors):</div>
+            <div class="code-output-container">
+                <div class="code-output" id="codeOutput"></div>
+                <button class="copy-btn" onclick="copyCode()">نسخ الكود</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const userInput = document.getElementById('userInput');
+        const color1Input = document.getElementById('color1');
+        const color2Input = document.getElementById('color2');
+        const textPreview = document.getElementById('textPreview');
+        const codeOutput = document.getElementById('codeOutput');
+
+        // تحويل RGB إلى Hex
+        function hexToRgb(hex) {
+            const bigint = parseInt(hex.replace('#', ''), 16);
+            return {
+                r: (bigint >> 16) & 255,
+                g: (bigint >> 8) & 255,
+                b: bigint & 255
+            };
+        }
+
+        // حساب لون التدريج لكل حرف
+        function interpolateColor(color1, color2, factor) {
+            const c1 = hexToRgb(color1);
+            const c2 = hexToRgb(color2);
+            
+            const r = Math.round(c1.r + factor * (c2.r - c1.r)).toString(16).padStart(2, '0');
+            const g = Math.round(c1.g + factor * (c2.g - c1.g)).toString(16).padStart(2, '0');
+            const b = Math.round(c1.b + factor * (c2.b - c1.b)).toString(16).padStart(2, '0');
+            
+            return `${r}${g}${b}`;
+        }
+
+        function generateGradientText() {
+            const text = userInput.value;
+            if (!text) {
+                textPreview.innerHTML = '';
+                codeOutput.innerText = '';
+                return;
+            }
+
+            let previewHTML = '';
+            let generatedCode = '';
+            const len = text.length;
+
+            for (let i = 0; i < len; i++) {
+                const char = text[i];
+                // إذا كان مسافة لا داعي لتلوينه بكود
+                if (char === ' ') {
+                    previewHTML += ' ';
+                    generatedCode += ' ';
+                    continue;
+                }
+
+                const factor = len > 1 ? i / (len - 1) : 0;
+                const hexColor = interpolateColor(color1Input.value, color2Input.value, factor);
+
+                // كود نولز المعتاد <cHex>حرف</c>
+                generatedCode += `<c${hexColor}>${char}</c>`;
+                previewHTML += `<span style="color: #${hexColor}">${char}</span>`;
+            }
+
+            textPreview.innerHTML = previewHTML;
+            codeOutput.innerText = generatedCode;
+        }
+
+        function copyCode() {
+            const code = codeOutput.innerText;
+            if (!code) return;
+            
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                btn.innerText = 'تم النسخ!';
+                btn.style.backgroundColor = '#00cc66';
+                setTimeout(() => {
+                    btn.innerText = 'نسخ الكود';
+                    btn.style.backgroundColor = 'var(--accent-blue)';
+                }, 1500);
+            });
+        }
+
+        // الاستماع للتغييرات
+        userInput.addEventListener('input', generateGradientText);
+        color1Input.addEventListener('input', generateGradientText);
+        color2Input.addEventListener('input', generateGradientText);
+
+        // تشغيل أول مرة عند التحميل
+        generateGradientText();
+    </script>
+</body>
+</html>
