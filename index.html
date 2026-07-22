@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nulls Magic - AI Text Colorizer</title>
+    <title>Nulls Magic V2 - Text Colorizer</title>
     <style>
         :root {
             --bg-color: #0d0e12;
@@ -29,12 +29,54 @@
             justify-content: center;
             min-height: 100vh;
             padding: 20px;
+            position: relative;
+        }
+
+        /* 🟢 بروفايل المستخدم بالزاوية العلوية */
+        .profile-widget {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            z-index: 10;
+        }
+
+        .profile-widget:hover {
+            transform: scale(1.05);
+        }
+
+        .profile-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-blue);
+            box-shadow: 0 0 10px var(--neon-glow);
+            object-fit: cover;
+            background-color: #222;
+        }
+
+        .profile-name {
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-top: 4px;
+            color: #fff;
+            text-shadow: 0 0 5px rgba(0,136,255,0.5);
+            max-width: 90px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center;
         }
 
         .container {
             width: 100%;
             max-width: 700px;
             text-align: center;
+            margin-top: 40px;
         }
 
         .header-area {
@@ -74,7 +116,7 @@
             box-shadow: 0 0 22px rgba(0, 136, 255, 0.8);
         }
 
-        /* الشريط الأسود ذو الحواف الزرقاء الماعة والضوء */
+        /* الشريط الأسود المضيء */
         .input-box {
             position: relative;
             background-color: #000000;
@@ -191,147 +233,155 @@
             background-color: #0066cc;
         }
 
-        /* نافذة Null's AI Modal */
+        /* 🟣 التصميم الذكي للنووافذ المنبثقة (Modals) والأنيميشن */
         .modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
             justify-content: center;
             align-items: center;
             z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            opacity: 1;
         }
 
         .modal-content {
+            position: relative;
             background: var(--card-bg);
-            border: 1px solid var(--accent-blue);
-            border-radius: 16px;
-            padding: 20px;
+            border: 1.5px solid var(--accent-blue);
+            border-radius: 20px;
+            padding: 30px 25px;
             width: 90%;
-            max-width: 500px;
-            height: 560px;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 0 25px var(--neon-glow);
+            max-width: 480px;
+            text-align: center;
+            box-shadow: 0 0 30px var(--neon-glow);
+            transform: scale(0.8);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #2a2e39;
-            padding-bottom: 12px;
-            margin-bottom: 12px;
+        .modal.show .modal-content {
+            transform: scale(1);
         }
 
-        .modal-header h2 {
-            font-size: 1.3rem;
-            background: linear-gradient(45deg, #0088ff, #00d2ff);
+        .close-btn {
+            position: absolute;
+            top: 12px;
+            left: 18px;
+            background: none;
+            border: none;
+            color: #aaa;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: color 0.2s, transform 0.2s;
+        }
+
+        .close-btn:hover {
+            color: #fff;
+            transform: scale(1.2);
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #fff;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #00d2ff, #0088ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .close-btn {
-            background: none;
-            border: none;
-            color: #aaa;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        .chat-box {
-            flex: 1;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            padding-right: 5px;
-            margin-bottom: 12px;
-        }
-
-        .chat-msg {
-            max-width: 80%;
-            padding: 10px 14px;
-            border-radius: 12px;
+        .input-label {
+            display: block;
             font-size: 0.95rem;
-            line-height: 1.4;
-            white-space: pre-line;
+            color: #bbb;
+            margin-bottom: 10px;
         }
 
-        .msg-ai {
-            align-self: flex-start;
-            background: #20242e;
-            color: #fff;
-            border-bottom-right-radius: 2px;
-            border: 1px solid #323846;
-        }
-
-        .msg-user {
-            align-self: flex-end;
-            background: var(--accent-blue);
-            color: #fff;
-            border-bottom-left-radius: 2px;
-        }
-
-        .image-preview-area {
-            display: none;
-            align-items: center;
-            gap: 10px;
+        .custom-input {
+            width: 100%;
             background: #000;
-            padding: 5px 10px;
-            border-radius: 8px;
-            margin-bottom: 8px;
-        }
-
-        .image-preview-area img {
-            width: 35px;
-            height: 35px;
-            object-fit: cover;
-            border-radius: 4px;
-        }
-
-        .chat-input-area {
-            display: flex;
-            gap: 8px;
-            background: #000;
-            border: 1px solid #333;
+            border: 1px solid var(--accent-blue);
+            padding: 12px;
             border-radius: 10px;
-            padding: 6px;
-            align-items: center;
-        }
-
-        .chat-input-area input[type="text"] {
-            flex: 1;
-            background: transparent;
-            border: none;
-            outline: none;
             color: #fff;
-            padding: 8px;
-        }
-
-        .upload-btn {
-            background: #222;
-            color: #fff;
-            border: 1px solid #444;
-            padding: 6px 10px;
-            border-radius: 8px;
-            cursor: pointer;
             font-size: 1rem;
+            text-align: center;
+            outline: none;
+            margin-bottom: 20px;
+            box-shadow: inset 0 0 8px rgba(0, 136, 255, 0.3);
         }
 
-        .send-btn {
-            background: var(--accent-blue);
+        .main-btn {
+            background: linear-gradient(135deg, #0088ff, #00d2ff);
             color: #fff;
             border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
             font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 15px var(--neon-glow);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .main-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px var(--accent-blue);
+        }
+
+        /* رفع وتغيير الصورة بالبروفايل */
+        .avatar-upload-label {
+            display: inline-block;
+            position: relative;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        .avatar-preview-edit {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 2px dashed var(--accent-blue);
+            object-fit: cover;
+            background: #000;
+            transition: opacity 0.3s;
+        }
+
+        .avatar-upload-label:hover .avatar-preview-edit {
+            opacity: 0.7;
+        }
+
+        .avatar-upload-hint {
+            position: absolute;
+            bottom: -5px;
+            right: 50%;
+            transform: translateX(50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            border: 1px solid var(--accent-blue);
+            white-space: nowrap;
         }
     </style>
 </head>
 <body>
+
+    <!-- 🟢 دائرة البروفايل بالزاوية العلوية -->
+    <div class="profile-widget" onclick="openProfileModal()">
+        <img id="headerAvatar" class="profile-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=NullsUser" alt="Avatar">
+        <span id="headerName" class="profile-name">زائر</span>
+    </div>
 
     <div class="container">
         <div class="header-area">
@@ -363,34 +413,45 @@
         </div>
     </div>
 
-    <!-- نافذة Null's AI المباشرة بدون API -->
+    <!-- 🔵 مودال الترحيب والتسجيل التلقائي عند فتح الموقع -->
+    <div class="modal" id="welcomeModal">
+        <div class="modal-content">
+            <div class="modal-title">
+                يأهلا وسهلا نورت الموقع Null’s Magic V2 اول موقع عربي لنولز برول !
+            </div>
+            
+            <label class="input-label">اكتب اسمك لو سمحت ☺️❤️</label>
+            <input type="text" id="welcomeNameInput" class="custom-input" placeholder="اسمك الكريم..." autofocus>
+            
+            <button class="main-btn" onclick="submitWelcome()">تسجيل الدخول</button>
+        </div>
+    </div>
+
+    <!-- 🟣 مودال تعديل البروفايل والصورة -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('profileModal')">&times;</button>
+            <div class="modal-title">تعديل الملف الشخصي</div>
+
+            <label class="avatar-upload-label" title="اضغط لتغيير الصورة">
+                <img id="editAvatarPreview" class="avatar-preview-edit" src="" alt="Avatar Edit">
+                <span class="avatar-upload-hint">📷 تغيير</span>
+                <input type="file" id="imageUploader" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+            </label>
+
+            <label class="input-label">اسم المستخدم:</label>
+            <input type="text" id="editNameInput" class="custom-input">
+
+            <button class="main-btn" onclick="saveProfile()">حفظ التعديلات</button>
+        </div>
+    </div>
+
+    <!-- 🔴 نافذة تنبيه AI Magic -->
     <div class="modal" id="aiModal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h2>🤖 Null’s AI Assistant</h2>
-                <button class="close-btn" onclick="closeAiModal()">&times;</button>
-            </div>
-
-            <div class="chat-box" id="chatBox">
-                <div class="chat-msg msg-ai">
-                    أهلاً بك! أنا Null’s AI 🤖.
-سولف معي عن أي شيء، أو ارفع لي صورة عبر زر الكاميرا 📷 لأستخرج لك ألوانها، أو اطلب مني ألواناً محددة لتطبيقها فوراً!
-                </div>
-            </div>
-
-            <div class="image-preview-area" id="imgPreviewArea">
-                <img id="imgPreview" src="" alt="preview">
-                <span style="font-size:0.8rem; color:#aaa;">تم اختيار صورة</span>
-                <button style="background:none; border:none; color:red; cursor:pointer; margin-right:auto;" onclick="removeImage()">✕</button>
-            </div>
-
-            <div class="chat-input-area">
-                <label class="upload-btn" title="رفع صورة">
-                    📷
-                    <input type="file" id="imageInput" accept="image/*" style="display:none;" onchange="handleImageSelect(event)">
-                </label>
-                <input type="text" id="aiMsgInput" placeholder="تحدث معي أو أرفق صورة..." onkeypress="handleKeyPress(event)">
-                <button class="send-btn" onclick="sendAiMessage()">إرسال</button>
+            <button class="close-btn" onclick="closeModal('aiModal')">&times;</button>
+            <div style="font-size: 1.1rem; color: #fff; margin-top: 15px; line-height: 1.5;">
+                اوه نعتذر على ذلك لاكن Ai Magic باقي ماجاء للأسف
             </div>
         </div>
     </div>
@@ -402,11 +463,83 @@
         const color3Input = document.getElementById('color3');
         const textPreview = document.getElementById('textPreview');
         const codeOutput = document.getElementById('codeOutput');
-        const chatBox = document.getElementById('chatBox');
-        const aiMsgInput = document.getElementById('aiMsgInput');
 
-        let selectedImageElement = null;
+        // بيانات البروفايل
+        let currentUser = {
+            name: "زائر",
+            avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=NullsUser"
+        };
 
+        // تشغيل الترحيب مباشرة عند تحميل الصفحة
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedData = localStorage.getItem('nulls_user');
+            if (savedData) {
+                currentUser = JSON.parse(savedData);
+                updateProfileUI();
+            } else {
+                openModal('welcomeModal');
+            }
+        });
+
+        function updateProfileUI() {
+            document.getElementById('headerName').innerText = currentUser.name;
+            document.getElementById('headerAvatar').src = currentUser.avatar;
+            document.getElementById('editAvatarPreview').src = currentUser.avatar;
+            document.getElementById('editNameInput').value = currentUser.name;
+        }
+
+        function submitWelcome() {
+            const nameVal = document.getElementById('welcomeNameInput').value.trim();
+            if (nameVal) {
+                currentUser.name = nameVal;
+            }
+            saveToStorage();
+            closeModal('welcomeModal');
+        }
+
+        function saveProfile() {
+            const newName = document.getElementById('editNameInput').value.trim();
+            if (newName) {
+                currentUser.name = newName;
+            }
+            saveToStorage();
+            closeModal('profileModal');
+        }
+
+        function handleImageUpload(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    currentUser.avatar = evt.target.result;
+                    document.getElementById('editAvatarPreview').src = currentUser.avatar;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function saveToStorage() {
+            localStorage.setItem('nulls_user', JSON.stringify(currentUser));
+            updateProfileUI();
+        }
+
+        // إدارة المودالات بمرونة
+        function openModal(id) {
+            const m = document.getElementById(id);
+            m.style.display = 'flex';
+            setTimeout(() => m.classList.add('show'), 10);
+        }
+
+        function closeModal(id) {
+            const m = document.getElementById(id);
+            m.classList.remove('show');
+            setTimeout(() => m.style.display = 'none', 300);
+        }
+
+        function openAiModal() { openModal('aiModal'); }
+        function openProfileModal() { openModal('profileModal'); }
+
+        // كود تحويل الألوان والتدرجات
         function hexToRgb(hex) {
             const bigint = parseInt(hex.replace('#', ''), 16);
             return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 };
@@ -472,155 +605,6 @@
                     btn.style.backgroundColor = 'var(--accent-blue)';
                 }, 1500);
             });
-        }
-
-        function openAiModal() { document.getElementById('aiModal').style.display = 'flex'; }
-        function closeAiModal() { document.getElementById('aiModal').style.display = 'none'; }
-        function handleKeyPress(e) { if (e.key === 'Enter') sendAiMessage(); }
-
-        function handleImageSelect(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                const img = new Image();
-                img.src = evt.target.result;
-                img.onload = function() {
-                    selectedImageElement = img;
-                    document.getElementById('imgPreview').src = evt.target.result;
-                    document.getElementById('imgPreviewArea').style.display = 'flex';
-                }
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function removeImage() {
-            selectedImageElement = null;
-            document.getElementById('imageInput').value = '';
-            document.getElementById('imgPreviewArea').style.display = 'none';
-        }
-
-        function extractColorsFromImage(img) {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = img.width;
-            canvas.height = img.height;
-            ctx.drawImage(img, 0, 0);
-
-            // سحب 3 بكسلات من نقاط مختلفة وموزعة بالصورة
-            const p1 = ctx.getImageData(Math.floor(img.width * 0.2), Math.floor(img.height * 0.2), 1, 1).data;
-            const p2 = ctx.getImageData(Math.floor(img.width * 0.5), Math.floor(img.height * 0.5), 1, 1).data;
-            const p3 = ctx.getImageData(Math.floor(img.width * 0.8), Math.floor(img.height * 0.8), 1, 1).data;
-
-            const rgbToHex = (r, g, b) => '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
-
-            return [
-                rgbToHex(p1[0], p1[1], p1[2]),
-                rgbToHex(p2[0], p2[1], p2[2]),
-                rgbToHex(p3[0], p3[1], p3[2])
-            ];
-        }
-
-        function sendAiMessage() {
-            const text = aiMsgInput.value.trim();
-            if (!text && !selectedImageElement) return;
-
-            let userDisplay = text;
-            if (selectedImageElement && !text) userDisplay = "[تم إرفاق صورة]";
-            appendMessage(userDisplay, 'user');
-
-            const hasImage = !!selectedImageElement;
-            const imgObj = selectedImageElement;
-
-            aiMsgInput.value = '';
-            removeImage();
-
-            setTimeout(() => {
-                if (hasImage) {
-                    const colors = extractColorsFromImage(imgObj);
-                    setColors(colors[0], colors[1], colors[2]);
-                    appendMessage("قمت بتحليل ألوان الصورة بنجاح وتطبيقه على التدرج ودوائر الألوان الثلاثية! 🎨📸", 'ai');
-                } else {
-                    const response = processSmartAiBrain(text);
-                    appendMessage(response, 'ai');
-                }
-            }, 400);
-        }
-
-        function appendMessage(msg, sender) {
-            const msgDiv = document.createElement('div');
-            msgDiv.classList.add('chat-msg', sender === 'user' ? 'msg-user' : 'msg-ai');
-            msgDiv.innerText = msg;
-            chatBox.appendChild(msgDiv);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-
-        /* محرك ذكاء اصطناعي ذكي يعتمد على تحليل المقاصد (Intent Analysis) */
-        function processSmartAiBrain(input) {
-            const txt = input.trim().toLowerCase();
-
-            // 1. التعرف على التحيات والأسئلة العامة (بدون تغيير الألوان)
-            if (/^(كيف حالك|كيفك|شخبارك|اخبارك|شلونك)/.test(txt)) {
-                return "الحمد لله تمام وبأفضل حال! يسعدني التحدث معك، كيف يمكنني مساعدتك اليوم؟ 😊";
-            }
-            if (/^(مرحبا|اهلين|أهلا|هلا|السلام عليكم|سلام)/.test(txt)) {
-                return "وعليكم السلام وأهلاً بك يا بطل! نورت Null’s AI 🤖. كيف أقدر أخدمك؟";
-            }
-            if (/^(من انت|من أنت|عرف عن نفسك|وش تسوي)/.test(txt)) {
-                return "أنا Null’s AI! مساعدك الذكي المخصص لتصميم واختيار ألوان نولز وتوليد تدرجات الألوان. أقدر أسولف معك، أحوّل أفكارك لألوان، أو أحلل صورك!";
-            }
-            if (/^(شكرا|مشكور|تسلم|يعطيك العافيه|يعطيك العافية)/.test(txt)) {
-                return "العفو، حبيبي! في خدمتك دائماً في أي وقت 💙";
-            }
-
-            // 2. تحليل الكلمات المفتاحية للـ الألوان والثيمات (تغيير الألوان عند طلب المستخدم فقط)
-            if (txt.includes('نار') || txt.includes('بركان') || txt.includes('ناري')) {
-                setColors('#ff0000', '#ff6600', '#ffee00');
-                return "تمت معالجة طلبك! جهزت لك تدرج ناري نيون ممتاز وربطته بالدوائر الثلاث فوراً 🔴🔥";
-            }
-            if (txt.includes('ثلج') || txt.includes('جليد') || txt.includes('ثلجي')) {
-                setColors('#00f0ff', '#0077ff', '#ffffff');
-                return "تم! قمت بإنشاء ثيم ثلجي كريستالي وتطبيقه على النص والدوائر ❄️💎";
-            }
-            if (txt.includes('سام') || txt.includes('سم') || txt.includes('لايم') || txt.includes('اخضر') || txt.includes('أخضر')) {
-                setColors('#00ff44', '#a6ff00', '#003311');
-                return "تم اختيار ثيم السُم والنيون الأخضر وتطبيقه بنجاح 🧪🟢";
-            }
-            if (txt.includes('بنفسجي') || txt.includes('ملكي') || txt.includes('شبح')) {
-                setColors('#8a2be2', '#d800ff', '#240046');
-                return "تم ضبط التدرج البنفسجي الملكي الفخم 🟣✨";
-            }
-            if (txt.includes('ذهب') || txt.includes('ذهبي') || txt.includes('فخم')) {
-                setColors('#ffe600', '#ffaa00', '#774400');
-                return "تم تطبيق التدرج الذهبي اللامع بنجاح 👑💛";
-            }
-            if (txt.includes('ورد') || txt.includes('وردي') || txt.includes('بناتي') || txt.includes('كيوت')) {
-                setColors('#ff007f', '#ff66cc', '#ffffff');
-                return "تم اختيار وتطبيق التدرج الوردي الناعم ✨ كيوووت!";
-            }
-            if (txt.includes('ليل') || txt.includes('فضاء') || txt.includes('كواكب') || txt.includes('مظلم')) {
-                setColors('#000b1e', '#1a0033', '#0088ff');
-                return "تم تطبيق ثيم الفضاء والليل المظلم العميق 🌌";
-            }
-
-            // 3. إذا كان طلب لون مخصص أو فكرة غير متوقعة
-            if (txt.includes('لون') || txt.includes('ألوان') || txt.includes('الوان') || txt.includes('ثيم') || txt.includes('تدرج')) {
-                const c1 = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
-                const c2 = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
-                const c3 = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
-                setColors(c1, c2, c3);
-                return `فهمت طلبك بخصوص الألوان! قمت بتحليل فكرتك واختيار 3 ألوان متناسقة وتطبيقها لك مباشرة 🎨✨`;
-            }
-
-            // 4. الرد الذكي المفتوح للأسئلة العادية العشوائية
-            return `فهمت كلامك! أنا هنا للدردشة معك ومساعدتك في أي وقت، وإذا احتجت أي ثيم ألوان أو تحليلات لـ نولز فقط اطلب مني أو أرفق صورة! 😊`;
-        }
-
-        function setColors(c1, c2, c3) {
-            color1Input.value = c1;
-            color2Input.value = c2;
-            color3Input.value = c3;
-            generateGradientText();
         }
 
         userInput.addEventListener('input', generateGradientText);
