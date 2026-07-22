@@ -299,7 +299,7 @@
             cursor: pointer;
             font-weight: bold;
             font-size: 0.85rem;
-            margin-bottom: 10px;
+            margin-top: auto;
         }
 
         .friends-list {
@@ -308,6 +308,7 @@
             display: flex;
             flex-direction: column;
             gap: 5px;
+            margin-bottom: 10px;
         }
 
         .friend-item {
@@ -382,6 +383,7 @@
             width: 22px; height: 22px;
             border-radius: 50%;
             object-fit: cover;
+            border: 1px solid var(--accent-blue);
         }
 
         .msg-sender-name {
@@ -524,19 +526,16 @@
 </head>
 <body>
 
-    <!-- الشريط العلوي للتنقل -->
     <div class="top-navbar">
         <div class="nav-item active" onclick="switchTab('colorsTab', this)">Null’s Magic</div>
         <div class="nav-item" onclick="switchTab('chatTab', this)">الرسائل 💬</div>
     </div>
 
-    <!-- بروفايل المستخدم بالزاوية -->
     <div class="profile-widget" onclick="openProfileModal()">
         <img id="headerAvatar" class="profile-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=NullsUser" alt="Avatar">
         <span id="headerName" class="profile-name">زائر</span>
     </div>
 
-    <!-- 1. قسم الألوان والواجهة الأساسية -->
     <div id="colorsTab" class="page-section active">
         <div class="header-area">
             <h1>Nulls Magic</h1>
@@ -564,7 +563,6 @@
         </div>
     </div>
 
-    <!-- 2. قسم الرسائل والتواصل -->
     <div id="chatTab" class="page-section">
         <div class="chat-app-container">
             <div class="chat-sidebar">
@@ -573,10 +571,10 @@
                     <button class="add-friend-btn" onclick="addFriend()">إضافة</button>
                 </div>
                 
-                <button class="group-btn" onclick="openModal('createGroupModal')">➕ إنشاء قروب جديد</button>
-
-                <div class="sidebar-section-title">المحادثات الخاصة والقروبات</div>
+                <div class="sidebar-section-title">المحادثات والقروبات</div>
                 <div class="friends-list" id="friendsList"></div>
+
+                <button class="group-btn" onclick="openModal('createGroupModal')">➕ إنشاء قروب جديد</button>
             </div>
             <div class="chat-main">
                 <div class="chat-header" id="activeChatHeader">اختر شات لبدء المحادثة</div>
@@ -593,7 +591,6 @@
         </div>
     </div>
 
-    <!-- 🟣 نافذة التسجيل / الدخول الأولية -->
     <div class="modal" id="welcomeModal">
         <div class="modal-content">
             <h3 style="color:#00d2ff; margin-bottom:12px;" id="authTitle">يأهلا وسهلا نورت الموقع Null’s Magic V2 اول موقع عربي لنولز برول !</h3>
@@ -606,8 +603,8 @@
 
             <div id="errorMessage" class="error-msg"></div>
 
-            <input type="text" id="authDisplayName" class="custom-input" placeholder="اسمك الكامل (مثال: أحمد بطل نولز)">
-            <input type="text" id="authUsername" class="custom-input" placeholder="اليوزر باللغة الإنجليزية">
+            <input type="text" id="authDisplayName" class="custom-input" placeholder="اسمك الكامل الظاهر">
+            <input type="text" id="authUsername" class="custom-input" placeholder="اسم المستخدم (اليوزر إنجليزي)">
             <input type="password" id="authPassword" class="custom-input" placeholder="كلمة السر">
 
             <button class="main-btn" id="authSubmitBtn" onclick="handleAuthSubmit()">تسجيل حساب جديد</button>
@@ -615,7 +612,6 @@
         </div>
     </div>
 
-    <!-- 🟣 نافذة إنشاء قروب جديد -->
     <div class="modal" id="createGroupModal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('createGroupModal')">&times;</button>
@@ -629,7 +625,6 @@
         </div>
     </div>
 
-    <!-- 🟣 نافذة البروفايل والتعديل -->
     <div class="modal" id="profileModal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('profileModal')">&times;</button>
@@ -648,7 +643,6 @@
         </div>
     </div>
 
-    <!-- 🔴 نافذة تنبيه AI Magic -->
     <div class="modal" id="aiModal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('aiModal')">&times;</button>
@@ -727,7 +721,7 @@
                 return;
             }
 
-            // منع اليوزرات العربية بالكامل باستثناء 'حـربـي' المتاح مستقبلاً لمستخدم كاستثناء داخلي
+            // منع اليوزرات العربية باستثناء 'حـربـي'
             const isArabic = /[\u0600-\u06FF]/.test(uInput);
             if (isArabic && uInput !== "حـربـي") {
                 showError("عذراً، اليوزرات يجب أن تكون بالأحرف الإنجليزية فقط!");
@@ -830,7 +824,7 @@
 
             if (!currentUser) return;
 
-            // 1. خيار المحادثة مع النفس (Echo Bot)
+            // 1. خيار المحادثة مع النفس (Echo Bot بنفس الاسم والصورة)
             const selfDiv = document.createElement('div');
             selfDiv.className = 'friend-item' + (activeChatId === 'self' ? ' active' : '');
             selfDiv.innerHTML = `<img src="${currentUser.avatar}"> <span>محادثة مع نفسي 👤</span>`;
@@ -940,19 +934,19 @@
             chats[key].push(msgObj);
             textInput.value = '';
 
-            // إذا كنت تتحدث مع نفسك، سيرد عليك البوت مجسداً شخصيتك
+            // إذا كنت تتحدث مع نفسك، سيرد عليك البوت مجسداً شخصيتك وصورتك واسمك بالضبط
             if (activeChatType === 'self') {
                 setTimeout(() => {
                     chats[key].push({
                         sender: currentUser.username + "_echo",
-                        displayName: currentUser.displayName + " (نفسك)",
+                        displayName: currentUser.displayName,
                         avatar: currentUser.avatar,
                         text: txt,
                         img: imgData
                     });
                     localStorage.setItem('nulls_db_chats', JSON.stringify(chats));
                     renderMessages();
-                }, 500);
+                }, 400);
             }
 
             localStorage.setItem('nulls_db_chats', JSON.stringify(chats));
@@ -982,7 +976,7 @@
                 const wrapper = document.createElement('div');
                 wrapper.className = 'msg-wrapper ' + (isMine ? 'mine' : 'other');
 
-                // هيدر الرسالة (صورة + اسم الشخص فوق الفقاعة)
+                // هيدر الرسالة (تضمين الصورة والاسم الكامل دائماً فوق الرسالة)
                 const infoDiv = document.createElement('div');
                 infoDiv.className = 'msg-sender-info';
                 infoDiv.innerHTML = `<img src="${m.avatar || currentUser.avatar}"> <span class="msg-sender-name">${m.displayName || m.sender}</span>`;
