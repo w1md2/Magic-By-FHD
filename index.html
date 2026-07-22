@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nulls Magic V2 - Ultimate Platform</title>
+    <title>Nulls Magic V3 - Ultimate Symbols & Fonts</title>
     <style>
         :root {
             --bg-color: #0d0e12;
@@ -184,7 +184,6 @@
             color: #fff;
             font-size: 1.1rem;
             padding: 8px;
-            scroll-margin: 0;
             min-width: 150px;
         }
 
@@ -329,7 +328,7 @@
             font-size: 0.85rem;
         }
 
-        /* 💎 قسم الرموز المميزة (100 رمز - 5 أعمدة) */
+        /* 💎 قسم رموز الزخرفة الحقيقية (بدون إيموجي - 5 في كل صف) */
         .symbols-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -354,28 +353,32 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             cursor: pointer;
             transition: all 0.2s ease;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            color: #00d2ff;
+            font-family: monospace;
         }
 
         .symbol-card:hover {
             background: var(--accent-blue);
+            color: #fff;
             transform: scale(1.1);
             box-shadow: 0 0 15px var(--neon-glow);
             border-color: #fff;
         }
 
-        /* 🔠 قسم الخطوط (Fonts) */
+        /* 🔠 قسم الخطوط (أقوى وأشمل خطوط المواقع والتطبيقات) */
         .fonts-list-container {
             width: 100%;
             display: flex;
             flex-direction: column;
             gap: 10px;
-            max-height: 450px;
+            max-height: 480px;
             overflow-y: auto;
             margin-top: 15px;
+            padding-right: 5px;
         }
 
         .font-row {
@@ -390,7 +393,7 @@
         }
 
         .font-text-display {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             font-weight: bold;
             color: #fff;
             word-break: break-all;
@@ -432,7 +435,7 @@
             border-radius: 20px;
             padding: 25px 20px;
             width: 90%;
-            max-width: 480px;
+            max-width: 550px;
             text-align: center;
             box-shadow: 0 0 30px var(--neon-glow);
             max-height: 90vh;
@@ -487,10 +490,10 @@
 </head>
 <body>
 
-    <!-- شريط التنقل العلوي المحدث -->
+    <!-- شريط التنقل العلوي -->
     <div class="top-navbar">
         <div class="nav-item active" onclick="switchTab('colorsTab', this)">Null’s Magic</div>
-        <div class="nav-item" onclick="switchTab('symbolsTab', this)">الرموز المميزة ⭐</div>
+        <div class="nav-item" onclick="switchTab('symbolsTab', this)">رموز الزخرفة 🔣</div>
     </div>
 
     <!-- بروفايل المستخدم العائم -->
@@ -504,7 +507,7 @@
         <div class="header-area">
             <h1>Nulls Magic</h1>
             <div class="header-btns">
-                <button class="action-btn" onclick="openFontsModal()">🔠 Fonts</button>
+                <button class="action-btn" onclick="openFontsModal()">🔠 Fonts الشاملة</button>
                 <button class="action-btn" onclick="openAiModal()">🤖 AI</button>
             </div>
         </div>
@@ -579,21 +582,21 @@
         </div>
     </div>
 
-    <!-- 2️⃣ قسم الرموز المميزة (100 رمز - 5 رموز في كل صف) -->
+    <!-- 2️⃣ قسم رموز الزخرفة الحقيقية (100 رمز - 5 في كل صف) -->
     <div id="symbolsTab" class="page-section">
         <div class="header-area" style="margin-bottom: 15px;">
-            <h1 style="font-size: 1.8rem;">مكتبة الرموز (100 رمز)</h1>
-            <span style="font-size: 0.85rem; color: #888;">اضغط على أي رمز لنسخه مباشرة!</span>
+            <h1 style="font-size: 1.8rem;">مكتبة رموز الزخرفة (100 رمز)</h1>
+            <span style="font-size: 0.85rem; color: #888;">اضغط على أي رمز لنسخه مباشرة (بدون إيموجي)!</span>
         </div>
         <div class="symbols-grid" id="symbolsContainer"></div>
     </div>
 
-    <!-- نافذة الخطوط (Fonts Modal) -->
+    <!-- نافذة الخطوط الشاملة (Fonts Modal) -->
     <div class="modal" id="fontsModal">
-        <div class="modal-content" style="max-width: 550px;">
+        <div class="modal-content" style="max-width: 580px;">
             <button class="close-btn" onclick="closeModal('fontsModal')">&times;</button>
-            <h3 style="color:#00d2ff; margin-bottom:12px;">مولد الخطوط الفخمة (Fonts)</h3>
-            <input type="text" id="fontInputText" class="custom-input" placeholder="اكتب نصك هنا لتوليد الخطوط..." value="Nulls Magic" oninput="generateFonts()">
+            <h3 style="color:#00d2ff; margin-bottom:12px;">مولد الخطوط الشامل (تطبيقات ومواقع)</h3>
+            <input type="text" id="fontInputText" class="custom-input" placeholder="اكتب نصك هنا لتوليد جميع الخطوط..." value="Nulls Magic" oninput="generateFonts()">
             
             <div class="fonts-list-container" id="fontsResultsContainer"></div>
         </div>
@@ -602,10 +605,10 @@
     <!-- نوافذ التسجيل والبروفايل -->
     <div class="modal" id="welcomeModal">
         <div class="modal-content">
-            <h3 style="color:#00d2ff; margin-bottom:12px;" id="authTitle">أهلاً بك في Null’s Magic V2</h3>
+            <h3 style="color:#00d2ff; margin-bottom:12px;">أهلاً بك في Null’s Magic V3</h3>
             <button style="background:#222; border:1px solid #444; color:#fff; padding:6px 12px; border-radius:12px; margin-bottom:12px; cursor:pointer;" onclick="scrollToInfo()">معلومات عن الموقع ⬇️</button>
             <div id="infoSection" style="display:none; text-align:right; font-size:0.8rem; color:#ccc; margin-bottom:12px; background:#000; padding:10px; border-radius:8px;">
-                💡 <b>حول الموقع:</b> أداة متكاملة لمجتمع Null's Brawl لتلوين الأسماء والرموز والخطوط الفخمة!
+                💡 <b>حول الموقع:</b> أداة متكاملة لمجتمع Null's Brawl لتلوين الأسماء ورموز الزخرفة الحقيقية والخطوط الاحترافية!
             </div>
             <div id="errorMessage" class="error-msg"></div>
             <input type="text" id="authDisplayName" class="custom-input" placeholder="اسمك الكامل الظاهر">
@@ -667,18 +670,18 @@
             generateFonts();
         });
 
-        // 💎 بناء 100 رمز وترتيبها 5 في كل صف
+        // 💎 100 رمز زخرفة حقيقي بدون أي إيموجي (مرتبة 5 رموز في كل صف)
         const symbolsList = [
-            "👑", "⚡", "🔥", "💎", "⭐", "🌟", "✨", "💫", "💥", "🔥",
-            "💀", "☠️", "👻", "👽", "🤖", "🎃", "😺", "🦾", "🕶️", "👑",
-            "❤️", "🖤", "💙", "💚", "💛", "💜", "🧡", "💖", "💗", "💘",
-            "🗡️", "⚔️", "🛡️", "🏹", "🪓", "💣", "🧨", "🔮", "🧿", "🕹️",
-            "🏆", "🥇", "🥈", "🥉", "🏅", "🎖️", "🎪", "🎯", "🎲", "🎮",
-            "🦅", "🐺", "🦁", "🐯", "🐍", "🐲", "🐉", "🦈", "🦂", "🕷️",
-            "❄️", "🌊", "🌪️", "⚡", "☄️", "🌙", "☀️", "☁️", "⚡", "🔥",
             "『", "』", "【", "】", "〖", "〗", "〈", "〉", "《", "》",
-            "「", "」", "［", "］", "｛", "｝", "【", "】", "『", "』",
-            "₪", "Ψ", "Ω", "§", "♠", "♣", "♥", "♦", " ▂▃", "▅▆▇"
+            "「", "」", "［", "］", "｛", "｝", "༺", "༻", "꧁", "꧂",
+            "⟅", "⟆", "【", "】", "｢", "｣", "《", "》", "〈", "〉",
+            "₪", "Ψ", "Ω", "§", "♠", "♣", "♥", "♦", "Ø", "Æ",
+            "卍", "卐", "☯", "☸", "⚜", "☤", "☥", "☧", "☨", "☩",
+            "✦", "✧", "✩", "✪", "✫", "✬", "✭", "✮", "✯", "✰",
+            "★", "☆", "✶", "✷", "✸", "✹", "✺", "✻", "✼", "✽",
+            " ▂▃", "▅▆▇", "█", "▓", "▒", "░", "■", "□", "▢", "▣",
+            "▤", "▥", "▦", "▧", "▨", "▩", "▪", "▫", "▬", "▭",
+            "❖", "₱", "¢", "€", "£", "¥", "₩", "₪", "₫", "₹"
         ];
 
         function buildSymbolsGrid() {
@@ -691,60 +694,129 @@
                 card.onclick = () => {
                     navigator.clipboard.writeText(sym);
                     card.style.background = '#00ff88';
-                    setTimeout(() => card.style.background = '', 300);
+                    card.style.color = '#000';
+                    setTimeout(() => {
+                        card.style.background = '';
+                        card.style.color = '';
+                    }, 300);
                 };
                 container.appendChild(card);
             });
         }
 
-        // 🔠 توليد الخطوط (بما فيها المربعات والدوائر والزخارف)
+        // 🔠 توليد الخطوط الشاملة لكل التطبيقات والمواقع (إنجليزي وعربي، مربعات، دوائر، وأشكال فخمة)
         function generateFonts() {
             const text = document.getElementById('fontInputText').value || "Nulls Magic";
             const container = document.getElementById('fontsResultsContainer');
             container.innerHTML = '';
 
-            // قواميس تحويل الأحرف
             const fontStyles = [
-                { name: "مربعات ممتلئة ⬛", transform: (t) => t.split('').map(c => {
-                    const code = c.charCodeAt(0);
-                    if(code >= 65 && code <= 90) return String.fromCodePoint(127312 + code - 65);
-                    if(code >= 97 && code <= 122) return String.fromCodePoint(127344 + code - 97);
-                    return c;
-                }).join('') },
-                
-                { name: "دوائر سوداء 🔘", transform: (t) => t.split('').map(c => {
-                    const code = c.charCodeAt(0);
-                    if(code >= 65 && code <= 90) return String.fromCodePoint(127338 + code - 65);
-                    if(code >= 97 && code <= 122) return String.fromCodePoint(127338 + code - 97);
-                    return c;
-                }).join('') },
-
-                { name: "خط الإحاطة البارز 🅕", transform: (t) => t.split('').map(c => {
-                    const code = c.charCodeAt(0);
-                    if(code >= 65 && code <= 90) return String.fromCodePoint(127274 + code - 65);
-                    if(code >= 97 && code <= 122) return String.fromCodePoint(127300 + code - 97);
-                    return c;
-                }).join('') },
-
-                { name: "خط القوطي الفخم 𝕬", transform: (t) => t.split('').map(c => {
-                    const code = c.charCodeAt(0);
-                    if(code >= 65 && code <= 90) return String.fromCodePoint(120068 + code - 65);
-                    if(code >= 97 && code <= 122) return String.fromCodePoint(120094 + code - 97);
-                    return c;
-                }).join('') },
-
-                { name: "خط عريض فخم 𝐀", transform: (t) => t.split('').map(c => {
-                    const code = c.charCodeAt(0);
-                    if(code >= 65 && code <= 90) return String.fromCodePoint(120468 + code - 65);
-                    if(code >= 97 && code <= 122) return String.fromCodePoint(120494 + code - 97);
-                    return c;
-                }).join('') },
-
-                { name: "إطار أقواس مزخرفة ꧁꧂", transform: (t) => `꧁༺ ${t} ༻꧂` },
-                { name: "زخرفة السيبربنك ⚡", transform: (t) => `⚡ ${t.split('').join('•')} ⚡` },
-                { name: "زخرفة النجوم ✨", transform: (t) => `✨「 ${t} 」✨` },
-                { name: "زخرفة الملوك 👑", transform: (t) => `👑『 ${t} 』👑` },
-                { name: "زخرفة الأشرار 💀", transform: (t) => `☠️ [ ${t} ] ☠️` }
+                { 
+                    name: "مربعات ممتلئة ⬛", 
+                    transform: (t) => t.split('').map(c => {
+                        const code = c.charCodeAt(0);
+                        if(code >= 65 && code <= 90) return String.fromCodePoint(127312 + code - 65);
+                        if(code >= 97 && code <= 122) return String.fromCodePoint(127344 + code - 97);
+                        return c;
+                    }).join('') 
+                },
+                { 
+                    name: "دوائر سوداء 🔘", 
+                    transform: (t) => t.split('').map(c => {
+                        const code = c.charCodeAt(0);
+                        if(code >= 65 && code <= 90) return String.fromCodePoint(127338 + code - 65);
+                        if(code >= 97 && code <= 122) return String.fromCodePoint(127338 + code - 97);
+                        return c;
+                    }).join('') 
+                },
+                { 
+                    name: "مربعات بإطار 🅕", 
+                    transform: (t) => t.split('').map(c => {
+                        const code = c.charCodeAt(0);
+                        if(code >= 65 && code <= 90) return String.fromCodePoint(127274 + code - 65);
+                        if(code >= 97 && code <= 122) return String.fromCodePoint(127300 + code - 97);
+                        return c;
+                    }).join('') 
+                },
+                { 
+                    name: "خط القوطي الفخم 𝕬", 
+                    transform: (t) => t.split('').map(c => {
+                        const code = c.charCodeAt(0);
+                        if(code >= 65 && code <= 90) return String.fromCodePoint(120068 + code - 65);
+                        if(code >= 97 && code <= 122) return String.fromCodePoint(120094 + code - 97);
+                        return c;
+                    }).join('') 
+                },
+                { 
+                    name: "خط عريض غامق 𝐀", 
+                    transform: (t) => t.split('').map(c => {
+                        const code = c.charCodeAt(0);
+                        if(code >= 65 && code <= 90) return String.fromCodePoint(120468 + code - 65);
+                        if(code >= 97 && code <= 122) return String.fromCodePoint(120494 + code - 97);
+                        return c;
+                    }).join('') 
+                },
+                { 
+                    name: "خط مائل فخم 𝐴", 
+                    transform: (t) => t.split('').map(c => {
+                        const code = c.charCodeAt(0);
+                        if(code >= 65 && code <= 90) return String.fromCodePoint(120416 + code - 65);
+                        if(code >= 97 && code <= 122) return String.fromCodePoint(120442 + code - 97);
+                        return c;
+                    }).join('') 
+                },
+                { 
+                    name: "خط مكتوب باليد 𝓐", 
+                    transform: (t) => t.split('').map(c => {
+                        const code = c.charCodeAt(0);
+                        if(code >= 65 && code <= 90) return String.fromCodePoint(120016 + code - 65);
+                        if(code >= 97 && code <= 122) return String.fromCodePoint(120042 + code - 97);
+                        return c;
+                    }).join('') 
+                },
+                { 
+                    name: "خط الرفيع المفرغ 𝔸", 
+                    transform: (t) => t.split('').map(c => {
+                        const code = c.charCodeAt(0);
+                        if(code >= 65 && code <= 90) return String.fromCodePoint(120120 + code - 65);
+                        if(code >= 97 && code <= 122) return String.fromCodePoint(120146 + code - 97);
+                        return c;
+                    }).join('') 
+                },
+                { 
+                    name: "خط مسטח صغير ᵃ", 
+                    transform: (t) => t.split('').map(c => {
+                        const map = {'a':'ᵃ','b':'ᵇ','c':'ᶜ','d':'ᵈ','e':'ᵉ','f':'ᶠ','g':'ᵍ','h':'ʰ','i':'ⁱ','j':'ʲ','k':'ᵏ','l':'ˡ','m':'ᵐ','n':'ⁿ','o':'ᵒ','p':'ᵖ','q':'𐞥','r':'ʳ','s':'ˢ','t':'ᵗ','u':'ᵘ','v':'ᵛ','w':'ʷ','x':'ˣ','y':'ʸ','z':'ᶻ'};
+                        return map[c.toLowerCase()] || c;
+                    }).join('') 
+                },
+                { 
+                    name: "خط معكوس رأسيًا ɐ", 
+                    transform: (t) => t.split('').reverse().map(c => {
+                        const map = {'a':'ɐ','b':'q','c':'ɔ','d':'p','e':'ǝ','f':'ɟ','g':'ƃ','h':'ɥ','i':'ᴉ','j':'ɾ','k':'ʞ','l':'l','m':'ɯ','n':'u','o':'o','p':'d','q':'b','r':'ɹ','s':'s','t':'ʇ','u':'n','v':'ʌ','w':'ʍ','x':'x','y':'ʎ','z':'z'};
+                        return map[c.toLowerCase()] || c;
+                    }).join('') 
+                },
+                { 
+                    name: "زخرفة الأقواس الملكية ꧁꧂", 
+                    transform: (t) => `꧁༺ ${t} ༻꧂` 
+                },
+                { 
+                    name: "زخرفة الفواصل النجمية ✦", 
+                    transform: (t) => `✦ ${t.split('').join('•')} ✦` 
+                },
+                { 
+                    name: "زخرفة الإطار المربع 【】", 
+                    transform: (t) => `【 ${t} 】` 
+                },
+                { 
+                    name: "زخرفة الأقواس المزخرفة 『』", 
+                    transform: (t) => `『 ${t} 』` 
+                },
+                { 
+                    name: "زخرفة السهمين ⟨⟩", 
+                    transform: (t) => `⟨ ${t} ⟩` 
+                }
             ];
 
             fontStyles.forEach(style => {
@@ -752,7 +824,7 @@
                 const row = document.createElement('div');
                 row.className = 'font-row';
                 row.innerHTML = `
-                    <div style="font-size:0.75rem; color:#aaa; width:130px;">${style.name}</div>
+                    <div style="font-size:0.75rem; color:#aaa; width:140px;">${style.name}</div>
                     <div class="font-text-display">${converted}</div>
                     <button class="font-copy-btn" onclick="copyFontText(this, '${converted}')">نسخ</button>
                 `;
@@ -989,6 +1061,7 @@
 
         userInput.addEventListener('input', () => { isTextRainbowMode = false; generateGradientText(); });
         color1Input.addEventListener('input', () => { isTextRainbowMode = false; generateGradientText(); });
+        color2Input.addEventListener('input', () => { isTextUnicode = false; generateGradientText(); });
         color2Input.addEventListener('input', () => { isTextRainbowMode = false; generateGradientText(); });
         color3Input.addEventListener('input', () => { isTextRainbowMode = false; generateGradientText(); });
 
