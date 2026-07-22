@@ -29,6 +29,7 @@
             align-items: center;
             position: relative;
             overflow-x: hidden;
+            transition: background-color 0.4s ease;
         }
 
         /* 🔴 شريط المنيو العلوي */
@@ -157,6 +158,7 @@
             margin-bottom: 25px;
         }
 
+        /* 🔒 منع السكرول التلقائي عند الكتابة */
         .input-box input[type="text"] {
             width: 100%;
             background: transparent;
@@ -165,6 +167,7 @@
             color: #fff;
             font-size: 1.1rem;
             padding: 8px;
+            scroll-margin: 0;
         }
 
         .color-pickers { display: flex; gap: 6px; }
@@ -231,6 +234,66 @@
             border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
+        }
+
+        /* 🌈 قسم واجهة الثيمات والألوان الفخمة (بالأسفل) */
+        .color-themes-section {
+            width: 100%;
+            margin-top: 25px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--text-color);
+            border-right: 4px solid var(--accent-blue);
+            padding-right: 10px;
+        }
+
+        .themes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            width: 100%;
+        }
+
+        .theme-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .theme-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-blue);
+            box-shadow: 0 5px 15px var(--neon-glow);
+        }
+
+        .theme-preview {
+            width: 100%;
+            height: 35px;
+            border-radius: 8px;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .preview-color { flex: 1; height: 100%; }
+
+        .theme-name {
+            font-weight: bold;
+            font-size: 0.9rem;
         }
 
         /* 🟣 شاشة الدردشة والتواصل */
@@ -357,20 +420,14 @@
             gap: 15px;
         }
 
-        /* هيكلة الرسائل المحسنة لتضمين الصورة والاسم */
         .msg-wrapper {
             display: flex;
             flex-direction: column;
             max-width: 75%;
         }
 
-        .msg-wrapper.mine {
-            align-self: flex-start;
-        }
-
-        .msg-wrapper.other {
-            align-self: flex-end;
-        }
+        .msg-wrapper.mine { align-self: flex-start; }
+        .msg-wrapper.other { align-self: flex-end; }
 
         .msg-sender-info {
             display: flex;
@@ -522,9 +579,29 @@
             padding: 8px;
             border-radius: 8px;
         }
+
+        /* شاشة فاصل الصيانة العام */
+        #maintenanceOverlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 10, 15, 0.95);
+            z-index: 9999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
     </style>
 </head>
 <body>
+
+    <!-- 🛑 واجهة صيانة الموقع العامة (تظهر بأمر F2) -->
+    <div id="maintenanceOverlay">
+        <h1 style="color: #ff3366; font-size: 2.8rem; margin-bottom: 15px;">⚠️ الموقع في وضع الصيانة</h1>
+        <p id="maintenanceText" style="font-size: 1.3rem; color: #ddd; max-width: 600px; line-height: 1.6;"></p>
+    </div>
 
     <div class="top-navbar">
         <div class="nav-item active" onclick="switchTab('colorsTab', this)">Null’s Magic</div>
@@ -542,8 +619,9 @@
             <button class="ai-btn" onclick="openAiModal()">🤖 Null’s AI</button>
         </div>
 
+        <!-- حقل النص مع منع السكرول التلقائي -->
         <div class="input-box">
-            <input type="text" id="userInput" placeholder="اكتب النص هنا..." value="Nulls Magic">
+            <input type="text" id="userInput" placeholder="اكتب النص هنا..." value="Nulls Magic" onfocus="preventAutoScroll(event)">
             <div class="color-pickers">
                 <input type="color" id="color1" value="#0088ff">
                 <input type="color" id="color2" value="#8a2be2">
@@ -559,6 +637,50 @@
             <div class="code-output-container">
                 <div class="code-output" id="codeOutput"></div>
                 <button class="copy-btn" onclick="copyCode()">نسخ الكود</button>
+            </div>
+        </div>
+
+        <!-- 🌈 قسم الثيمات والألوان الفخمة بالأسفل -->
+        <div class="color-themes-section">
+            <h2 class="section-title">اختر ثيم الألوان والواجهة الفخمة</h2>
+            <div class="themes-grid">
+                
+                <!-- الطبيعي -->
+                <div class="theme-card" onclick="applyTheme('#0d1f12', '#14331d', '#2ecc71', 'rgba(46, 204, 113, 0.6)')">
+                    <div class="theme-preview">
+                        <div class="preview-color" style="background: #0d1f12;"></div>
+                        <div class="preview-color" style="background: #2ecc71;"></div>
+                    </div>
+                    <span class="theme-name">🍃 لون الطبيعي</span>
+                </div>
+
+                <!-- الجليد -->
+                <div class="theme-card" onclick="applyTheme('#0b192c', '#1e3e62', '#00d2ff', 'rgba(0, 210, 255, 0.6)')">
+                    <div class="theme-preview">
+                        <div class="preview-color" style="background: #0b192c;"></div>
+                        <div class="preview-color" style="background: #00d2ff;"></div>
+                    </div>
+                    <span class="theme-name">❄️ لون الجليد</span>
+                </div>
+
+                <!-- الذهب الملكي -->
+                <div class="theme-card" onclick="applyTheme('#12100e', '#2b261f', '#f1c40f', 'rgba(241, 196, 15, 0.6)')">
+                    <div class="theme-preview">
+                        <div class="preview-color" style="background: #12100e;"></div>
+                        <div class="preview-color" style="background: #f1c40f;"></div>
+                    </div>
+                    <span class="theme-name">👑 الذهب الفخم</span>
+                </div>
+
+                <!-- نيون سيبربنك -->
+                <div class="theme-card" onclick="applyTheme('#1a002c', '#2d004f', '#ff007f', 'rgba(255, 0, 127, 0.6)')">
+                    <div class="theme-preview">
+                        <div class="preview-color" style="background: #1a002c;"></div>
+                        <div class="preview-color" style="background: #ff007f;"></div>
+                    </div>
+                    <span class="theme-name">⚡ النيون الفخم</span>
+                </div>
+
             </div>
         </div>
     </div>
@@ -584,10 +706,24 @@
                         📷
                         <input type="file" id="chatImgInput" accept="image/*" style="display:none;" onchange="sendChatImage(event)">
                     </label>
-                    <input type="text" id="chatTextInput" placeholder="اكتب رسالة..." onkeypress="if(event.key==='Enter') sendChatMessage()">
+                    <input type="text" id="chatTextInput" placeholder="اكتب رسالة أو /AdminPanel..." onkeypress="if(event.key==='Enter') sendChatMessage()">
                     <button class="add-friend-btn" onclick="sendChatMessage()">إرسال</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- نافذة لوحة تحكم المشرفين الخاصة بـ F2 -->
+    <div class="modal" id="adminPanelModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('adminPanelModal')">&times;</button>
+            <h3 style="color:#00ff88; margin-bottom:15px;">🛡️ لوحة تحكم المشرف (F2 Panel)</h3>
+            
+            <div style="font-size:0.85rem; color:#aaa; margin-bottom:8px; text-align:right;">تفعيل فاصل صيانة عام للموقع:</div>
+            <input type="text" id="maintenanceMsgInput" class="custom-input" placeholder="رسالة الصيانة التي ستظهر للجميع...">
+            
+            <button class="main-btn" style="background:linear-gradient(135deg, #ff3366, #ff6600);" onclick="toggleMaintenance(true)">تفعيل الصيانة للكل 🔴</button>
+            <button class="main-btn" style="background:linear-gradient(135deg, #00cc66, #0088ff); margin-top:10px;" onclick="toggleMaintenance(false)">إلغاء وضع الصيانة 🟢</button>
         </div>
     </div>
 
@@ -663,13 +799,16 @@
         let isLoginMode = false;
         let currentUser = null;
         let activeChatId = null; 
-        let activeChatType = 'friend'; // 'self', 'friend', 'group'
+        let activeChatType = 'friend';
 
         let dbUsers = JSON.parse(localStorage.getItem('nulls_db_users') || '{}');
         let dbGroups = JSON.parse(localStorage.getItem('nulls_db_groups') || '{}');
         let chats = JSON.parse(localStorage.getItem('nulls_db_chats') || '{}');
 
         window.addEventListener('DOMContentLoaded', () => {
+            checkMaintenanceStatus();
+            setInterval(checkMaintenanceStatus, 1500);
+
             const savedSession = localStorage.getItem('nulls_active_user');
             if (savedSession && dbUsers[savedSession]) {
                 currentUser = dbUsers[savedSession];
@@ -678,6 +817,43 @@
                 openModal('welcomeModal');
             }
         });
+
+        function preventAutoScroll(e) {
+            const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            setTimeout(() => {
+                window.scrollTo(0, currentScroll);
+            }, 0);
+        }
+
+        function applyTheme(bgColor, cardBg, accentColor, glowColor) {
+            document.documentElement.style.setProperty('--bg-color', bgColor);
+            document.documentElement.style.setProperty('--card-bg', cardBg);
+            document.documentElement.style.setProperty('--accent-blue', accentColor);
+            document.documentElement.style.setProperty('--neon-glow', glowColor);
+        }
+
+        function checkMaintenanceStatus() {
+            const mData = JSON.parse(localStorage.getItem('nulls_maintenance') || '{"active":false, "msg":""}');
+            const overlay = document.getElementById('maintenanceOverlay');
+            if (mData.active) {
+                if (currentUser && currentUser.username === 'F2') {
+                    overlay.style.display = 'none';
+                } else {
+                    document.getElementById('maintenanceText').innerText = mData.msg || "عذراً الموقع تحت الصيانة حالياً من قبل الإدارة.";
+                    overlay.style.display = 'flex';
+                }
+            } else {
+                overlay.style.display = 'none';
+            }
+        }
+
+        function toggleMaintenance(activate) {
+            if (!currentUser || currentUser.username !== 'F2') return;
+            const msg = document.getElementById('maintenanceMsgInput').value.trim() || "الموقع مغلق حالياً للصيانة الشاملة.";
+            localStorage.setItem('nulls_maintenance', JSON.stringify({ active: activate, msg: msg }));
+            closeModal('adminPanelModal');
+            checkMaintenanceStatus();
+        }
 
         function switchTab(tabId, el) {
             document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
@@ -717,14 +893,12 @@
             const dName = document.getElementById('authDisplayName').value.trim();
 
             if (!uInput || !pInput || (!isLoginMode && !dName)) {
-                showError("يرجى ملء جميع الحقول المطلوب!");
+                showError("يرجى ملء جميع الحقول المطلوبة!");
                 return;
             }
 
-            // منع اليوزرات العربية باستثناء 'حـربـي'
-            const isArabic = /[\u0600-\u06FF]/.test(uInput);
-            if (isArabic && uInput !== "حـربـي") {
-                showError("عذراً، اليوزرات يجب أن تكون بالأحرف الإنجليزية فقط!");
+            if (uInput.toLowerCase() === 'f2' && uInput !== 'F2') {
+                showError("هذا اليوزر محصّن ولا يمكن تقليده!");
                 return;
             }
 
@@ -738,8 +912,12 @@
                     showError("خطأ في بيانات تسجيل الدخول!");
                 }
             } else {
+                if (uInput === 'F2' && dbUsers['F2']) {
+                    showError("يوزر F2 مسجل مسبقاً ولا يمكن أخذه!");
+                    return;
+                }
                 if (dbUsers[uInput]) {
-                    showError("هذا اليوزر مستخدم من قبل شحص آخر!");
+                    showError("هذا اليوزر مستخدم من قبل شخص آخر!");
                     return;
                 }
 
@@ -767,6 +945,7 @@
             document.getElementById('editDisplayNameInput').value = currentUser.displayName || '';
             document.getElementById('profileUserDisplay').innerText = "@" + currentUser.username;
             renderFriendsAndGroups();
+            checkMaintenanceStatus();
         }
 
         function handleImageUpload(e) {
@@ -782,7 +961,7 @@
         }
 
         function saveProfile() {
-            currentUser.displayName = document.getElementById('editDisplayNameInput').value.trim() || currentUser.username;
+            currentUser.displayName = document.getElementById('editDisplayNameInput'].value.trim() || currentUser.username;
             dbUsers[currentUser.username] = currentUser;
             saveUsersDB();
             updateProfileUI();
@@ -798,7 +977,6 @@
             localStorage.setItem('nulls_db_users', JSON.stringify(dbUsers));
         }
 
-        // ---- إدارة قائمة الأصدقاء والقروبات والمحادثة مع النفس ----
         function addFriend() {
             const fName = document.getElementById('friendUsernameInput').value.trim();
             if (!fName || fName === currentUser.username) return;
@@ -824,14 +1002,12 @@
 
             if (!currentUser) return;
 
-            // 1. خيار المحادثة مع النفس (Echo Bot بنفس الاسم والصورة)
             const selfDiv = document.createElement('div');
             selfDiv.className = 'friend-item' + (activeChatId === 'self' ? ' active' : '');
             selfDiv.innerHTML = `<img src="${currentUser.avatar}"> <span>محادثة مع نفسي 👤</span>`;
             selfDiv.onclick = () => selectChat('self', 'self');
             list.appendChild(selfDiv);
 
-            // 2. قائمة القروبات
             if (currentUser.groups) {
                 currentUser.groups.forEach(gId => {
                     const group = dbGroups[gId];
@@ -845,7 +1021,6 @@
                 });
             }
 
-            // 3. قائمة الأصدقاء
             if (currentUser.friends) {
                 currentUser.friends.forEach(f => {
                     const friendUser = dbUsers[f];
@@ -856,7 +1031,6 @@
                         div.onclick = () => selectChat(f, 'friend');
                         list.appendChild(div);
 
-                        // خيارات تحديد الأعضاء للقروب
                         groupSelect.innerHTML += `<label><input type="checkbox" value="${f}"> ${friendUser.displayName} (@${f})</label>`;
                     }
                 });
@@ -871,13 +1045,8 @@
             selected.push(currentUser.username);
 
             const gId = 'group_' + Date.now();
-            dbGroups[gId] = {
-                id: gId,
-                name: gName,
-                members: selected
-            };
+            dbGroups[gId] = { id: gId, name: gName, members: selected };
 
-            // إضافته لكل المشاركين
             selected.forEach(u => {
                 if (dbUsers[u]) {
                     if (!dbUsers[u].groups) dbUsers[u].groups = [];
@@ -916,13 +1085,23 @@
         function sendChatMessage(imgData = null) {
             const textInput = document.getElementById('chatTextInput');
             const txt = textInput.value.trim();
+
+            if (txt === '/AdminPanel') {
+                textInput.value = '';
+                if (currentUser && currentUser.username === 'F2') {
+                    openModal('adminPanelModal');
+                } else {
+                    alert("عذراً هذا الأمر مخصص للمشرف الرئيسي فقط!");
+                }
+                return;
+            }
+
             if (!txt && !imgData) return;
             const key = getChatKey();
             if (!key) return;
 
             if (!chats[key]) chats[key] = [];
 
-            // تسجيل رسالتك الأصلية
             const msgObj = {
                 sender: currentUser.username,
                 displayName: currentUser.displayName,
@@ -934,7 +1113,6 @@
             chats[key].push(msgObj);
             textInput.value = '';
 
-            // إذا كنت تتحدث مع نفسك، سيرد عليك البوت مجسداً شخصيتك وصورتك واسمك بالضبط
             if (activeChatType === 'self') {
                 setTimeout(() => {
                     chats[key].push({
@@ -976,7 +1154,6 @@
                 const wrapper = document.createElement('div');
                 wrapper.className = 'msg-wrapper ' + (isMine ? 'mine' : 'other');
 
-                // هيدر الرسالة (تضمين الصورة والاسم الكامل دائماً فوق الرسالة)
                 const infoDiv = document.createElement('div');
                 infoDiv.className = 'msg-sender-info';
                 infoDiv.innerHTML = `<img src="${m.avatar || currentUser.avatar}"> <span class="msg-sender-name">${m.displayName || m.sender}</span>`;
@@ -997,7 +1174,6 @@
             box.scrollTop = box.scrollHeight;
         }
 
-        // المودالات
         function openModal(id) {
             const m = document.getElementById(id);
             m.style.display = 'flex';
@@ -1013,7 +1189,6 @@
         function openAiModal() { openModal('aiModal'); }
         function openProfileModal() { openModal('profileModal'); }
 
-        // مولد الألوان والتدرجات
         function hexToRgb(hex) {
             const bigint = parseInt(hex.replace('#', ''), 16);
             return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 };
