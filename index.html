@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nulls Magic - Text Colorizer</title>
+    <title>الموقع العربي الاول ل الوان سحريه بنولز - Text Colorizer</title>
     <style>
         :root {
             --bg-color: #0d0e12;
@@ -33,19 +33,44 @@
 
         .container {
             width: 100%;
-            max-width: 650px;
+            max-width: 700px;
             text-align: center;
         }
 
-        h1 {
-            font-size: 2.8rem;
-            font-weight: 800;
-            letter-spacing: 1px;
+        .header-area {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             margin-bottom: 25px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
             background: linear-gradient(45deg, #0088ff, #00d2ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 0 15px rgba(0, 136, 255, 0.3);
+        }
+
+        .ai-btn {
+            background: linear-gradient(135deg, #8a2be2, #0088ff);
+            color: #fff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 0 12px rgba(138, 43, 226, 0.5);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ai-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.8);
         }
 
         /* الشريط الأسود ذو الحواف الزرقاء الماعة */
@@ -77,22 +102,18 @@
             padding: 10px;
         }
 
+        /* 3 دوائر ألوان */
         .color-pickers {
             display: flex;
             align-items: center;
-            gap: 8px;
-        }
-
-        .color-pickers label {
-            font-size: 0.8rem;
-            color: #888;
+            gap: 6px;
         }
 
         .color-pickers input[type="color"] {
             -webkit-appearance: none;
             border: none;
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             cursor: pointer;
             background: none;
@@ -168,25 +189,81 @@
         .copy-btn:hover {
             background-color: #0066cc;
         }
+
+        /* نافذة AI Magic Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--accent-blue);
+            border-radius: 12px;
+            padding: 25px;
+            width: 90%;
+            max-width: 450px;
+            text-align: right;
+            box-shadow: 0 0 20px var(--neon-glow);
+        }
+
+        .modal-content h2 {
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .modal-content input[type="text"], .modal-content input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            border: 1px solid #333;
+            background: #000;
+            color: #fff;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 15px;
+        }
+
+        .btn-sec {
+            background: #444;
+            color: #fff;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Nulls Magic</h1>
+        <div class="header-area">
+            <h1>Nulls Magic</h1>
+            <button class="ai-btn" onclick="openAiModal()">✨ AI Magic</button>
+        </div>
 
-        <!-- شريط النص بستايل النيون -->
+        <!-- شريط النص والـ 3 ألوان -->
         <div class="input-box">
             <input type="text" id="userInput" placeholder="اكتب النص هنا..." value="Nulls Magic">
             
             <div class="color-pickers">
-                <label>التدريج:</label>
-                <input type="color" id="color1" value="#0088ff">
-                <input type="color" id="color2" value="#ff007f">
+                <input type="color" id="color1" value="#0088ff" title="اللون الأول">
+                <input type="color" id="color2" value="#8a2be2" title="اللون الأوسط">
+                <input type="color" id="color3" value="#ff007f" title="اللون الثالث">
             </div>
         </div>
 
-        <!-- نتيجة المعاينة والكود -->
+        <!-- معاينة النتيجة والكود -->
         <div class="result-card">
             <div class="preview-title">الشكل داخل اللعبة:</div>
             <div class="text-preview" id="textPreview"></div>
@@ -199,14 +276,30 @@
         </div>
     </div>
 
+    <!-- نافذة الذكاء الاصطناعي -->
+    <div class="modal" id="aiModal">
+        <div class="modal-content">
+            <h2>✨ AI Magic</h2>
+            <p style="font-size:0.85rem; color:#aaa; margin-bottom:12px;">وصف الثيم أو اختر صورة لاستخراج 3 ألوان:</p>
+
+            <input type="text" id="aiPrompt" placeholder="مثال: نار، نيون لايم، ثيم دراغون بول...">
+            <input type="file" id="aiImage" accept="image/*">
+
+            <div class="modal-actions">
+                <button class="btn-sec" onclick="closeAiModal()">إلغاء</button>
+                <button class="copy-btn" onclick="processAi()">توليد الألوان</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const userInput = document.getElementById('userInput');
         const color1Input = document.getElementById('color1');
         const color2Input = document.getElementById('color2');
+        const color3Input = document.getElementById('color3');
         const textPreview = document.getElementById('textPreview');
         const codeOutput = document.getElementById('codeOutput');
 
-        // تحويل RGB إلى Hex
         function hexToRgb(hex) {
             const bigint = parseInt(hex.replace('#', ''), 16);
             return {
@@ -216,16 +309,22 @@
             };
         }
 
-        // حساب لون التدريج لكل حرف
-        function interpolateColor(color1, color2, factor) {
-            const c1 = hexToRgb(color1);
-            const c2 = hexToRgb(color2);
-            
+        function interpolateColor(c1Hex, c2Hex, factor) {
+            const c1 = hexToRgb(c1Hex);
+            const c2 = hexToRgb(c2Hex);
             const r = Math.round(c1.r + factor * (c2.r - c1.r)).toString(16).padStart(2, '0');
             const g = Math.round(c1.g + factor * (c2.g - c1.g)).toString(16).padStart(2, '0');
             const b = Math.round(c1.b + factor * (c2.b - c1.b)).toString(16).padStart(2, '0');
-            
             return `${r}${g}${b}`;
+        }
+
+        // حساب التدرج بناءً على 3 ألوان
+        function get3PointGradientColor(factor) {
+            if (factor <= 0.5) {
+                return interpolateColor(color1Input.value, color2Input.value, factor * 2);
+            } else {
+                return interpolateColor(color2Input.value, color3Input.value, (factor - 0.5) * 2);
+            }
         }
 
         function generateGradientText() {
@@ -242,7 +341,6 @@
 
             for (let i = 0; i < len; i++) {
                 const char = text[i];
-                // إذا كان مسافة لا داعي لتلوينه بكود
                 if (char === ' ') {
                     previewHTML += ' ';
                     generatedCode += ' ';
@@ -250,9 +348,8 @@
                 }
 
                 const factor = len > 1 ? i / (len - 1) : 0;
-                const hexColor = interpolateColor(color1Input.value, color2Input.value, factor);
+                const hexColor = get3PointGradientColor(factor);
 
-                // كود نولز المعتاد <cHex>حرف</c>
                 generatedCode += `<c${hexColor}>${char}</c>`;
                 previewHTML += `<span style="color: #${hexColor}">${char}</span>`;
             }
@@ -276,12 +373,68 @@
             });
         }
 
+        /* التحكم بـ AI Modal */
+        function openAiModal() { document.getElementById('aiModal').style.display = 'flex'; }
+        function closeAiModal() { document.getElementById('aiModal').style.display = 'none'; }
+
+        function processAi() {
+            const prompt = document.getElementById('aiPrompt').value.toLowerCase();
+            const imageInput = document.getElementById('aiImage');
+
+            // إذا تم اختيار صورة
+            if (imageInput.files && imageInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.src = e.target.result;
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        ctx.drawImage(img, 0, 0);
+                        
+                        // سحب 3 ألوان من أماكن مختلفة بالصورة
+                        const p1 = ctx.getImageData(10, 10, 1, 1).data;
+                        const p2 = ctx.getImageData(Math.floor(img.width/2), Math.floor(img.height/2), 1, 1).data;
+                        const p3 = ctx.getImageData(img.width - 10, img.height - 10, 1, 1).data;
+
+                        color1Input.value = `#${((1<<24)+(p1[0]<<16)+(p1[1]<<8)+p2[2]).toString(16).slice(1)}`;
+                        color2Input.value = `#${((1<<24)+(p2[0]<<16)+(p2[1]<<8)+p2[2]).toString(16).slice(1)}`;
+                        color3Input.value = `#${((1<<24)+(p3[0]<<16)+(p3[1]<<8)+p3[2]).toString(16).slice(1)}`;
+                        
+                        generateGradientText();
+                        closeAiModal();
+                    }
+                }
+                reader.readAsDataURL(imageInput.files[0]);
+                return;
+            }
+
+            // اقتراحات الذكاء الاصطناعي المبسطة بناءً على الوصف النصي
+            if (prompt.includes('نار') || prompt.includes('fire')) {
+                color1Input.value = '#ff0000'; color2Input.value = '#ff7700'; color3Input.value = '#ffea00';
+            } else if (prompt.includes('ثلج') || prompt.includes('ice')) {
+                color1Input.value = '#00ffff'; color2Input.value = '#0088ff'; color3Input.value = '#ffffff';
+            } else if (prompt.includes('سام') || prompt.includes('toxic') || prompt.includes('لايم')) {
+                color1Input.value = '#00ff22'; color2Input.value = '#a6ff00'; color3Input.value = '#004411';
+            } else {
+                // تلوين عشوائي متناسق كـ AI Suggestion
+                color1Input.value = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+                color2Input.value = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+                color3Input.value = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+            }
+
+            generateGradientText();
+            closeAiModal();
+        }
+
         // الاستماع للتغييرات
         userInput.addEventListener('input', generateGradientText);
         color1Input.addEventListener('input', generateGradientText);
         color2Input.addEventListener('input', generateGradientText);
+        color3Input.addEventListener('input', generateGradientText);
 
-        // تشغيل أول مرة عند التحميل
         generateGradientText();
     </script>
 </body>
