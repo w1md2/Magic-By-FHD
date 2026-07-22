@@ -801,9 +801,18 @@
         let activeChatId = null; 
         let activeChatType = 'friend';
 
-        let dbUsers = JSON.parse(localStorage.getItem('nulls_db_users') || '{}');
-        let dbGroups = JSON.parse(localStorage.getItem('nulls_db_groups') || '{}');
-        let chats = JSON.parse(localStorage.getItem('nulls_db_chats') || '{}');
+        let dbUsers = {};
+        let dbGroups = {};
+        let chats = {};
+
+        // فحص وتحميل البيانات بأمان تام لمنع أي تعليق
+        try {
+            dbUsers = JSON.parse(localStorage.getItem('nulls_db_users') || '{}');
+            dbGroups = JSON.parse(localStorage.getItem('nulls_db_groups') || '{}');
+            chats = JSON.parse(localStorage.getItem('nulls_db_chats') || '{}');
+        } catch (e) {
+            localStorage.clear();
+        }
 
         window.addEventListener('DOMContentLoaded', () => {
             checkMaintenanceStatus();
@@ -833,7 +842,11 @@
         }
 
         function checkMaintenanceStatus() {
-            const mData = JSON.parse(localStorage.getItem('nulls_maintenance') || '{"active":false, "msg":""}');
+            let mData = { active: false, msg: "" };
+            try {
+                mData = JSON.parse(localStorage.getItem('nulls_maintenance') || '{"active":false, "msg":""}');
+            } catch (e) {}
+
             const overlay = document.getElementById('maintenanceOverlay');
             if (mData.active) {
                 if (currentUser && currentUser.username === 'F2') {
@@ -986,6 +999,7 @@
                 return;
             }
 
+            if (!currentUser.friends) currentUser.friends = [];
             if (!currentUser.friends.includes(fName)) {
                 currentUser.friends.push(fName);
                 saveProfile();
